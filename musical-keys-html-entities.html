@@ -1,0 +1,787 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musical Keys & Instruments Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .circle-of-fifths {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 30px;
+        }
+        .circle-button {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        .circle-button:hover {
+            background: #e0e0e0;
+            transform: scale(1.1);
+        }
+        .circle-button.selected {
+            background: #4CAF50;
+            color: white;
+        }
+        .major-key {
+            border-color: #2196F3;
+        }
+        .minor-key {
+            border-color: #FF9800;
+            font-size: 11px;
+        }
+        .info-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .key-info, .instrument-panel {
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .key-info h3, .instrument-panel h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .scale-notes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .note-chip {
+            padding: 4px 8px;
+            background: #2196F3;
+            color: white;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .note-chip.root {
+            background: #f44336;
+        }
+        .instrument-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .instrument-btn {
+            padding: 10px 15px;
+            border: 2px solid #333;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .instrument-btn:hover {
+            background: #e0e0e0;
+        }
+        .instrument-btn.selected {
+            background: #4CAF50;
+            color: white;
+        }
+        .tuning-controls {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .tuning-controls h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+        }
+        .string-tuning {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .string-tuning label {
+            min-width: 60px;
+            font-weight: bold;
+        }
+        .string-tuning select {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .fretboard {
+            background: transparent;
+            border-radius: 8px;
+            margin: 20px auto;
+            overflow-x: auto;
+            position: relative;
+            width: 95%;
+            max-width: 1400px;
+            height: 280px;
+        }
+        .fretboard-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-width: 800px;
+        }
+        
+        /* CSS Grid fretboard layout */
+        .fretboard-grid {
+            display: grid;
+            grid-template-columns: 60px repeat(var(--fret-count, 24), 1fr);
+            grid-template-rows: repeat(var(--string-count, 4), 45px);
+            gap: 0;
+            width: 100%;
+            min-width: 800px;
+            position: relative;
+        }
+        
+        .fret-cell {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid #d7d6d6;
+            border-bottom: 1px solid #c8c8c8;
+            background: white;
+        }
+        
+        /* Slightly darker background for traditional fret positions */
+        .fret-cell.fret-position {
+            background: #f0f0f0;
+        }
+        
+        /* Even darker background for 12th fret (octave) */
+        .fret-cell.fret-12 {
+            background: #d0d0d0;
+        }
+        
+        .fret-cell:first-of-type {
+            border-left: 4px solid #e8e8e8; /* Nut */
+        }
+        
+        /* Darker nut line between open strings and first fret */
+        .fret-cell.nut-border {
+            border-left: 3px solid #333;
+        }
+        
+        /* Remove brown background from fret marker positions - make them transparent */
+        
+        /* String labels on the left */
+        .string-label {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+            background: #e8e8e8;
+            border-right: 1px solid #d7d6d6;
+            border-bottom: 1px solid #c8c8c8;
+        }
+        
+        /* Notes positioned in fret cells */
+        .note-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            border: 2px solid #333;
+            z-index: 10;
+        }
+        .note-dot.root {
+            background: #1a237e;
+            border: 2px solid #000;
+        }
+        .note-dot.scale {
+            background: #4A90E2;
+            border: 2px solid #2c5aa0;
+        }
+        
+        /* Fret markers below */
+        .fret-markers {
+            display: grid;
+            grid-template-columns: 60px repeat(var(--fret-count, 24), 1fr);
+            gap: 0;
+            margin-top: 10px;
+            padding: 0 10px;
+        }
+        .fret-marker {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 25px;
+            position: relative;
+        }
+        .legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .info-panel {
+                grid-template-columns: 1fr;
+            }
+            .fretboard-grid {
+                grid-template-columns: 60px repeat(var(--fret-count, 24), 1fr);
+                grid-template-rows: repeat(var(--string-count, 4), 50px);
+                min-width: calc(60px + var(--fret-count, 24) * 25px);
+            }
+            .fret-markers {
+                grid-template-columns: 60px repeat(var(--fret-count, 24), 1fr);
+                min-width: calc(60px + var(--fret-count, 24) * 25px);
+            }
+            .note-dot {
+                width: 22px;
+                height: 22px;
+                font-size: 10px;
+            }
+            .string-label {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .fretboard-grid {
+                grid-template-columns: 50px repeat(var(--fret-count, 24), 1fr);
+                grid-template-rows: repeat(var(--string-count, 4), 45px);
+                min-width: calc(50px + var(--fret-count, 24) * 20px);
+            }
+            .fret-markers {
+                grid-template-columns: 50px repeat(var(--fret-count, 24), 1fr);
+                min-width: calc(50px + var(--fret-count, 24) * 20px);
+            }
+            .note-dot {
+                width: 18px;
+                height: 18px;
+                font-size: 9px;
+            }
+            .string-label {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Musical Keys & Instruments Visualizer</h1>
+        
+        <!-- Circle of Fifths -->
+        <div class="circle-of-fifths" id="circleOfFifths"></div>
+        
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div class="key-info">
+                <h3>Key Information</h3>
+                <div id="keyInfo">Select a key to see information</div>
+            </div>
+            <div class="instrument-panel">
+                <h3>Instruments</h3>
+                <div class="instrument-buttons" id="instrumentButtons"></div>
+                
+                <!-- Interactive Tuning Controls -->
+                <div class="tuning-controls" id="tuningControls">
+                    <h4>Tuning</h4>
+                    <div id="stringTunings"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #1a237e; border: 2px solid #000;"></div>
+                <span>Root Notes</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background: #4A90E2; border: 2px solid #333;"></div>
+                <span>Scale Notes</span>
+            </div>
+        </div>
+        
+        <!-- Fretboard -->
+        <div class="fretboard">
+            <div id="fretboard"></div>
+        </div>
+    </div>
+
+    <script>
+        // Musical data with proper sharp and flat symbols
+        const musicalKeys = {
+            'C': { 
+                scale: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+                signature: 'No sharps or flats',
+                chords: ['C', 'Dm', 'Em', 'F', 'G', 'Am', 'B°']
+            },
+            'G': { 
+                scale: ['G', 'A', 'B', 'C', 'D', 'E', 'F♯'],
+                signature: '1 sharp (F♯)',
+                chords: ['G', 'Am', 'Bm', 'C', 'D', 'Em', 'F♯°']
+            },
+            'D': { 
+                scale: ['D', 'E', 'F♯', 'G', 'A', 'B', 'C♯'],
+                signature: '2 sharps (F♯, C♯)',
+                chords: ['D', 'Em', 'F♯m', 'G', 'A', 'Bm', 'C♯°']
+            },
+            'A': { 
+                scale: ['A', 'B', 'C♯', 'D', 'E', 'F♯', 'G♯'],
+                signature: '3 sharps (F♯, C♯, G♯)',
+                chords: ['A', 'Bm', 'C♯m', 'D', 'E', 'F♯m', 'G♯°']
+            },
+            'E': { 
+                scale: ['E', 'F♯', 'G♯', 'A', 'B', 'C♯', 'D♯'],
+                signature: '4 sharps (F♯, C♯, G♯, D♯)',
+                chords: ['E', 'F♯m', 'G♯m', 'A', 'B', 'C♯m', 'D♯°']
+            },
+            'B': { 
+                scale: ['B', 'C♯', 'D♯', 'E', 'F♯', 'G♯', 'A♯'],
+                signature: '5 sharps (F♯, C♯, G♯, D♯, A♯)',
+                chords: ['B', 'C♯m', 'D♯m', 'E', 'F♯', 'G♯m', 'A♯°']
+            },
+            'F♯/G♭': { 
+                scale: ['F♯', 'G♯', 'A♯', 'B', 'C♯', 'D♯', 'E♯'],
+                signature: '6 sharps/6 flats',
+                chords: ['F♯', 'G♯m', 'A♯m', 'B', 'C♯', 'D♯m', 'E♯°']
+            },
+            'D♭': { 
+                scale: ['D♭', 'E♭', 'F', 'G♭', 'A♭', 'B♭', 'C'],
+                signature: '5 flats (B♭, E♭, A♭, D♭, G♭)',
+                chords: ['D♭', 'E♭m', 'Fm', 'G♭', 'A♭', 'B♭m', 'C°']
+            },
+            'A♭': { 
+                scale: ['A♭', 'B♭', 'C', 'D♭', 'E♭', 'F', 'G'],
+                signature: '4 flats (B♭, E♭, A♭, D♭)',
+                chords: ['A♭', 'B♭m', 'Cm', 'D♭', 'E♭', 'Fm', 'G°']
+            },
+            'E♭': { 
+                scale: ['E♭', 'F', 'G', 'A♭', 'B♭', 'C', 'D'],
+                signature: '3 flats (B♭, E♭, A♭)',
+                chords: ['E♭', 'Fm', 'Gm', 'A♭', 'B♭', 'Cm', 'D°']
+            },
+            'B♭': { 
+                scale: ['B♭', 'C', 'D', 'E♭', 'F', 'G', 'A'],
+                signature: '2 flats (B♭, E♭)',
+                chords: ['B♭', 'Cm', 'Dm', 'E♭', 'F', 'Gm', 'A°']
+            },
+            'F': { 
+                scale: ['F', 'G', 'A', 'B♭', 'C', 'D', 'E'],
+                signature: '1 flat (B♭)',
+                chords: ['F', 'Gm', 'Am', 'B♭', 'C', 'Dm', 'E°']
+            },
+            
+            // Minor keys
+            'Am': { 
+                scale: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+                signature: 'No sharps or flats',
+                chords: ['Am', 'B°', 'C', 'Dm', 'Em', 'F', 'G']
+            },
+            'Em': { 
+                scale: ['E', 'F♯', 'G', 'A', 'B', 'C', 'D'],
+                signature: '1 sharp (F♯)',
+                chords: ['Em', 'F♯°', 'G', 'Am', 'Bm', 'C', 'D']
+            },
+            'Bm': { 
+                scale: ['B', 'C♯', 'D', 'E', 'F♯', 'G', 'A'],
+                signature: '2 sharps (F♯, C♯)',
+                chords: ['Bm', 'C♯°', 'D', 'Em', 'F♯m', 'G', 'A']
+            },
+            'F♯m': { 
+                scale: ['F♯', 'G♯', 'A', 'B', 'C♯', 'D', 'E'],
+                signature: '3 sharps (F♯, C♯, G♯)',
+                chords: ['F♯m', 'G♯°', 'A', 'Bm', 'C♯m', 'D', 'E']
+            },
+            'C♯m': { 
+                scale: ['C♯', 'D♯', 'E', 'F♯', 'G♯', 'A', 'B'],
+                signature: '4 sharps (F♯, C♯, G♯, D♯)',
+                chords: ['C♯m', 'D♯°', 'E', 'F♯m', 'G♯m', 'A', 'B']
+            },
+            'G♯m': { 
+                scale: ['G♯', 'A♯', 'B', 'C♯', 'D♯', 'E', 'F♯'],
+                signature: '5 sharps (F♯, C♯, G♯, D♯, A♯)',
+                chords: ['G♯m', 'A♯°', 'B', 'C♯m', 'D♯m', 'E', 'F♯']
+            },
+            'D♯m/E♭m': { 
+                scale: ['D♯', 'E♯', 'F♯', 'G♯', 'A♯', 'B', 'C♯'],
+                signature: '6 sharps/6 flats',
+                chords: ['D♯m', 'E♯°', 'F♯', 'G♯m', 'A♯m', 'B', 'C♯']
+            },
+            'B♭m': { 
+                scale: ['B♭', 'C', 'D♭', 'E♭', 'F', 'G♭', 'A♭'],
+                signature: '5 flats (B♭, E♭, A♭, D♭, G♭)',
+                chords: ['B♭m', 'C°', 'D♭', 'E♭m', 'Fm', 'G♭', 'A♭']
+            },
+            'Fm': { 
+                scale: ['F', 'G', 'A♭', 'B♭', 'C', 'D♭', 'E♭'],
+                signature: '4 flats (B♭, E♭, A♭, D♭)',
+                chords: ['Fm', 'G°', 'A♭', 'B♭m', 'Cm', 'D♭', 'E♭']
+            },
+            'Cm': { 
+                scale: ['C', 'D', 'E♭', 'F', 'G', 'A♭', 'B♭'],
+                signature: '3 flats (B♭, E♭, A♭)',
+                chords: ['Cm', 'D°', 'E♭', 'Fm', 'Gm', 'A♭', 'B♭']
+            },
+            'Gm': { 
+                scale: ['G', 'A', 'B♭', 'C', 'D', 'E♭', 'F'],
+                signature: '2 flats (B♭, E♭)',
+                chords: ['Gm', 'A°', 'B♭', 'Cm', 'Dm', 'E♭', 'F']
+            },
+            'Dm': { 
+                scale: ['D', 'E', 'F', 'G', 'A', 'B♭', 'C'],
+                signature: '1 flat (B♭)',
+                chords: ['Dm', 'E°', 'F', 'Gm', 'Am', 'B♭', 'C']
+            }
+        };
+
+        // All possible notes for tuning selection
+        const allNotes = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
+
+        // Instruments data with updated violin positions
+        const instruments = {
+            guitar: {
+                name: 'Guitar',
+                type: 'fretted',
+                strings: ['E', 'A', 'D', 'G', 'B', 'E'], // Low E to High E
+                frets: 24,
+                defaultTuning: ['E', 'A', 'D', 'G', 'B', 'E']
+            },
+            bass: {
+                name: 'Bass Guitar', 
+                type: 'fretted',
+                strings: ['E', 'A', 'D', 'G'], // Low E to High G
+                frets: 24,
+                defaultTuning: ['E', 'A', 'D', 'G']
+            },
+            ukulele: {
+                name: 'Ukulele',
+                type: 'fretted', 
+                strings: ['G', 'C', 'E', 'A'], // Low G to High A
+                frets: 15,
+                defaultTuning: ['G', 'C', 'E', 'A']
+            },
+            violin: {
+                name: 'Violin',
+                type: 'bowed',
+                strings: ['G', 'D', 'A', 'E'], // Low G to High E
+                frets: 20, // positions instead of frets
+                defaultTuning: ['G', 'D', 'A', 'E']
+            }
+        };
+
+        // Note mapping functions
+        function noteToSemitone(note) {
+            const noteMap = {
+                'C': 0, 'C♯': 1, 'D♭': 1, 'C♯/D♭': 1, 'D': 2, 'D♯': 3, 'E♭': 3, 'D♯/E♭': 3,
+                'E': 4, 'E♯': 5, 'F': 5, 'F♯': 6, 'G♭': 6, 'F♯/G♭': 6, 'G': 7, 'G♯': 8, 'A♭': 8, 'G♯/A♭': 8,
+                'A': 9, 'A♯': 10, 'B♭': 10, 'A♯/B♭': 10, 'B': 11, 'B♯': 0
+            };
+            return noteMap[note] !== undefined ? noteMap[note] : 0;
+        }
+
+        function semitoneToNote(semitone) {
+            const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+            return notes[semitone % 12];
+        }
+
+        function isNoteInScale(note, scaleNotes) {
+            const noteSemi = noteToSemitone(note);
+            return scaleNotes.some(scaleNote => {
+                const scaleSemi = noteToSemitone(scaleNote);
+                return noteSemi === scaleSemi;
+            });
+        }
+
+        function isRootNote(note, key) {
+            const rootNote = key.replace(/m$/, '').split('/')[0];
+            return noteToSemitone(note) === noteToSemitone(rootNote);
+        }
+
+        // State
+        let selectedKey = 'C';
+        let selectedInstrument = 'guitar';
+        let currentTuning = {};
+
+        // Initialize the app
+        function init() {
+            createCircleOfFifths();
+            createInstrumentButtons();
+            initializeTuning();
+            updateKeyInfo();
+            updateFretboard();
+            updateSelectedButtons();
+        }
+
+        function createCircleOfFifths() {
+            const container = document.getElementById('circleOfFifths');
+            const centerX = 200;
+            const centerY = 200;
+            const majorRadius = 160;
+            const minorRadius = 110;
+
+            // Major keys (outer circle)
+            const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭', 'D♭', 'A♭', 'E♭', 'B♭', 'F'];
+            majorKeys.forEach((key, index) => {
+                const angle = (index * 30 - 90) * Math.PI / 180;
+                const x = centerX + majorRadius * Math.cos(angle) - 30;
+                const y = centerY + majorRadius * Math.sin(angle) - 30;
+                
+                const button = document.createElement('button');
+                button.className = 'circle-button major-key';
+                button.innerHTML = key;
+                button.style.left = x + 'px';
+                button.style.top = y + 'px';
+                button.onclick = () => selectKey(key);
+                container.appendChild(button);
+            });
+
+            // Minor keys (inner circle)
+            const minorKeys = ['Am', 'Em', 'Bm', 'F♯m', 'C♯m', 'G♯m', 'D♯m/E♭m', 'B♭m', 'Fm', 'Cm', 'Gm', 'Dm'];
+            minorKeys.forEach((key, index) => {
+                const angle = (index * 30 - 90) * Math.PI / 180;
+                const x = centerX + minorRadius * Math.cos(angle) - 30;
+                const y = centerY + minorRadius * Math.sin(angle) - 30;
+                
+                const button = document.createElement('button');
+                button.className = 'circle-button minor-key';
+                button.innerHTML = key;
+                button.style.left = x + 'px';
+                button.style.top = y + 'px';
+                button.onclick = () => selectKey(key);
+                container.appendChild(button);
+            });
+        }
+
+        function createInstrumentButtons() {
+            const container = document.getElementById('instrumentButtons');
+            Object.keys(instruments).forEach(key => {
+                const button = document.createElement('button');
+                button.className = 'instrument-btn';
+                button.textContent = instruments[key].name;
+                button.onclick = () => selectInstrument(key);
+                container.appendChild(button);
+            });
+        }
+
+        function initializeTuning() {
+            const instrument = instruments[selectedInstrument];
+            currentTuning = { ...instrument.defaultTuning };
+            createTuningControls();
+        }
+
+        function createTuningControls() {
+            const container = document.getElementById('stringTunings');
+            const instrument = instruments[selectedInstrument];
+            
+            container.innerHTML = '';
+            
+            instrument.strings.forEach((string, index) => {
+                const stringDiv = document.createElement('div');
+                stringDiv.className = 'string-tuning';
+                
+                const label = document.createElement('label');
+                label.textContent = `String ${index + 1}:`;
+                
+                const select = document.createElement('select');
+                select.id = `tuning-${index}`;
+                
+                allNotes.forEach(note => {
+                    const option = document.createElement('option');
+                    option.value = note;
+                    option.textContent = note;
+                    if (note === currentTuning[index]) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+                
+                select.onchange = (e) => {
+                    currentTuning[index] = e.target.value;
+                    updateFretboard();
+                };
+                
+                stringDiv.appendChild(label);
+                stringDiv.appendChild(select);
+                container.appendChild(stringDiv);
+            });
+        }
+
+        function selectKey(key) {
+            selectedKey = key;
+            updateKeyInfo();
+            updateFretboard();
+            updateSelectedButtons();
+        }
+
+        function selectInstrument(instrument) {
+            selectedInstrument = instrument;
+            initializeTuning();
+            updateFretboard();
+            updateSelectedButtons();
+        }
+
+        function updateSelectedButtons() {
+            // Update circle buttons
+            document.querySelectorAll('.circle-button').forEach(btn => {
+                btn.classList.toggle('selected', btn.innerHTML === selectedKey);
+            });
+            
+            // Update instrument buttons
+            document.querySelectorAll('.instrument-btn').forEach((btn, index) => {
+                const instrumentKeys = Object.keys(instruments);
+                btn.classList.toggle('selected', instrumentKeys[index] === selectedInstrument);
+            });
+        }
+
+        function updateKeyInfo() {
+            const keyData = musicalKeys[selectedKey];
+            const container = document.getElementById('keyInfo');
+            
+            if (keyData) {
+                container.innerHTML = `
+                    <h4>${selectedKey} ${selectedKey.includes('m') ? 'Minor' : 'Major'}</h4>
+                    <p><strong>Key Signature:</strong> ${keyData.signature}</p>
+                    <p><strong>Scale Notes:</strong></p>
+                    <div class="scale-notes">
+                        ${keyData.scale.map((note, index) => 
+                            `<span class="note-chip ${index === 0 ? 'root' : ''}">${note}</span>`
+                        ).join('')}
+                    </div>
+                    <p><strong>Chords:</strong> ${keyData.chords.join(', ')}</p>
+                `;
+            }
+        }
+
+        function updateFretboard() {
+            const instrument = instruments[selectedInstrument];
+            const keyData = musicalKeys[selectedKey];
+            const container = document.getElementById('fretboard');
+            
+            if (!keyData) return;
+            
+            const maxFrets = instrument.frets;
+            
+            // Set CSS custom properties for grid layout
+            document.documentElement.style.setProperty('--fret-count', maxFrets);
+            document.documentElement.style.setProperty('--string-count', instrument.strings.length);
+            
+            let html = '<div class="fretboard-grid">';
+            
+            // String configuration
+            const stringOrder = [...Object.values(currentTuning)];
+            if (selectedInstrument === 'guitar' || selectedInstrument === 'bass') {
+                stringOrder.reverse(); // High to low for visual display
+            }
+            
+            // Create grid: each string gets its own row, each fret gets its own column
+            stringOrder.forEach((openString, stringIndex) => {
+                // String label (first column)
+                html += `<div class="string-label" style="grid-row: ${stringIndex + 1}; grid-column: 1;">${openString}</div>`;
+                
+                // Fret cells for this string
+                for (let fret = 0; fret <= maxFrets; fret++) {
+                    const semitone = (noteToSemitone(openString) + fret) % 12;
+                    const note = semitoneToNote(semitone);
+                    
+                    let noteClass = '';
+                    let showNote = false;
+                    
+                    if (isRootNote(note, selectedKey)) {
+                        noteClass = 'root';
+                        showNote = true;
+                    } else if (isNoteInScale(note, keyData.scale)) {
+                        noteClass = 'scale';
+                        showNote = true;
+                    }
+                    
+                    const gridColumn = fret + 2; // +2 because column 1 is string label, fret 0 is column 2
+                    const nutClass = fret === 1 ? 'nut-border' : ''; // Add nut border class for first fret
+                    
+                    // Add subtle background shading for traditional fret positions
+                    let fretPositionClass = '';
+                    if (fret === 12) {
+                        fretPositionClass = 'fret-12'; // Special darker shading for 12th fret
+                    } else if ([3, 5, 7, 9, 15, 17, 19].includes(fret)) {
+                        fretPositionClass = 'fret-position'; // Regular shading for other positions
+                    }
+                    
+                    html += `<div class="fret-cell ${nutClass} ${fretPositionClass}" style="grid-row: ${stringIndex + 1}; grid-column: ${gridColumn};">`;
+                    if (showNote) {
+                        html += `<div class="note-dot ${noteClass}">${note}</div>`;
+                    }
+                    html += '</div>';
+                }
+            });
+            
+            html += '</div>'; // Close fretboard-grid
+            
+            // Add simple fret markers below (no dots, just spacing)
+            html += '<div class="fret-markers">';
+            html += '<div class="fret-marker"></div>'; // Empty space for string labels
+            for (let fret = 0; fret <= maxFrets; fret++) {
+                html += '<div class="fret-marker"></div>';
+            }
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+
+        // Initialize the app when page loads
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
