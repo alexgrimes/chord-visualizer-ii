@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Musical Keys & Instruments Visualizer</title>
+    <title>Musical Keys & Instruments Visualizer - Interactive Chord Explorer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,7 +86,7 @@
         }
         .note-chip {
             padding: 4px 8px;
-            background: #2196F3;
+            background: #64B5F6;
             color: white;
             border-radius: 15px;
             font-size: 14px;
@@ -105,11 +105,12 @@
         }
         .chord-toggle button {
             flex: 1;
-            padding: 10px 15px;
+            padding: 6px 8px;
             border: none;
             background: white;
             cursor: pointer;
             font-weight: bold;
+            font-size: 11px;
             transition: all 0.3s ease;
         }
         .chord-toggle button.active {
@@ -119,65 +120,114 @@
         .chord-toggle button:hover:not(.active) {
             background: #e0e0e0;
         }
-        .chord-buttons {
-            display: flex;
-            flex-wrap: wrap;
+        .chord-analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
             gap: 8px;
             margin: 15px 0;
+            max-width: 100%;
+            overflow-x: auto;
         }
-        .chord-btn {
-            padding: 8px 12px;
+        
+        .chord-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 6px 4px;
+            background: #f9f9f9;
+            min-width: 65px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chord-column.selected {
+            border-color: #ff6b35;
+            background: #fff5f2;
+        }
+        
+        .roman-numeral {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+            text-align: center;
+            font-weight: normal;
+        }
+        
+        .scale-degree-roman {
+            font-size: 10px;
+            color: #888;
+            margin-bottom: 2px;
+            text-align: center;
+            font-weight: normal;
+        }
+        
+        .function-roman {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+            text-align: center;
+            font-weight: normal;
+        }
+        
+        .chord-button {
+            padding: 6px 8px;
+            margin: 4px 0;
             border: 2px solid #333;
             background: white;
             cursor: pointer;
             border-radius: 4px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
+            width: 100%;
             transition: all 0.3s ease;
-            position: relative;
         }
-        .chord-btn:hover {
-            background: #e0e0e0;
-        }
-        .chord-btn.selected {
+        
+        .chord-button.selected {
             background: #ff6b35;
             color: white;
             border-color: #e55a2b;
         }
-        .chord-details {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            min-width: 200px;
-            background: white;
-            border: 2px solid #333;
-            border-radius: 4px;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 100;
-            display: none;
-        }
-        .chord-details.show {
-            display: block;
-        }
-        .chord-notes {
+        
+        .note-members {
             display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 5px 0;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
-        .chord-note {
-            padding: 4px 8px;
-            background: #ff6b35;
-            color: white;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
+        
+        .note-member {
+            font-size: 11px;
+            line-height: 1.3;
+            margin: 1px 0;
+            text-align: center;
+            width: 100%;
         }
-        .scale-degree {
-            font-size: 10px;
-            opacity: 0.8;
-            margin-left: 2px;
+        
+        .degree-subscript {
+            font-size: 8px;
+            vertical-align: sub;
+            color: #888;
+            margin-right: 2px;
+        }
+        
+        /* Diminished passing chord styles */
+        .diminished-mode .chord-analysis-grid {
+            grid-template-rows: auto auto;
+        }
+        
+        .diatonic-chord {
+            grid-row: 1;
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+        
+        .passing-chord {
+            grid-row: 2;
+            border: 2px dashed #999;
+            background: #f0f0f0;
+            margin-top: 10px;
         }
         .instrument-buttons {
             display: grid;
@@ -340,8 +390,8 @@
             border: 2px solid #000;
         }
         .note-dot.scale {
-            background: #B3D9FF;
-            border: 2px solid #90C4E8;
+            background: #E3F2FD;
+            border: 2px solid #BBDEFB;
         }
         .note-dot.chord {
             background: #0D47A1;
@@ -407,6 +457,19 @@
             }
             .string-label {
                 font-size: 14px;
+            }
+            .chord-analysis-grid {
+                grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            }
+            .chord-button {
+                font-size: 12px;
+                padding: 5px 6px;
+            }
+            .note-member {
+                font-size: 10px;
+            }
+            .degree-subscript {
+                font-size: 7px;
             }
         }
         
@@ -1017,8 +1080,112 @@
             }
         };
 
+        // Key signature mappings for proper enharmonic spelling
+        const keySignatures = {
+            'C': { sharps: [], flats: [] },
+            'G': { sharps: ['F'], flats: [] },
+            'D': { sharps: ['F', 'C'], flats: [] },
+            'A': { sharps: ['F', 'C', 'G'], flats: [] },
+            'E': { sharps: ['F', 'C', 'G', 'D'], flats: [] },
+            'B': { sharps: ['F', 'C', 'G', 'D', 'A'], flats: [] },
+            'F♯/G♭': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [] },
+            'F': { sharps: [], flats: ['B'] },
+            'B♭': { sharps: [], flats: ['B', 'E'] },
+            'E♭': { sharps: [], flats: ['B', 'E', 'A'] },
+            'A♭': { sharps: [], flats: ['B', 'E', 'A', 'D'] },
+            'D♭': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'] }
+        };
+
         // All possible notes for tuning selection
         const allNotes = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
+
+        // Generate secondary dominants for a key
+        function generateSecondaryDominants(key) {
+            const keyData = musicalKeys[key];
+            if (!keyData || !keyData.scale) return [];
+            
+            const scaleNotes = keyData.scale;
+            const isMinor = key.includes('m');
+            
+            // Build dominant 7th chords ON each scale degree (in diatonic order)
+            const secondaryDominants = [];
+            
+            scaleNotes.forEach((note, index) => {
+                // Build dominant 7th chord on this scale degree
+                const rootSemitone = noteToSemitone(note);
+                const root = semitoneToNote(rootSemitone, key);
+                const third = semitoneToNote((rootSemitone + 4) % 12, key); // Major third
+                const fifth = semitoneToNote((rootSemitone + 7) % 12, key); // Perfect fifth  
+                const seventh = semitoneToNote((rootSemitone + 10) % 12, key); // Minor 7th
+                
+                // Get scale degree roman numeral (what degree this chord is built on)
+                const scaleDegreeRomans = ['I7', 'II7', 'III7', 'IV7', 'V7', 'VI7', 'VII7'];
+                const scaleDegreeRoman = scaleDegreeRomans[index];
+                
+                // Get target roman numeral (what this chord resolves to - a fifth below)
+                const targetIndex = (index + 4) % 7; // Perfect fifth down in scale degrees
+                const targetRomanNumerals = isMinor ? 
+                    ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'] :
+                    ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                    
+                secondaryDominants.push({
+                    symbol: `${root}7`,
+                    notes: [root, third, fifth, seventh],
+                    degrees: ['1', '3', '5', '♭7'],
+                    scaleDegree: scaleDegreeRoman,
+                    target: targetRomanNumerals[targetIndex]
+                });
+            });
+            
+            return secondaryDominants;
+        }
+
+        // Generate diminished passing chords for a key
+        function generateDiminishedPassing(key) {
+            const keyData = musicalKeys[key];
+            if (!keyData || !keyData.scale) return [];
+            
+            const scaleNotes = keyData.scale;
+            const diminishedPassing = [];
+            const isMinor = key.includes('m');
+            
+            // Define the chromatic passing tones with their correct flat spellings
+            const passingToneIntervals = [
+                { semitoneOffset: 1, roman: isMinor ? '♭ii°7' : '♭ii°7', flatSpelling: true },    // Between 1 and 2
+                { semitoneOffset: 3, roman: isMinor ? '♭III°7' : '♭iii°7', flatSpelling: true },  // Between 2 and 3
+                { semitoneOffset: 6, roman: isMinor ? '♭V°7' : '♭V°7', flatSpelling: true },      // Between 4 and 5
+                { semitoneOffset: 8, roman: isMinor ? '♭VI°7' : '♭vi°7', flatSpelling: true },    // Between 5 and 6
+                { semitoneOffset: 10, roman: isMinor ? '♭VII°7' : '♭vii°7', flatSpelling: true }  // Between 6 and 7
+            ];
+            
+            // Get the tonic note (first scale degree) as reference
+            const tonicSemitone = noteToSemitone(scaleNotes[0]);
+            
+            passingToneIntervals.forEach(passingInfo => {
+                const passingToneSemitone = (tonicSemitone + passingInfo.semitoneOffset) % 12;
+                
+                // Force flat spelling for diminished passing chord roots
+                const root = semitoneToNoteFlat(passingToneSemitone);
+                const third = semitoneToNoteFlat((passingToneSemitone + 3) % 12); // Minor third
+                const fifth = semitoneToNoteFlat((passingToneSemitone + 6) % 12); // Diminished fifth
+                const seventh = semitoneToNoteFlat((passingToneSemitone + 9) % 12); // Diminished seventh
+                
+                diminishedPassing.push({
+                    symbol: `${root}°7`,
+                    notes: [root, third, fifth, seventh],
+                    degrees: ['1', '♭3', '♭5', '♭♭7'],
+                    roman: passingInfo.roman
+                });
+            });
+            
+            return diminishedPassing;
+        }
+        
+        // Helper function to force flat spellings for diminished chords
+        function semitoneToNoteFlat(semitone) {
+            const flatNotes = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+            return flatNotes[semitone];
+        }
 
         // Instruments data with updated violin positions
         const instruments = {
@@ -1062,9 +1229,19 @@
             return noteMap[note] !== undefined ? noteMap[note] : 0;
         }
 
-        function semitoneToNote(semitone) {
-            const notes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
-            return notes[semitone % 12];
+        function semitoneToNote(semitone, key) {
+            // Get proper enharmonic spelling based on key signature
+            const keyInfo = keySignatures[key.replace(/m$/, '').split('/')[0]] || keySignatures['C'];
+            
+            if (keyInfo.flats.length > 0) {
+                // Use flat names for flat keys
+                const flatNotes = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+                return flatNotes[semitone % 12];
+            } else {
+                // Use sharp names for sharp keys
+                const sharpNotes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+                return sharpNotes[semitone % 12];
+            }
         }
 
         function isNoteInScale(note, scaleNotes) {
@@ -1093,7 +1270,7 @@
         let selectedKey = 'C';
         let selectedInstrument = 'guitar';
         let currentTuning = {};
-        let chordMode = 'triads'; // 'triads' or 'sevenths'
+        let chordMode = 'triads'; // 'triads', 'sevenths', 'secondary', or 'diminished'
         let selectedChord = null; // Currently selected chord for highlighting
 
         // Initialize the app
@@ -1227,62 +1404,125 @@
             });
         }
 
+        // Generate Roman numeral for a chord
+        function generateRomanNumeral(chordIndex, chordMode, key) {
+            const isMinor = key.includes('m');
+            
+            switch(chordMode) {
+                case 'triads':
+                case 'sevenths':
+                    if (!isMinor) {
+                        const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                        return majorRomanNumerals[chordIndex];
+                    } else {
+                        const minorRomanNumerals = ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'];
+                        return minorRomanNumerals[chordIndex];
+                    }
+                case 'secondary':
+                    // Get the actual secondary dominant data
+                    const secondaryChords = generateSecondaryDominants(key);
+                    if (secondaryChords[chordIndex]) {
+                        return `V7/${secondaryChords[chordIndex].target}`;
+                    }
+                    return 'V7';
+                case 'diminished':
+                    // Get the actual diminished passing chord data
+                    const diminishedChords = generateDiminishedPassing(key);
+                    if (diminishedChords[chordIndex] && diminishedChords[chordIndex].roman) {
+                        return diminishedChords[chordIndex].roman;
+                    }
+                    return '°7';
+            }
+        }
+        
+        // Generate chord column HTML
+        function generateChordColumn(chord, chordIndex, isSelected) {
+            const roman = generateRomanNumeral(chordIndex, chordMode, selectedKey);
+            
+            // For secondary dominants, show both the scale degree and the V7/target
+            let romanNumeralContent = '';
+            if (chordMode === 'secondary' && chord.scaleDegree) {
+                romanNumeralContent = `
+                    <div class="scale-degree-roman">${chord.scaleDegree}</div>
+                    <div class="function-roman">${roman}</div>
+                `;
+            } else {
+                romanNumeralContent = `<div class="roman-numeral">${roman}</div>`;
+            }
+            
+            return `
+                <div class="chord-column ${isSelected ? 'selected' : ''}" 
+                     onclick="selectChord(${chordIndex})">
+                  
+                  ${romanNumeralContent}
+                  
+                  <button class="chord-button ${isSelected ? 'selected' : ''}">
+                    ${chord.symbol}
+                  </button>
+                  
+                  <div class="note-members">
+                    ${chord.notes.map((note, noteIndex) => 
+                        `<div class="note-member">
+                           <span class="degree-subscript">${chord.degrees[noteIndex]}</span>${note}
+                         </div>`
+                    ).join('')}
+                  </div>
+                </div>
+            `;
+        }
+
         function updateKeyInfo() {
             const keyData = musicalKeys[selectedKey];
             const container = document.getElementById('keyInfo');
             
             if (keyData) {
-                // Check if key has new chord structure
-                if (keyData.triads && keyData.sevenths) {
-                    const chords = chordMode === 'triads' ? keyData.triads : keyData.sevenths;
-                    
-                    container.innerHTML = `
-                        <h4>${selectedKey} ${selectedKey.includes('m') ? 'Minor' : 'Major'}</h4>
-                        <p><strong>Key Signature:</strong> ${keyData.signature}</p>
-                        <p><strong>Scale Notes:</strong></p>
-                        <div class="scale-notes">
-                            ${keyData.scale.map((note, index) => 
-                                `<span class="note-chip ${index === 0 ? 'root' : ''}">${note}</span>`
-                            ).join('')}
-                        </div>
-                        
-                        <div class="chord-toggle">
-                            <button class="${chordMode === 'triads' ? 'active' : ''}" onclick="toggleChordMode('triads')">Triads</button>
-                            <button class="${chordMode === 'sevenths' ? 'active' : ''}" onclick="toggleChordMode('sevenths')">7th Chords</button>
-                        </div>
-                        
-                        <p><strong>${chordMode === 'triads' ? 'Triads' : '7th Chords'}:</strong></p>
-                        <div class="chord-buttons">
-                            ${chords.map((chord, index) => `
-                                <div class="chord-btn ${selectedChord && selectedChord.symbol === chord.symbol ? 'selected' : ''}" 
-                                     onclick="selectChord(${index})">
-                                    ${chord.symbol}
-                                    <div class="chord-details ${selectedChord && selectedChord.symbol === chord.symbol ? 'show' : ''}">
-                                        <strong>${chord.symbol}</strong>
-                                        <div class="chord-notes">
-                                            ${chord.notes.map((note, noteIndex) => 
-                                                `<span class="chord-note">${note}<span class="scale-degree">${chord.degrees[noteIndex]}</span></span>`
-                                            ).join('')}
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                } else {
-                    // Fallback for keys without new chord structure
-                    container.innerHTML = `
-                        <h4>${selectedKey} ${selectedKey.includes('m') ? 'Minor' : 'Major'}</h4>
-                        <p><strong>Key Signature:</strong> ${keyData.signature}</p>
-                        <p><strong>Scale Notes:</strong></p>
-                        <div class="scale-notes">
-                            ${keyData.scale.map((note, index) => 
-                                `<span class="note-chip ${index === 0 ? 'root' : ''}">${note}</span>`
-                            ).join('')}
-                        </div>
-                        <p><strong>Chords:</strong> ${keyData.chords ? keyData.chords.join(', ') : 'Not available'}</p>
-                    `;
+                let chords = [];
+                let chordModeTitle = '';
+                
+                // Get appropriate chord set based on mode
+                switch(chordMode) {
+                    case 'triads':
+                        chords = keyData.triads || [];
+                        chordModeTitle = 'Triads';
+                        break;
+                    case 'sevenths':
+                        chords = keyData.sevenths || [];
+                        chordModeTitle = '7th Chords';
+                        break;
+                    case 'secondary':
+                        chords = generateSecondaryDominants(selectedKey);
+                        chordModeTitle = 'Secondary Dominants';
+                        break;
+                    case 'diminished':
+                        chords = generateDiminishedPassing(selectedKey);
+                        chordModeTitle = 'Diminished Passing';
+                        break;
                 }
+                
+                container.innerHTML = `
+                    <h4>${selectedKey} ${selectedKey.includes('m') ? 'Minor' : 'Major'}</h4>
+                    <p><strong>Key Signature:</strong> ${keyData.signature}</p>
+                    <p><strong>Scale Notes:</strong></p>
+                    <div class="scale-notes">
+                        ${keyData.scale.map((note, index) => 
+                            `<span class="note-chip ${index === 0 ? 'root' : ''}">${note}</span>`
+                        ).join('')}
+                    </div>
+                    
+                    <div class="chord-toggle">
+                        <button class="${chordMode === 'triads' ? 'active' : ''}" onclick="toggleChordMode('triads')">Triads</button>
+                        <button class="${chordMode === 'sevenths' ? 'active' : ''}" onclick="toggleChordMode('sevenths')">7th Chords</button>
+                        <button class="${chordMode === 'secondary' ? 'active' : ''}" onclick="toggleChordMode('secondary')">Secondary</button>
+                        <button class="${chordMode === 'diminished' ? 'active' : ''}" onclick="toggleChordMode('diminished')">Diminished</button>
+                    </div>
+                    
+                    <p><strong>${chordModeTitle}:</strong></p>
+                    <div class="chord-analysis-grid ${chordMode === 'diminished' ? 'diminished-mode' : ''}">
+                        ${chords.map((chord, index) => 
+                            generateChordColumn(chord, index, selectedChord && selectedChord.symbol === chord.symbol)
+                        ).join('')}
+                    </div>
+                `;
             }
         }
 
@@ -1294,8 +1534,23 @@
         }
 
         function selectChord(chordIndex) {
-            const keyData = musicalKeys[selectedKey];
-            const chords = chordMode === 'triads' ? keyData.triads : keyData.sevenths;
+            let chords = [];
+            
+            // Get appropriate chord set based on mode
+            switch(chordMode) {
+                case 'triads':
+                    chords = musicalKeys[selectedKey].triads || [];
+                    break;
+                case 'sevenths':
+                    chords = musicalKeys[selectedKey].sevenths || [];
+                    break;
+                case 'secondary':
+                    chords = generateSecondaryDominants(selectedKey);
+                    break;
+                case 'diminished':
+                    chords = generateDiminishedPassing(selectedKey);
+                    break;
+            }
             
             if (selectedChord && selectedChord.symbol === chords[chordIndex].symbol) {
                 // Deselect if clicking the same chord
@@ -1338,7 +1593,7 @@
                 // Fret cells for this string
                 for (let fret = 0; fret <= maxFrets; fret++) {
                     const semitone = (noteToSemitone(openString) + fret) % 12;
-                    const note = semitoneToNote(semitone);
+                    const note = semitoneToNote(semitone, selectedKey); // Use key-aware note naming
                     
                     let noteClass = '';
                     let showNote = false;
@@ -1351,6 +1606,7 @@
                         noteClass = 'root';
                         showNote = true;
                     } else if (isNoteInScale(note, keyData.scale)) {
+                        // Show scale notes even when chord is selected (in light blue)
                         noteClass = 'scale';
                         showNote = true;
                     }
