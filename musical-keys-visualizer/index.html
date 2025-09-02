@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musical Keys & Instruments Visualizer - Interactive Chord Explorer</title>
+    
+    <!-- Music engraving fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Music&display=swap" rel="stylesheet">
+
+    <!-- Alternative: Use Bravura font via CDN -->
+    <style>
+    @font-face {
+      font-family: 'Bravura';
+      src: url('https://cdn.jsdelivr.net/gh/steinbergmedia/bravura@latest/redist/otf/Bravura.otf') format('opentype');
+      font-display: swap;
+    }
+    </style>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -282,6 +296,7 @@
             border-radius: 8px;
             margin: 20px auto;
             overflow-x: auto;
+            overflow-y: hidden; /* Prevent vertical overflow that might cause floating elements */
             position: relative;
             width: 95%;
             max-width: 1400px;
@@ -303,6 +318,7 @@
             width: 100%;
             min-width: 800px;
             position: relative;
+            /* Remove white background to allow fret cell backgrounds to show */
         }
         
         .fret-cell {
@@ -310,8 +326,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-right: 1px solid #d7d6d6;
-            background: white;
+            /* Completely remove all borders to eliminate horizontal lines */
+            border: none !important;
+            background: white; /* Default white background */
+            border-radius: 0; /* Sharp, clean corners */
         }
         
         /* Position notes on the string line instead of center of cell */
@@ -324,23 +342,15 @@
         }
         
         /* Slightly darker background for traditional fret positions */
-        .fret-cell.fret-position {
-            background: #f0f0f0;
+        .fretboard-grid .fret-cell.fret-position {
+            background: rgba(230, 230, 230, 0.75) !important; /* Slightly lighter semi-transparent gray */
         }
         
         /* Even darker background for 12th fret (octave) */
-        .fret-cell.fret-12 {
-            background: #d0d0d0;
+        .fretboard-grid .fret-cell.fret-12 {
+            background: rgba(190, 190, 190, 0.85) !important; /* Darker semi-transparent gray */
         }
         
-        .fret-cell:first-of-type {
-            border-left: 4px solid #e8e8e8; /* Nut */
-        }
-        
-        /* Darker nut line between open strings and first fret */
-        .fret-cell.nut-border {
-            border-left: 3px solid #333;
-        }
         
         /* Remove brown background from fret marker positions - make them transparent */
         
@@ -405,6 +415,8 @@
             gap: 0;
             margin-top: 10px;
             padding: 0 10px;
+            /* Debug: temporarily make container visible */
+            /* border: 1px solid red; */
         }
         .fret-marker {
             text-align: center;
@@ -430,6 +442,235 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
+        }
+        
+        /* Chord Progression System CSS */
+        .progression-controls {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+        }
+
+        .progression-controls h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+        }
+
+        .progression-setup {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .progression-setup select, .progression-setup input {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .create-progression-btn, .play-progression-btn {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .create-progression-btn:hover, .play-progression-btn:hover {
+            background: #45a049;
+        }
+
+        /* Enhanced Staff-Based Progression System CSS - Clean Multi-Row Layout */
+        .staff-container {
+            background: transparent;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 15px 0;
+            display: none;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .staff-container.active {
+            display: block;
+        }
+
+        .staff-wrapper {
+            display: block; /* Change from grid */
+            position: relative;
+        }
+
+        .staff-system {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            position: relative;
+            page-break-inside: avoid;
+        }
+
+        .staff-system:last-child {
+            margin-bottom: 0;
+        }
+
+        .staff-header {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 2vw, 15px);
+            margin-right: 1rem;
+            flex-shrink: 0;
+            min-height: 3rem; /* Ensure consistent height even without treble clef */
+        }
+
+        .measures-row {
+            display: flex;
+            flex: 1;
+            position: relative;
+            min-height: 5rem;
+        }
+
+        .staff-svg {
+            position: absolute;
+            top: 1rem;
+            left: 0;
+            width: 100%;
+            height: 3rem;
+            z-index: 1;
+        }
+
+        .time-signature {
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+            line-height: 0.8;
+            text-align: center;
+            margin-left: 0.5rem;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .measure-staff {
+            flex: 1;
+            min-width: clamp(80px, 15vw, 120px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border-right: 1px solid #000;
+            height: 5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            min-height: 44px; /* Minimum touch target */
+        }
+
+        .measure-staff:first-child {
+            border-left: 2px solid #000;
+        }
+
+        .measure-staff:last-child {
+            border-right: 2px solid #000;
+        }
+
+        .measure-staff:hover,
+        .measure-staff:focus {
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .staff-container .roman-numeral {
+            position: absolute;
+            top: 0.5rem;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            font-weight: bold;
+            color: #333;
+            white-space: nowrap;
+            font-family: serif;
+        }
+
+        .staff-container .chord-symbol {
+            position: absolute;
+            top: 1.8rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            font-weight: bold;
+            color: #000;
+            white-space: nowrap;
+            font-family: serif;
+        }
+
+        @keyframes beatPulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+
+        .count-in-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(3rem, 8vw, 4.5rem);
+            font-weight: bold;
+            color: #ff4444;
+            z-index: 20;
+            display: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @keyframes countPulse {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        }
+
+        /* Mobile-Specific Adaptations */
+        @media (max-width: 768px) {
+            .staff-system {
+                margin-bottom: 1.5rem;
+            }
+            
+            .staff-header {
+                gap: 5px;
+            }
+            
+            .measure-staff {
+                min-width: 60px;
+            }
+            
+            .staff-container {
+                padding: 15px;
+                margin: 10px 0;
+            }
+            
+            .staff-container .roman-numeral, .staff-container .chord-symbol {
+                font-size: 12px; /* Fixed size for readability */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .measures-row {
+                overflow-x: auto;
+            }
+            
+            .staff-container {
+                padding: 15px;
+            }
+        }
+
+        @media (hover: none) {
+            .measure-staff:active {
+                background-color: rgba(76, 175, 80, 0.2);
+            }
+        }
+
+        .progression-controls-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 15px;
         }
         
         /* Responsive design */
@@ -496,11 +737,302 @@
                 font-size: 12px;
             }
         }
+
+        /* Position Controls Styling */
+        .position-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+
+        .position-btn {
+            padding: 8px 12px;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .position-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .position-btn.active {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .position-btn:hover {
+            background: linear-gradient(135deg, #ecf0f1 0%, #d5dbdb 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .position-label {
+            font-size: 12px;
+            color: #666;
+            margin-right: 15px;
+            white-space: nowrap;
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 15px;
+            padding-left: 15px;
+            border-left: 1px solid #ccc;
+        }
+
+        .zoom-btn {
+            padding: 6px 12px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .zoom-btn:hover {
+            background: #1976D2;
+        }
+
+        .fretboard.position-zoom {
+            transition: all 0.4s ease;
+        }
+
+        .fretboard-grid.zoomed {
+            transform-origin: left center;
+        }
+
+        /* True Zoom Implementation */
+        .fretboard-zoom-container {
+            overflow-x: auto;
+            overflow-y: hidden; /* Change back to hidden to prevent elements from escaping */
+            transition: all 0.4s ease;
+        }
+
+        /* Sleek zoom container with modern styling */
+        .fretboard-zoom-container.zoomed {
+            /* Allow horizontal scrolling when zoomed and add padding for dots */
+            padding: 25px 15px;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.08) 0%, rgba(41, 128, 185, 0.12) 100%);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(52, 152, 219, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Enhanced zoom grid styling */
+        .fretboard-grid.zoomed {
+            background: linear-gradient(145deg, rgba(248, 249, 250, 0.95) 0%, rgba(241, 243, 244, 0.98) 100%);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            /* Remove all grid borders to eliminate horizontal lines */
+            border: none;
+            outline: none;
+        }
+
+        .fretboard-grid.zoomed {
+            transform: scale(1.4); /* Reduced from 1.8x to 1.4x for better visibility */
+            transform-origin: left center;
+            margin: 25px 0; /* Increased margin to prevent dot clipping */
+        }
+
+        /* Make fretboard elements smaller when zoomed */
+        .fretboard-grid.zoomed {
+            /* Override the CSS custom property to make string rows closer together */
+            grid-template-rows: repeat(var(--string-count, 6), 28px); /* Increased slightly to accommodate dots */
+        }
+
+        .fretboard-grid.zoomed .note-dot {
+            /* Enhanced note dots for zoom view - subtle styling without distracting borders */
+            width: 22px;
+            height: 22px;
+            font-size: 10px;
+            line-height: 22px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
+
+        .fretboard-grid.zoomed .string-label {
+            /* Hide string labels in zoom view */
+            display: none;
+        }
+
+        /* Ensure white background for fret cells in zoom view */
+        .fretboard-grid.zoomed .fret-cell {
+            background: white; /* Changed back to white */
+            border-radius: 0; /* Sharp, clean corners for zoom view */
+            border: none !important; /* Remove all borders for clean look */
+            border-top: none !important; /* Remove horizontal grid lines */
+            border-bottom: none !important; /* Remove horizontal grid lines */
+        }
+
+        /* Comprehensive border removal for zoom view */
+        .fretboard-grid.zoomed .fret-cell,
+        .fretboard-grid.zoomed .fret-cell::before,
+        .fretboard-grid.zoomed .fret-cell::after {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none;
+        }
+
+        /* Enhanced fret lines for zoom view */
+        .fretboard-grid.zoomed .fret-cell::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #bdc3c7 0%, #95a5a6 50%, #bdc3c7 100%);
+            opacity: 0.9;
+            box-shadow: 0 0 4px rgba(189, 195, 199, 0.3);
+        }
+
+        /* Don't add fret line to the first column (string labels) */
+        .fretboard-grid.zoomed .string-label::after {
+            display: none;
+        }
+
+        /* Ensure fret position backgrounds are preserved in zoom */
+        .fretboard-grid.zoomed .fret-cell.fret-position {
+            background: rgba(230, 230, 230, 0.75) !important; /* Slightly lighter semi-transparent gray for fret positions 3,5,7,9,15,17,19 */
+        }
+
+        .fretboard-grid.zoomed .fret-cell.fret-12 {
+            background: rgba(190, 190, 190, 0.85) !important; /* Darker semi-transparent gray for 12th fret */
+        }
+
+        /* Enhanced nut line styling */
+        .fretboard-grid.zoomed .fret-cell[style*="grid-column: 2"]::after {
+            background: linear-gradient(to bottom, #34495e 0%, #2c3e50 50%, #34495e 100%);
+            width: 6px;
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(52, 73, 94, 0.5);
+        }
+
+        .fret-cell.hidden-position,
+        .fret-marker.hidden-position {
+            display: none !important;
+        }
+
+        /* Prevent any accidentally floating green elements */
+        [style*="90EE90"], [style*="#90EE90"] {
+            position: static !important;
+        }
+
+        /* Ensure position buttons stay in their container */
+        .position-btn {
+            position: relative !important;
+            background: #f8f9fa !important;
+            border: 1px solid #dee2e6 !important;
+        }
+
+        /* Complete green box prevention - hide any elements with green background */
+        *[style*="90EE90"],
+        *[style*="#90EE90"],
+        *[style*="rgb(144, 238, 144)"] {
+            background: transparent !important;
+            display: none !important;
+        }
+
+        /* Allow green styling only on chord buttons */
+        .chord-button[style*="90EE90"],
+        .chord-button[style*="#90EE90"],
+        .chord-button[style*="rgb(144, 238, 144)"] {
+            background: #90EE90 !important;
+            display: block !important;
+        }
+
+        /* Specifically prevent green in fretboard area */
+        .fretboard *[style*="90EE90"],
+        .fretboard *[style*="#90EE90"],
+        .fretboard *[style*="rgb(144, 238, 144)"] {
+            background: transparent !important;
+            display: none !important;
+        }
+
+        .fret-cell.position-target {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.4), rgba(41, 128, 185, 0.3));
+            /* Removed border to avoid conflict with fret lines */
+            border-radius: 0; /* Keep sharp corners */
+            border: none !important; /* Remove all borders completely */
+            box-shadow: 0 0 12px rgba(52, 152, 219, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .fret-cell.context-fret {
+            background: rgba(44, 62, 80, 0.3);
+            /* Removed border to avoid conflict with fret lines */
+            border-radius: 0; /* Keep sharp corners */
+            border: none !important; /* Remove all borders completely */
+        }
+
+        .fret-cell.context-fret .note-dot {
+            opacity: 0.7;
+            filter: grayscale(0.2) brightness(0.9);
+        }
+
+        .fret-marker.position-target {
+            /* Removed green background to prevent floating green box */
+            border-radius: 2px;
+            font-weight: bold; /* Add bold text instead of background */
+        }
+
+        .fret-marker.context-fret {
+            color: #999;
+        }
+
+        /* Mobile Position Controls */
+        @media (max-width: 768px) {
+            .position-controls {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            
+            .position-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                justify-content: center;
+            }
+            
+            .position-btn {
+                min-width: 35px;
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+            
+            .zoom-controls {
+                margin-left: 0;
+                padding-left: 0;
+                border-left: none;
+                border-top: 1px solid #ccc;
+                padding-top: 10px;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Musical Keys Visualizer - Chord Progression Composer</h1>
+        <h1>Musical Keys & Instruments Visualizer</h1>
         
         <!-- Circle of Fifths -->
         <div class="circle-of-fifths" id="circleOfFifths"></div>
@@ -510,6 +1042,15 @@
             <div class="key-info">
                 <h3>Key Information</h3>
                 <div id="keyInfo">Select a key to see information</div>
+                
+                <!-- Musical Staff -->
+                <div class="staff-container" id="staffContainer">
+                    <h4>Chord Progression Staff</h4>
+                    <div class="staff-wrapper" id="staffWrapper">
+                        <!-- Systems will be generated here -->
+                    </div>
+                    <div class="count-in-display" id="countInDisplay">4</div>
+                </div>
             </div>
             <div class="instrument-panel">
                 <h3>Instruments</h3>
@@ -519,6 +1060,80 @@
                 <div class="tuning-controls" id="tuningControls">
                     <h4>Tuning</h4>
                     <div id="stringTunings"></div>
+                </div>
+
+                <!-- Chord Progression Controls -->
+                <div class="progression-controls" id="progressionControls">
+                    <h4>Chord Progression Composer</h4>
+                    
+                    <div class="progression-setup">
+                        <label>
+                            Key: 
+                            <select id="progressionKey">
+                                <option value="C">C Major</option>
+                                <option value="G">G Major</option>
+                                <option value="D">D Major</option>
+                                <option value="A">A Major</option>
+                                <option value="E">E Major</option>
+                                <option value="B">B Major</option>
+                                <option value="F♯/G♭">F♯/G♭ Major</option>
+                                <option value="F">F Major</option>
+                                <option value="B♭">B♭ Major</option>
+                                <option value="E♭">E♭ Major</option>
+                                <option value="A♭">A♭ Major</option>
+                                <option value="D♭">D♭ Major</option>
+                                <option value="Am">A Minor</option>
+                                <option value="Em">E Minor</option>
+                                <option value="Bm">B Minor</option>
+                                <option value="F♯m">F♯ Minor</option>
+                                <option value="C♯m">C♯ Minor</option>
+                                <option value="G♯m">G♯ Minor</option>
+                                <option value="D♯m/E♭m">D♯/E♭ Minor</option>
+                                <option value="Dm">D Minor</option>
+                                <option value="Gm">G Minor</option>
+                                <option value="Cm">C Minor</option>
+                                <option value="Fm">F Minor</option>
+                                <option value="B♭m">B♭ Minor</option>
+                            </select>
+                        </label>
+                        
+                        <label>
+                            Time Signature: 
+                            <select id="timeSignature">
+                                <option value="4/4" selected>4/4</option>
+                                <option value="3/4">3/4</option>
+                                <option value="2/4">2/4</option>
+                                <option value="6/8">6/8</option>
+                            </select>
+                        </label>
+                        
+                        <label>
+                            Measures: 
+                            <select id="measureCount">
+                                <option value="2">2</option>
+                                <option value="4" selected>4</option>
+                                <option value="8">8</option>
+                                <option value="12">12</option>
+                                <option value="16">16</option>
+                            </select>
+                        </label>
+                        
+                        <label>
+                            Tempo: 
+                            <input type="number" id="tempo" value="120" min="60" max="200" step="5">
+                            <span>BPM</span>
+                        </label>
+                    </div>
+                    
+                    <div class="progression-controls-row">
+                        <button class="create-progression-btn" onclick="createProgression()">Create Progression</button>
+                        <button class="play-progression-btn" onclick="playProgression()" disabled>Play</button>
+                        <button class="create-progression-btn" onclick="clearProgression()">Clear</button>
+                        <label>
+                            <input type="checkbox" id="loopProgression" checked>
+                            Loop
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -539,13 +1154,67 @@
             </div>
         </div>
         
+        <!-- Position Controls -->
+        <div class="position-controls" id="positionControls" style="display: none;">
+            <span class="position-label">Fretboard Positions:</span>
+            <div class="position-buttons" id="positionButtons">
+                <!-- Position buttons will be generated here -->
+            </div>
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="resetZoom()">Show All</button>
+            </div>
+        </div>
+        
         <!-- Fretboard -->
         <div class="fretboard">
-            <div id="fretboard"></div>
+            <div class="fretboard-zoom-container" id="fretboardZoomContainer">
+                <div id="fretboard"></div>
+            </div>
         </div>
     </div>
 
     <script>
+        // Musical symbols using Unicode and font-specific characters
+        const MUSIC_SYMBOLS = {
+            TREBLE_CLEF: '\uD834\uDD1E', // 𝄞
+            SHARP: '\u266F', // ♯
+            FLAT: '\u266D', // ♭
+            NATURAL: '\u266E', // ♮
+            QUARTER_NOTE: '\u2669', // ♩
+            EIGHTH_NOTE: '\u266A', // ♪
+            DOUBLE_BAR: '\uD834\uDD01', // 𝄁
+        };
+
+        // Key signature mappings
+        const KEY_SIGNATURES = {
+            'C': { sharps: [], flats: [], display: '' },
+            'G': { sharps: ['F'], flats: [], display: '♯' },
+            'D': { sharps: ['F', 'C'], flats: [], display: '♯♯' },
+            'A': { sharps: ['F', 'C', 'G'], flats: [], display: '♯♯♯' },
+            'E': { sharps: ['F', 'C', 'G', 'D'], flats: [], display: '♯♯♯♯' },
+            'B': { sharps: ['F', 'C', 'G', 'D', 'A'], flats: [], display: '♯♯♯♯♯' },
+            'F♯/G♭': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [], display: '♯♯♯♯♯♯' },
+            'F': { sharps: [], flats: ['B'], display: '♭' },
+            'B♭': { sharps: [], flats: ['B', 'E'], display: '♭♭' },
+            'E♭': { sharps: [], flats: ['B', 'E', 'A'], display: '♭♭♭' },
+            'A♭': { sharps: [], flats: ['B', 'E', 'A', 'D'], display: '♭♭♭♭' },
+            'D♭': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'], display: '♭♭♭♭♭' },
+            
+            // Minor keys
+            'Am': { sharps: [], flats: [], display: '' },
+            'Em': { sharps: ['F'], flats: [], display: '♯' },
+            'Bm': { sharps: ['F', 'C'], flats: [], display: '♯♯' },
+            'F♯m': { sharps: ['F', 'C', 'G'], flats: [], display: '♯♯♯' },
+            'C♯m': { sharps: ['F', 'C', 'G', 'D'], flats: [], display: '♯♯♯♯' },
+            'G♯m': { sharps: ['F', 'C', 'G', 'D', 'A'], flats: [], display: '♯♯♯♯♯' },
+            'D♯m/E♭m': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [], display: '♯♯♯♯♯♯' },
+            'Dm': { sharps: [], flats: ['B'], display: '♭' },
+            'Gm': { sharps: [], flats: ['B', 'E'], display: '♭♭' },
+            'Cm': { sharps: [], flats: ['B', 'E', 'A'], display: '♭♭♭' },
+            'Fm': { sharps: [], flats: ['B', 'E', 'A', 'D'], display: '♭♭♭♭' },
+            'B♭m': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'], display: '♭♭♭♭♭' }
+        };
+
         // Musical data with proper sharp and flat symbols
         const musicalKeys = {
             'C': { 
@@ -1099,6 +1768,79 @@
         // All possible notes for tuning selection
         const allNotes = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
 
+        // Calculate note name based on scale degrees for proper chord spelling
+        function getScaleDegreeNote(rootNote, interval, key) {
+            const keyData = musicalKeys[key];
+            if (!keyData || !keyData.scale) return rootNote;
+            
+            const scale = keyData.scale;
+            const rootIndex = scale.findIndex(note => noteToSemitone(note) === noteToSemitone(rootNote));
+            
+            if (rootIndex === -1) return rootNote;
+            
+            // For dominant 7th chords, we want the flatted 7th degree
+            if (interval === 6) { // This is the 7th degree
+                const seventhIndex = (rootIndex + 6) % 7;
+                const seventhNote = scale[seventhIndex];
+                
+                // Calculate what the natural 7th would be
+                const rootSemitone = noteToSemitone(rootNote);
+                const naturalSeventhSemitone = (rootSemitone + 11) % 12; // Major 7th
+                const flatSeventhSemitone = (rootSemitone + 10) % 12; // Minor 7th (♭7)
+                
+                // If the scale's 7th degree is the natural 7th, we need to flat it
+                if (noteToSemitone(seventhNote) === naturalSeventhSemitone) {
+                    return seventhNote + '♭';
+                }
+                // If the scale's 7th degree is already a flatted note relative to the natural 7th
+                else if (noteToSemitone(seventhNote) === flatSeventhSemitone) {
+                    return seventhNote;
+                }
+                // Otherwise calculate the proper flat 7th
+                else {
+                    return seventhNote + '♭';
+                }
+            }
+            
+            // For other intervals, use standard calculation
+            const targetIndex = (rootIndex + interval) % 7;
+            const targetScaleNote = scale[targetIndex];
+            
+            // Calculate the semitone difference
+            const rootSemitone = noteToSemitone(rootNote);
+            const targetSemitone = (rootSemitone + getSemitoneInterval(interval)) % 12;
+            
+            // If the scale note matches the target semitone, use it
+            if (noteToSemitone(targetScaleNote) === targetSemitone) {
+                return targetScaleNote;
+            }
+            
+            // Otherwise, we need to alter the scale note with sharps/flats
+            const scaleNoteSemitone = noteToSemitone(targetScaleNote);
+            const diff = (targetSemitone - scaleNoteSemitone + 12) % 12;
+            
+            if (diff === 1) {
+                return targetScaleNote + '♯';
+            } else if (diff === 11) {
+                return targetScaleNote + '♭';
+            }
+            
+            return targetScaleNote;
+        }
+        
+        function getSemitoneInterval(scaleDegreeInterval) {
+            const intervals = {
+                0: 0,   // unison
+                1: 2,   // major 2nd
+                2: 4,   // major 3rd  
+                3: 5,   // perfect 4th
+                4: 7,   // perfect 5th
+                5: 9,   // major 6th
+                6: 10   // minor 7th (for dominant 7th chords)
+            };
+            return intervals[scaleDegreeInterval] || 0;
+        }
+
         // Generate secondary dominants for a key
         function generateSecondaryDominants(key) {
             const keyData = musicalKeys[key];
@@ -1111,19 +1853,19 @@
             const secondaryDominants = [];
             
             scaleNotes.forEach((note, index) => {
-                // Build dominant 7th chord on this scale degree
-                const rootSemitone = noteToSemitone(note);
-                const root = semitoneToNote(rootSemitone, key);
-                const third = semitoneToNote((rootSemitone + 4) % 12, key); // Major third
-                const fifth = semitoneToNote((rootSemitone + 7) % 12, key); // Perfect fifth  
-                const seventh = semitoneToNote((rootSemitone + 10) % 12, key); // Minor 7th
+                // Build dominant 7th chord on this scale degree using proper scale degree spelling
+                const root = note;
+                const third = getScaleDegreeNote(root, 2, key); // Major third (scale degree 3)
+                const fifth = getScaleDegreeNote(root, 4, key); // Perfect fifth (scale degree 5)
+                const seventh = getScaleDegreeNote(root, 6, key); // Minor 7th (scale degree ♭7)
                 
                 // Get scale degree roman numeral (what degree this chord is built on)
                 const scaleDegreeRomans = ['I7', 'II7', 'III7', 'IV7', 'V7', 'VI7', 'VII7'];
                 const scaleDegreeRoman = scaleDegreeRomans[index];
                 
-                // Get target roman numeral (what this chord resolves to - a fifth below)
-                const targetIndex = (index + 4) % 7; // Perfect fifth down in scale degrees
+                // Get target roman numeral (what this chord resolves to - a fifth below from the chord root)
+                // C7 (I7) resolves to F (IV), D7 (II7) resolves to G (V), etc.
+                const targetIndex = (index + 3) % 7; // Perfect fourth up = fifth down
                 const targetRomanNumerals = isMinor ? 
                     ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'] :
                     ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
@@ -1152,10 +1894,10 @@
             // Define the chromatic passing tones with their correct flat spellings
             const passingToneIntervals = [
                 { semitoneOffset: 1, roman: isMinor ? '♭ii°7' : '♭ii°7', flatSpelling: true },    // Between 1 and 2
-                { semitoneOffset: 3, roman: isMinor ? '♭III°7' : '♭iii°7', flatSpelling: true },  // Between 2 and 3
-                { semitoneOffset: 6, roman: isMinor ? '♭V°7' : '♭V°7', flatSpelling: true },      // Between 4 and 5
-                { semitoneOffset: 8, roman: isMinor ? '♭VI°7' : '♭vi°7', flatSpelling: true },    // Between 5 and 6
-                { semitoneOffset: 10, roman: isMinor ? '♭VII°7' : '♭vii°7', flatSpelling: true }  // Between 6 and 7
+                { semitoneOffset: 3, roman: isMinor ? '♭iii°7' : '♭iii°7', flatSpelling: true },  // Between 2 and 3
+                { semitoneOffset: 6, roman: isMinor ? '♭v°7' : '♭v°7', flatSpelling: true },      // Between 4 and 5
+                { semitoneOffset: 8, roman: isMinor ? '♭vi°7' : '♭vi°7', flatSpelling: true },    // Between 5 and 6
+                { semitoneOffset: 10, roman: isMinor ? '♭vii°7' : '♭vii°7', flatSpelling: true }  // Between 6 and 7
             ];
             
             // Get the tonic note (first scale degree) as reference
@@ -1266,6 +2008,15 @@
             });
         }
 
+        function getCorrectChordNoteName(semitone, chord) {
+            if (!chord || !chord.notes) return null;
+            
+            // Find the exact note name from the chord that matches this semitone
+            return chord.notes.find(chordNote => {
+                return noteToSemitone(chordNote) === semitone;
+            });
+        }
+
         // State
         let selectedKey = 'C';
         let selectedInstrument = 'guitar';
@@ -1273,11 +2024,50 @@
         let chordMode = 'triads'; // 'triads', 'sevenths', 'secondary', or 'diminished'
         let selectedChord = null; // Currently selected chord for highlighting
 
+        // Position zoom state
+        let currentPosition = null;
+        let isPositionZoomed = false;
+
+        // Position definitions (fret ranges)
+        const POSITIONS = {
+            'I': { frets: [1, 2, 3, 4, 5, 6], label: 'I' },
+            'II': { frets: [2, 3, 4, 5, 6, 7], label: 'II' },
+            'III': { frets: [3, 4, 5, 6, 7, 8], label: 'III' },
+            'IV': { frets: [4, 5, 6, 7, 8, 9], label: 'IV' },
+            'V': { frets: [5, 6, 7, 8, 9, 10], label: 'V' },
+            'VI': { frets: [6, 7, 8, 9, 10, 11], label: 'VI' },
+            'VII': { frets: [7, 8, 9, 10, 11, 12], label: 'VII' },
+            'VIII': { frets: [8, 9, 10, 11, 12, 13], label: 'VIII' },
+            'IX': { frets: [9, 10, 11, 12, 13, 14], label: 'IX' },
+            'X': { frets: [10, 11, 12, 13, 14, 15], label: 'X' },
+            'XI': { frets: [11, 12, 13, 14, 15, 16], label: 'XI' },
+            'XII': { frets: [12, 13, 14, 15, 16, 17], label: 'XII' },
+            'XIII': { frets: [13, 14, 15, 16, 17, 18], label: 'XIII' },
+            'XIV': { frets: [14, 15, 16, 17, 18, 19], label: 'XIV' },
+            'XV': { frets: [15, 16, 17, 18, 19, 20], label: 'XV' },
+            'XVI': { frets: [16, 17, 18, 19, 20, 21], label: 'XVI' },
+            'XVII': { frets: [17, 18, 19, 20, 21, 22], label: 'XVII' }
+        };
+
+        // Progression state
+        let progressionActive = false;
+        let progressionKey = 'C';
+        let progressionMeasures = [];
+        let currentMeasure = 0;
+        let audioContext = null;
+        let isPlaying = false;
+        
+        // Additional progression state for enhanced staff system
+        let isLooping = true;
+        let countInActive = false;
+        let cursorPosition = 0;
+
         // Initialize the app
         function init() {
             createCircleOfFifths();
             createInstrumentButtons();
             initializeTuning();
+            generatePositionButtons(); // Generate position buttons on startup
             updateKeyInfo();
             updateFretboard();
             updateSelectedButtons();
@@ -1379,6 +2169,13 @@
 
         function selectKey(key) {
             selectedKey = key;
+            
+            // Also update the progression key dropdown to match
+            const progressionKeySelect = document.getElementById('progressionKey');
+            if (progressionKeySelect) {
+                progressionKeySelect.value = key;
+            }
+            
             updateKeyInfo();
             updateFretboard();
             updateSelectedButtons();
@@ -1387,6 +2184,7 @@
         function selectInstrument(instrument) {
             selectedInstrument = instrument;
             initializeTuning();
+            generatePositionButtons(); // Add position buttons for the selected instrument
             updateFretboard();
             updateSelectedButtons();
         }
@@ -1552,11 +2350,29 @@
                     break;
             }
             
+            // If progression is active, add chord to current measure
+            if (progressionActive && progressionMeasures.length > 0) {
+                if (currentMeasure < progressionMeasures.length) {
+                    // Create a copy of the chord with mode and index information
+                    const chordCopy = {
+                        ...chords[chordIndex],
+                        sourceMode: chordMode,
+                        sourceIndex: chordIndex
+                    };
+                    progressionMeasures[currentMeasure] = chordCopy;
+                    updateProgressionChart();
+                    
+                    // Move to next measure
+                    currentMeasure = (currentMeasure + 1) % progressionMeasures.length;
+                    updateActiveChordButton(chords[chordIndex]);
+                    return;
+                }
+            }
+            
+            // Normal chord selection behavior
             if (selectedChord && selectedChord.symbol === chords[chordIndex].symbol) {
-                // Deselect if clicking the same chord
                 selectedChord = null;
             } else {
-                // Select new chord
                 selectedChord = chords[chordIndex];
             }
             
@@ -1593,13 +2409,18 @@
                 // Fret cells for this string
                 for (let fret = 0; fret <= maxFrets; fret++) {
                     const semitone = (noteToSemitone(openString) + fret) % 12;
-                    const note = semitoneToNote(semitone, selectedKey); // Use key-aware note naming
+                    let note = semitoneToNote(semitone, selectedKey); // Default to key-aware note naming
                     
                     let noteClass = '';
                     let showNote = false;
                     
                     // Priority: chord tones > root notes (only if no chord selected) > scale notes
                     if (selectedChord && isChordTone(note, selectedChord)) {
+                        // Use the exact spelling from the chord
+                        const correctChordNoteName = getCorrectChordNoteName(semitone, selectedChord);
+                        if (correctChordNoteName) {
+                            note = correctChordNoteName;
+                        }
                         noteClass = 'chord';
                         showNote = true;
                     } else if (!selectedChord && isRootNote(note, selectedKey)) {
@@ -1612,7 +2433,6 @@
                     }
                     
                     const gridColumn = fret + 2; // +2 because column 1 is string label, fret 0 is column 2
-                    const nutClass = fret === 1 ? 'nut-border' : ''; // Add nut border class for first fret
                     
                     // Add subtle background shading for traditional fret positions
                     let fretPositionClass = '';
@@ -1622,7 +2442,7 @@
                         fretPositionClass = 'fret-position'; // Regular shading for other positions
                     }
                     
-                    html += `<div class="fret-cell ${nutClass} ${fretPositionClass}" style="grid-row: ${stringIndex + 1}; grid-column: ${gridColumn};">`;
+                    html += `<div class="fret-cell ${fretPositionClass}" style="grid-row: ${stringIndex + 1}; grid-column: ${gridColumn};">`;
                     if (showNote) {
                         html += `<div class="note-dot ${noteClass}">${note}</div>`;
                     }
@@ -1641,10 +2461,700 @@
             html += '</div>';
             
             container.innerHTML = html;
+            
+            // Apply position zoom if active - do this immediately without timeout
+            if (isPositionZoomed && currentPosition) {
+                const position = POSITIONS[currentPosition];
+                applyPositionZoom(position.frets);
+            }
         }
+
+        // Position Functions
+        function generatePositionButtons() {
+            const container = document.getElementById('positionButtons');
+            const instrument = instruments[selectedInstrument];
+            
+            container.innerHTML = '';
+            
+            // Show positions that make sense for the instrument
+            // For guitars: show positions up to 17 if the instrument has enough frets
+            // For other instruments: show fewer positions based on fret count
+            let maxPosition;
+            if (selectedInstrument === 'guitar' && instrument.frets >= 22) {
+                maxPosition = 17; // Show all 17 positions for 22+ fret guitars
+            } else if (selectedInstrument === 'guitar' && instrument.frets >= 20) {
+                maxPosition = 15; // Show up to position XV for 20+ fret guitars
+            } else {
+                maxPosition = Math.floor(instrument.frets / 2); // Original logic for other instruments
+            }
+            
+            Object.entries(POSITIONS).forEach(([key, position]) => {
+                const positionNumber = Object.keys(POSITIONS).indexOf(key) + 1;
+                
+                if (positionNumber <= maxPosition) {
+                    const button = document.createElement('button');
+                    button.className = 'position-btn';
+                    button.id = `position-${key}`;
+                    button.textContent = position.label;
+                    button.title = `Position ${position.label} (frets ${position.frets[0]}-${position.frets[position.frets.length-1]})`;
+                    button.onclick = () => zoomToPosition(key);
+                    
+                    container.appendChild(button);
+                }
+            });
+            
+            // Show position controls
+            document.getElementById('positionControls').style.display = 'flex';
+        }
+
+        function zoomToPosition(positionKey) {
+            // Clean up any accidental green styling
+            cleanupGreenStyling();
+            
+            const position = POSITIONS[positionKey];
+            if (!position) return;
+            
+            currentPosition = positionKey;
+            isPositionZoomed = true;
+            
+            // Update button states
+            document.querySelectorAll('.position-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.id === `position-${positionKey}`);
+            });
+            
+            // Apply zoom to fretboard directly - don't call updateFretboard()
+            applyPositionZoom(position.frets);
+        }
+
+        function applyPositionZoom(fretRange) {
+            const fretboard = document.getElementById('fretboard');
+            const zoomContainer = document.getElementById('fretboardZoomContainer');
+            const fretboardGrid = fretboard.querySelector('.fretboard-grid');
+            
+            if (!fretboardGrid) return;
+            
+            // Add zoom classes
+            zoomContainer.classList.add('zoomed');
+            fretboardGrid.classList.add('zoomed');
+            
+            const minFret = Math.min(...fretRange);
+            const maxFret = Math.max(...fretRange);
+            const contextRange = 2; // Show 2 frets on each side with reduced opacity
+            
+            // Show all frets but with different opacity levels
+            const allFretCells = fretboardGrid.querySelectorAll('.fret-cell');
+            allFretCells.forEach(cell => {
+                const gridColumnMatch = cell.style.gridColumn?.match(/(\d+)/);
+                if (gridColumnMatch) {
+                    const fretNumber = parseInt(gridColumnMatch[1]) - 2; // Adjust for string labels
+                    
+                    if (fretNumber === 0) {
+                        // Open strings - keep visible with normal opacity
+                        cell.style.opacity = '1';
+                        cell.style.display = '';
+                        cell.classList.remove('position-target', 'context-fret');
+                    } else if (fretNumber >= minFret && fretNumber <= maxFret) {
+                        // Target position - full opacity with highlight
+                        cell.style.opacity = '1';
+                        cell.style.display = '';
+                        cell.classList.add('position-target');
+                        cell.classList.remove('context-fret');
+                    } else if (fretNumber >= (minFret - contextRange) && fretNumber <= (maxFret + contextRange)) {
+                        // Context frets - reduced opacity
+                        cell.style.opacity = '0.3';
+                        cell.style.display = '';
+                        cell.classList.add('context-fret');
+                        cell.classList.remove('position-target');
+                    } else {
+                        // Far frets - very low opacity
+                        cell.style.opacity = '0.1';
+                        cell.style.display = '';
+                        cell.classList.remove('position-target', 'context-fret');
+                    }
+                }
+            });
+            
+            // Update fret markers with same logic
+            const allFretMarkers = document.querySelectorAll('.fret-marker');
+            allFretMarkers.forEach((marker, index) => {
+                if (index === 0) {
+                    // Keep string labels visible
+                    marker.style.opacity = '1';
+                } else {
+                    const fretNumber = index - 1;
+                    if (fretNumber >= minFret && fretNumber <= maxFret) {
+                        marker.style.opacity = '1';
+                        marker.classList.add('position-target');
+                    } else if (fretNumber >= (minFret - contextRange) && fretNumber <= (maxFret + contextRange)) {
+                        marker.style.opacity = '0.4';
+                        marker.classList.add('context-fret');
+                    } else {
+                        marker.style.opacity = '0.15';
+                    }
+                }
+            });
+            
+            // Scroll to center the position
+            setTimeout(() => {
+                const targetFret = Math.floor((minFret + maxFret) / 2);
+                const targetElement = fretboardGrid.querySelector(`[style*="grid-column: ${targetFret + 2}"]`);
+                
+                if (targetElement && zoomContainer.scrollTo) {
+                    const containerWidth = zoomContainer.offsetWidth;
+                    const targetLeft = targetElement.offsetLeft;
+                    const scrollPosition = Math.max(0, targetLeft - (containerWidth / 2));
+                    
+                    zoomContainer.scrollTo({
+                        left: scrollPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100);
+        }
+
+        // Function to actively clean up any accidental green styling
+        function cleanupGreenStyling() {
+            document.querySelectorAll('*').forEach(element => {
+                if (element.style.background && 
+                    (element.style.background.includes('90EE90') || 
+                     element.style.background.includes('#90EE90') || 
+                     element.style.background.includes('rgb(144, 238, 144)')) &&
+                    !element.classList.contains('chord-button')) {
+                    element.style.background = '';
+                }
+            });
+        }
+
+        function resetZoom() {
+            currentPosition = null;
+            isPositionZoomed = false;
+            
+            const zoomContainer = document.getElementById('fretboardZoomContainer');
+            const fretboardGrid = document.querySelector('.fretboard-grid');
+            
+            // Remove zoom classes
+            if (zoomContainer) zoomContainer.classList.remove('zoomed');
+            if (fretboardGrid) fretboardGrid.classList.remove('zoomed');
+            
+            // Clear button states
+            document.querySelectorAll('.position-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show all elements and remove position classes
+            const allElements = document.querySelectorAll('.fret-cell, .fret-marker');
+            allElements.forEach(element => {
+                element.style.display = '';
+                element.style.opacity = '';
+                element.classList.remove('hidden-position', 'position-target');
+            });
+            
+            // Scroll back to start
+            if (zoomContainer && zoomContainer.scrollTo) {
+                zoomContainer.scrollTo({ left: 0, behavior: 'smooth' });
+            }
+            
+            updateFretboard();
+        }
+
+        // Chord Progression Functions
+        function createProgression() {
+            try {
+                const keySelect = document.getElementById('progressionKey');
+                const measureSelect = document.getElementById('measureCount');
+                const timeSelect = document.getElementById('timeSignature');
+                
+                progressionKey = keySelect.value;
+                const measureCount = parseInt(measureSelect.value);
+                const timeSignature = timeSelect.value;
+            
+            // Initialize empty measures
+            progressionMeasures = new Array(measureCount).fill(null);
+            currentMeasure = 0;
+            progressionActive = true;
+            
+            // Update UI
+            const staffContainer = document.getElementById('staffContainer');
+            staffContainer.classList.add('active');
+            document.querySelector('.play-progression-btn').disabled = true;
+            
+            // Generate staff measures
+            generateStaffMeasures(measureCount, timeSignature);
+            
+            // Update chord buttons to show progression key's chords
+            if (progressionKey !== selectedKey) {
+                selectKey(progressionKey);
+            }
+            } catch (error) {
+                console.error('Error in createProgression:', error);
+                alert('Error creating progression: ' + error.message);
+            }
+        }
+
+        function generateStaffMeasures(measureCount, timeSignature) {
+            const staffWrapper = document.getElementById('staffWrapper');
+            staffWrapper.innerHTML = '';
+            
+            const measuresPerRow = 4;
+            const systemCount = Math.ceil(measureCount / measuresPerRow);
+            
+            const [numerator, denominator] = timeSignature.split('/');
+            
+            for (let systemIndex = 0; systemIndex < systemCount; systemIndex++) {
+                
+                const system = document.createElement('div');
+                system.className = 'staff-system';
+                system.id = `system-${systemIndex}`;
+                
+                // Add time sig only to first system (no key signature)
+                if (systemIndex === 0) {
+                    system.innerHTML = `
+                        <div class="staff-header">
+                            <div class="time-signature" id="timeSignatureDisplay">
+                                <div>${numerator}</div>
+                                <div>${denominator}</div>
+                            </div>
+                        </div>
+                        <div class="measures-row" id="measures-row-${systemIndex}"></div>
+                    `;
+                } else {
+                    system.innerHTML = `
+                        <div class="measures-row" id="measures-row-${systemIndex}"></div>
+                    `;
+                }
+                
+                staffWrapper.appendChild(system);
+                
+                // Generate measures for this system
+                const measuresRow = document.getElementById(`measures-row-${systemIndex}`);
+                const startMeasure = systemIndex * measuresPerRow;
+                const endMeasure = Math.min(startMeasure + measuresPerRow, measureCount);
+                const measuresInThisRow = endMeasure - startMeasure;
+                
+                // Generate measure overlays for this system
+                for (let i = 0; i < measuresInThisRow; i++) {
+                    const measureIndex = startMeasure + i;
+                    const measure = document.createElement('div');
+                    measure.className = 'measure-staff';
+                    measure.id = `staff-measure-${measureIndex}`;
+                    
+                    measure.innerHTML = `
+                        <div class="roman-numeral" id="roman-${measureIndex}"></div>
+                        <div class="chord-symbol" id="chord-${measureIndex}">—</div>
+                    `;
+                    
+                    measure.onclick = () => selectMeasure(measureIndex);
+                    measuresRow.appendChild(measure);
+                }
+            }
+        }
+        
+        function displayKeySignature(key) {
+            const keySignature = KEY_SIGNATURES[key] || KEY_SIGNATURES['C'];
+            const keySignatureEl = document.getElementById('keySignatureDisplay');
+            if (keySignatureEl) {
+                keySignatureEl.textContent = keySignature.display;
+            }
+        }
+
+        function updateProgressionChart() {
+            progressionMeasures.forEach((chord, index) => {
+                const chordEl = document.getElementById(`chord-${index}`);
+                const romanEl = document.getElementById(`roman-${index}`);
+                const measureEl = document.getElementById(`staff-measure-${index}`);
+                
+                if (chordEl && romanEl && measureEl) {
+                    if (chord) {
+                        chordEl.textContent = chord.symbol;
+                        romanEl.textContent = generateRomanNumeralForChord(chord, progressionKey, index);
+                        chordEl.style.color = '#333';
+                    } else {
+                        chordEl.textContent = '—';
+                        romanEl.textContent = '';
+                        chordEl.style.color = '#999';
+                    }
+                    
+                    // Update active measure indicator
+                    measureEl.style.background = index === currentMeasure ? 'rgba(76, 175, 80, 0.1)' : '';
+                } else {
+                    console.warn(`Missing elements for measure ${index}:`, {
+                        chordEl: !!chordEl,
+                        romanEl: !!romanEl,
+                        measureEl: !!measureEl
+                    });
+                }
+            });
+            
+            // Enable play button if all measures have chords
+            const allFilled = progressionMeasures.every(chord => chord !== null);
+            const playBtn = document.querySelector('.play-progression-btn');
+            if (playBtn) {
+                playBtn.disabled = !allFilled;
+            }
+        }
+
+        function generateRomanNumeralForChord(chord, key, index) {
+            // If chord has preserved mode information, use it
+            if (chord.sourceMode && chord.sourceIndex !== undefined) {
+                return generateRomanNumeral(chord.sourceIndex, chord.sourceMode, key);
+            }
+            
+            // Get the current key's chord data to find the actual position of this chord
+            const keyData = musicalKeys[key];
+            if (!keyData) return 'I';
+            
+            const isMinor = key.includes('m');
+            
+            // Get the appropriate chord array based on current mode
+            let chords = [];
+            switch(chordMode) {
+                case 'triads':
+                    chords = keyData.triads || [];
+                    break;
+                case 'sevenths':
+                    chords = keyData.sevenths || [];
+                    break;
+                case 'secondary':
+                    chords = generateSecondaryDominants(key);
+                    break;
+                case 'diminished':
+                    chords = generateDiminishedPassing(key);
+                    break;
+            }
+            
+            // Find the position of this chord in the diatonic progression
+            const chordPosition = chords.findIndex(c => c && c.symbol === chord.symbol);
+            
+            if (chordPosition === -1) {
+                // Fallback: try to calculate based on chord root vs key
+                return calculateRomanNumeralFromRoot(chord, key);
+            }
+            
+            // Use diatonic position for roman numerals
+            if (chordMode === 'secondary') {
+                // For secondary dominants, use the stored scale degree roman numeral
+                if (chord.scaleDegree) {
+                    return chord.scaleDegree;
+                }
+                // Fallback to V7/target format if no scale degree available
+                if (chord.target) {
+                    return `V7/${chord.target}`;
+                }
+                return 'V7';
+            } else if (chordMode === 'diminished') {
+                // For diminished passing chords, use the stored roman numeral
+                if (chord.roman) {
+                    return chord.roman;
+                }
+                return '°7';
+            } else {
+                // Standard diatonic roman numerals
+                if (isMinor) {
+                    const minorRomanNumerals = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
+                    const numeral = minorRomanNumerals[chordPosition] || 'i';
+                    return chordMode === 'sevenths' ? numeral + '7' : numeral;
+                } else {
+                    const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                    const numeral = majorRomanNumerals[chordPosition] || 'I';
+                    return chordMode === 'sevenths' ? numeral + '7' : numeral;
+                }
+            }
+        }
+        
+        function calculateRomanNumeralFromRoot(chord, key) {
+            // Fallback method for calculating roman numerals
+            const isMinor = key.includes('m');
+            const keyRoot = key.replace('m', '').split('/')[0];
+            const chordRoot = chord.symbol.replace(/[^A-G♯♭]/g, '');
+            
+            // Scale degrees mapping
+            const keyData = musicalKeys[key];
+            if (!keyData || !keyData.scale) return 'I';
+            
+            const scalePosition = keyData.scale.findIndex(note => {
+                return noteToSemitone(note) === noteToSemitone(chordRoot);
+            });
+            
+            if (scalePosition === -1) return chordRoot;
+            
+            if (isMinor) {
+                const minorRomanNumerals = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
+                return minorRomanNumerals[scalePosition] || 'i';
+            } else {
+                const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                return majorRomanNumerals[scalePosition] || 'I';
+            }
+        }
+
+        function selectMeasure(measureIndex) {
+            if (progressionActive) {
+                currentMeasure = measureIndex;
+                updateProgressionChart();
+            }
+        }
+
+        function updateActiveChordButton(chord) {
+            // Simplified chord button feedback - no green highlighting to prevent floating boxes
+            document.querySelectorAll('.chord-button').forEach(btn => {
+                btn.style.background = '';
+                btn.style.color = '';
+                
+                // Simple border highlight instead of background color
+                if (btn.textContent.includes(chord.symbol) && btn.classList.contains('chord-button')) {
+                    btn.style.border = '2px solid #4CAF50';
+                    setTimeout(() => {
+                        btn.style.border = '';
+                    }, 500);
+                }
+            });
+        }
+
+        function clearProgression() {
+            progressionActive = false;
+            progressionMeasures = [];
+            currentMeasure = 0;
+            isPlaying = false;
+            
+            document.getElementById('staffContainer').classList.remove('active');
+            document.querySelector('.play-progression-btn').disabled = true;
+            document.querySelector('.play-progression-btn').textContent = 'Play';
+            document.getElementById('countInDisplay').style.display = 'none';
+            document.getElementById('beatIndicator').style.display = 'none';
+            
+            // Clear any chord highlighting
+            selectedChord = null;
+            updateKeyInfo();
+            updateFretboard();
+        }
+
+        async function playProgression() {
+            if (!progressionMeasures.length || progressionMeasures.some(chord => chord === null)) {
+                return;
+            }
+            
+            if (isPlaying) {
+                stopProgression();
+                return;
+            }
+            
+            isLooping = document.getElementById('loopProgression').checked;
+            isPlaying = true;
+            document.querySelector('.play-progression-btn').textContent = 'Stop';
+            
+            try {
+                // Initialize audio context if needed
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                if (audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+                
+                // Count-in
+                await performCountIn();
+                
+                // Play progression (with looping)
+                do {
+                    await playProgressionOnce();
+                } while (isPlaying && isLooping);
+                
+            } catch (error) {
+                console.error('Audio playback error:', error);
+            } finally {
+                stopProgression();
+            }
+        }
+
+        async function performCountIn() {
+            const countDisplay = document.getElementById('countInDisplay');
+            const tempo = parseInt(document.getElementById('tempo').value) || 120;
+            const beatDuration = (60 / tempo) * 1000; // milliseconds
+            
+            // Get the actual time signature for count-in
+            const timeSignature = document.getElementById('timeSignature').value;
+            const [beatsPerMeasure] = timeSignature.split('/').map(Number);
+            
+            countInActive = true;
+            countDisplay.style.display = 'block';
+            
+            for (let count = beatsPerMeasure; count >= 1 && isPlaying; count--) {
+                countDisplay.textContent = count;
+                countDisplay.style.animation = 'none';
+                // Force reflow
+                countDisplay.offsetHeight;
+                countDisplay.style.animation = 'countPulse 1s ease-out';
+                
+                // Play enhanced metronome click
+                playMetronomeClick(count === 1); // Accent on beat 1
+                
+                // Wait for beat duration on every beat, including the last one
+                await new Promise(resolve => setTimeout(resolve, beatDuration));
+            }
+            
+            countDisplay.style.display = 'none';
+            countInActive = false;
+        }
+
+        function playMetronomeClick(isAccent = false) {
+            if (!audioContext) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Higher pitch for accent, lower for regular beats
+                oscillator.frequency.setValueAtTime(isAccent ? 1200 : 800, audioContext.currentTime);
+                oscillator.type = 'square';
+                
+                // Louder for accent
+                const volume = isAccent ? 0.3 : 0.15;
+                gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (error) {
+                console.error('Metronome click error:', error);
+            }
+        }
+
+        async function playProgressionOnce() {
+            const tempo = parseInt(document.getElementById('tempo').value) || 120;
+            const beatDuration = (60 / tempo) * 1000; // milliseconds per beat
+            const timeSignature = document.getElementById('timeSignature').value;
+            const [beatsPerMeasure] = timeSignature.split('/').map(Number);
+            const measureDuration = beatDuration * beatsPerMeasure;
+            
+            for (let i = 0; i < progressionMeasures.length && isPlaying; i++) {
+                const chord = progressionMeasures[i];
+                const measureEl = document.getElementById(`staff-measure-${i}`);
+                
+                // Highlight current measure
+                document.querySelectorAll('.measure-staff').forEach((m, index) => {
+                    m.style.background = index === i ? 'rgba(255, 255, 0, 0.1)' : '';
+                });
+                
+                // Highlight chord on fretboard
+                selectedChord = chord;
+                updateFretboard();
+                
+                // Play all beats of the measure with proper timing
+                for (let beat = 1; beat <= beatsPerMeasure && isPlaying; beat++) {
+                    if (beat === 1) {
+                        // Beat 1: Play chord and accented click
+                        playMetronomeClick(true); // Accent on beat 1
+                        playChordSound(chord, measureDuration / 1000);
+                    } else {
+                        // Other beats: Just metronome click
+                        playMetronomeClick(false);
+                    }
+                    
+                    // Wait for next beat (always wait, then check if we should continue)
+                    await new Promise(resolve => setTimeout(resolve, beatDuration));
+                }
+            }
+        }
+
+        function playClickSound() {
+            if (!audioContext) return;
+            
+            try {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.type = 'square';
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (error) {
+                console.error('Click sound error:', error);
+            }
+        }
+
+        function stopProgression() {
+            isPlaying = false;
+            document.querySelector('.play-progression-btn').textContent = 'Play';
+            
+            // Clear measure highlighting
+            document.querySelectorAll('.measure-staff').forEach(m => {
+                m.style.background = '';
+            });
+            
+            // Hide count display and beat indicator
+            document.getElementById('countInDisplay').style.display = 'none';
+            document.getElementById('beatIndicator').style.display = 'none';
+            
+            // Keep chord chart and fretboard as they were - don't clear chord highlighting
+        }
+
+        async function playChordSound(chord, duration) {
+            if (!audioContext || !chord) return;
+            
+            try {
+                // Simple synthesized chord using Web Audio API
+                const frequencies = getChordFrequencies(chord.notes);
+                const oscillators = [];
+                const gainNode = audioContext.createGain();
+                
+                gainNode.connect(audioContext.destination);
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                frequencies.forEach(freq => {
+                    const oscillator = audioContext.createOscillator();
+                    oscillator.connect(gainNode);
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    oscillator.type = 'sine';
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + duration);
+                    oscillators.push(oscillator);
+                });
+                
+                return new Promise(resolve => {
+                    setTimeout(resolve, duration * 1000);
+                });
+                
+            } catch (error) {
+                console.error('Chord sound generation error:', error);
+            }
+        }
+
+        function getChordFrequencies(noteNames) {
+            // Simple note to frequency mapping (middle octave)
+            const noteFrequencies = {
+                'C': 261.63, 'C♯': 277.18, 'D♭': 277.18, 'D': 293.66, 'D♯': 311.13, 'E♭': 311.13,
+                'E': 329.63, 'F': 349.23, 'F♯': 369.99, 'G♭': 369.99, 'G': 392.00, 'G♯': 415.30, 
+                'A♭': 415.30, 'A': 440.00, 'A♯': 466.16, 'B♭': 466.16, 'B': 493.88
+            };
+            
+            return noteNames.map(note => noteFrequencies[note] || 440).slice(0, 4); // Limit to 4 voices
+        }
+
+        // Start periodic cleanup of green styling to prevent floating boxes
+        setInterval(cleanupGreenStyling, 1000);
 
         // Initialize the app when page loads
         window.addEventListener('load', init);
+
+        // Add font loading detection
+        document.fonts.ready.then(() => {
+            console.log('Music fonts loaded');
+            // Re-render staff if needed
+            if (progressionActive) {
+                generateStaffMeasures(progressionMeasures.length, document.getElementById('timeSignature').value);
+            }
+        });
     </script>
 </body>
 </html>
