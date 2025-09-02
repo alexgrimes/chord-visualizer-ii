@@ -672,6 +672,49 @@
             align-items: center;
             margin-top: 15px;
         }
+
+        /* Cadence Controls */
+        .cadence-controls {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f0f8ff;
+            border: 1px solid #4a90e2;
+            border-radius: 8px;
+        }
+
+        .cadence-controls h5 {
+            margin: 0 0 10px 0;
+            color: #2c5282;
+            font-size: 14px;
+        }
+
+        .cadence-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .cadence-btn {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .cadence-btn:hover {
+            background: linear-gradient(135deg, #357abd 0%, #2c5282 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .cadence-btn:active {
+            transform: translateY(0);
+        }
         
         /* Responsive design */
         @media (max-width: 768px) {
@@ -1027,6 +1070,38 @@
                 padding-top: 10px;
                 justify-content: center;
             }
+            
+            /* Mobile Layout Reordering: Chord Progression → Instruments → Fretboard */
+            .info-panel {
+                flex-direction: column;
+            }
+            
+            .key-info {
+                order: 1; /* Chord progression first */
+            }
+            
+            .instrument-panel {
+                order: 2; /* Instruments second */
+            }
+            
+            .fretboard {
+                order: 3; /* Fretboard last */
+            }
+            
+            /* Make progression controls more prominent on mobile */
+            .progression-controls {
+                background: #f8f9fa;
+                border: 1px solid #dee2e6;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .progression-controls h4 {
+                font-size: 18px;
+                margin-bottom: 15px;
+                color: #495057;
+            }
         }
     </style>
 </head>
@@ -1133,6 +1208,14 @@
                             <input type="checkbox" id="loopProgression" checked>
                             Loop
                         </label>
+                    </div>
+                    
+                    <!-- Cadence Controls -->
+                    <div class="cadence-controls" id="cadenceControls" style="display: none;">
+                        <h5>Suggested Cadences</h5>
+                        <div class="cadence-buttons" id="cadenceButtons">
+                            <!-- Cadence buttons will be generated here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1999,6 +2082,161 @@
             return noteToSemitone(note) === noteToSemitone(rootNote);
         }
 
+        function isChordRoot(note, chord) {
+            if (!chord || !chord.notes || chord.notes.length === 0) return false;
+            // The first note in the chord.notes array is the root
+            const chordRoot = chord.notes[0];
+            return noteToSemitone(note) === noteToSemitone(chordRoot);
+        }
+
+        // Cadence System
+        function getCadencesForChord(chordSymbol, key) {
+            const cadences = [];
+            
+            if (!chordSymbol || !key) return cadences;
+            
+            // Define common cadences based on chord function
+            const cadencePatterns = {
+                // Dominant function (V, V7, vii°) -> Tonic resolutions
+                'V': [
+                    { name: 'Authentic', target: 'I', description: 'Strong resolution to tonic' },
+                    { name: 'Deceptive', target: 'vi', description: 'Surprise resolution to relative minor' }
+                ],
+                'V7': [
+                    { name: 'Authentic', target: 'I', description: 'Classic V7→I resolution' },
+                    { name: 'Deceptive', target: 'vi', description: 'V7→vi deceptive cadence' }
+                ],
+                'vii°': [
+                    { name: 'Leading Tone', target: 'I', description: 'Leading tone resolution' }
+                ],
+                
+                // Subdominant function (IV, ii) -> Dominant or Tonic
+                'IV': [
+                    { name: 'Plagal', target: 'I', description: 'Amen cadence' },
+                    { name: 'Subdominant', target: 'V', description: 'IV→V motion' }
+                ],
+                'ii': [
+                    { name: 'ii-V', target: 'V', description: 'Classic ii→V motion' },
+                    { name: 'ii-V-I', target: 'V7', description: 'Setup for V7→I' }
+                ],
+                'ii7': [
+                    { name: 'ii7-V7', target: 'V7', description: 'Jazz ii7→V7 progression' }
+                ],
+                
+                // Tonic function (I, vi) -> Any direction
+                'I': [
+                    { name: 'Circle of 5ths', target: 'vi', description: 'I→vi motion' },
+                    { name: 'To Subdominant', target: 'IV', description: 'I→IV progression' },
+                    { name: 'To Dominant', target: 'V', description: 'I→V progression' }
+                ],
+                'vi': [
+                    { name: 'vi-IV', target: 'IV', description: 'Popular vi→IV motion' },
+                    { name: 'vi-ii', target: 'ii', description: 'vi→ii progression' },
+                    { name: 'Relative Major', target: 'I', description: 'Return to tonic' }
+                ],
+                
+                // Other common progressions
+                'iii': [
+                    { name: 'iii-vi', target: 'vi', description: 'iii→vi motion' },
+                    { name: 'iii-IV', target: 'IV', description: 'iii→IV progression' }
+                ]
+            };
+            
+            // Get Roman numeral for current chord
+            const currentRoman = generateRomanNumeralForChord(chordSymbol, key);
+            
+            // Find matching cadences
+            if (cadencePatterns[currentRoman]) {
+                cadencePatterns[currentRoman].forEach(pattern => {
+                    const targetChord = romanToChordSymbol(pattern.target, key);
+                    if (targetChord) {
+                        cadences.push({
+                            name: pattern.name,
+                            description: pattern.description,
+                            targetRoman: pattern.target,
+                            targetChord: targetChord,
+                            displayText: `${pattern.name} →${pattern.target}`
+                        });
+                    }
+                });
+            }
+            
+            return cadences;
+        }
+
+        function romanToChordSymbol(roman, key) {
+            const keyData = keys[key];
+            if (!keyData) return null;
+            
+            const scale = keyData.scale;
+            const isMinor = key.includes('m');
+            
+            // Roman numeral to scale degree mapping
+            const romanMap = {
+                'I': 0, 'ii': 1, 'iii': 2, 'IV': 3, 'V': 4, 'vi': 5, 'vii°': 6,
+                'i': 0, 'ii°': 1, 'III': 2, 'iv': 3, 'v': 4, 'VI': 5, 'VII': 6
+            };
+            
+            const degree = romanMap[roman];
+            if (degree === undefined) return null;
+            
+            const root = scale[degree];
+            
+            // Determine chord quality based on roman numeral
+            if (roman === 'V7') return root + '7';
+            if (roman === 'ii7') return root + 'm7';
+            if (roman === 'vii°') return root + 'dim';
+            if (roman === 'ii°') return root + 'dim';
+            if (roman.toLowerCase() === roman) return root + 'm'; // lowercase = minor
+            return root; // uppercase = major
+        }
+
+        function showCadenceOptions(chordSymbol, key) {
+            const cadenceControls = document.getElementById('cadenceControls');
+            const cadenceButtons = document.getElementById('cadenceButtons');
+            
+            if (!chordSymbol || !key) {
+                cadenceControls.style.display = 'none';
+                return;
+            }
+            
+            const cadences = getCadencesForChord(chordSymbol, key);
+            
+            if (cadences.length === 0) {
+                cadenceControls.style.display = 'none';
+                return;
+            }
+            
+            // Clear existing buttons
+            cadenceButtons.innerHTML = '';
+            
+            // Create cadence buttons
+            cadences.forEach(cadence => {
+                const button = document.createElement('button');
+                button.className = 'cadence-btn';
+                button.textContent = cadence.displayText;
+                button.title = cadence.description;
+                button.onclick = () => applyCadence(cadence.targetChord);
+                cadenceButtons.appendChild(button);
+            });
+            
+            cadenceControls.style.display = 'block';
+        }
+
+        function applyCadence(targetChord) {
+            // Find the next empty measure and add the target chord
+            const nextEmptyIndex = progressionMeasures.findIndex(chord => chord === null);
+            
+            if (nextEmptyIndex !== -1) {
+                // Add the cadence chord to the next measure
+                progressionMeasures[nextEmptyIndex] = getChordData(targetChord, selectedKey);
+                updateProgressionChart();
+                
+                // Show new cadence options for the newly added chord
+                showCadenceOptions(targetChord, selectedKey);
+            }
+        }
+
         function isChordTone(note, chord) {
             if (!chord || !chord.notes) return false;
             const noteSemi = noteToSemitone(note);
@@ -2056,11 +2294,34 @@
         let currentMeasure = 0;
         let audioContext = null;
         let isPlaying = false;
+        let isMobileAudioUnlocked = false;
         
         // Additional progression state for enhanced staff system
         let isLooping = true;
         let countInActive = false;
         let cursorPosition = 0;
+
+        // Mobile audio unlock function
+        function unlockMobileAudio() {
+            if (isMobileAudioUnlocked) return;
+            
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            if (audioContext.state === 'suspended') {
+                audioContext.resume().then(() => {
+                    console.log('Mobile audio unlocked!');
+                    isMobileAudioUnlocked = true;
+                });
+            } else {
+                isMobileAudioUnlocked = true;
+            }
+        }
+
+        // Add mobile audio unlock listeners
+        document.addEventListener('touchstart', unlockMobileAudio, { once: true });
+        document.addEventListener('click', unlockMobileAudio, { once: true });
 
         // Initialize the app
         function init() {
@@ -2170,11 +2431,25 @@
         function selectKey(key) {
             selectedKey = key;
             
+            // Clear any selected chord when changing keys
+            selectedChord = null;
+            
+            // If progression is active, update the progression key
+            if (progressionActive) {
+                progressionKey = key;
+            }
+            
             // Also update the progression key dropdown to match
             const progressionKeySelect = document.getElementById('progressionKey');
             if (progressionKeySelect) {
                 progressionKeySelect.value = key;
             }
+            
+            // Hide cadence controls when changing keys
+            document.getElementById('cadenceControls').style.display = 'none';
+            
+            // Reset fretboard zoom when key changes
+            resetZoom();
             
             updateKeyInfo();
             updateFretboard();
@@ -2360,11 +2635,24 @@
                         sourceIndex: chordIndex
                     };
                     progressionMeasures[currentMeasure] = chordCopy;
+                    
+                    // Set selected chord to show orange highlighting
+                    selectedChord = chords[chordIndex];
+                    
                     updateProgressionChart();
                     
+                    // Show cadence options for the newly added chord
+                    showCadenceOptions(chordCopy.symbol, selectedKey);
+                    
                     // Move to next measure
-                    currentMeasure = (currentMeasure + 1) % progressionMeasures.length;
+                    if (currentMeasure < progressionMeasures.length - 1) {
+                        currentMeasure++;
+                        // Keep the chord selected to show orange highlighting
+                    }
+                    
                     updateActiveChordButton(chords[chordIndex]);
+                    updateKeyInfo();
+                    updateFretboard();
                     return;
                 }
             }
@@ -2414,8 +2702,16 @@
                     let noteClass = '';
                     let showNote = false;
                     
-                    // Priority: chord tones > root notes (only if no chord selected) > scale notes
-                    if (selectedChord && isChordTone(note, selectedChord)) {
+                    // Priority: chord root (orange) > chord tones > scale root (only if no chord) > scale notes
+                    if (selectedChord && isChordRoot(note, selectedChord)) {
+                        // Use the exact spelling from the chord for the root
+                        const correctChordNoteName = getCorrectChordNoteName(semitone, selectedChord);
+                        if (correctChordNoteName) {
+                            note = correctChordNoteName;
+                        }
+                        noteClass = 'root'; // Orange highlighting for chord root
+                        showNote = true;
+                    } else if (selectedChord && isChordTone(note, selectedChord)) {
                         // Use the exact spelling from the chord
                         const correctChordNoteName = getCorrectChordNoteName(semitone, selectedChord);
                         if (correctChordNoteName) {
@@ -2668,15 +2964,23 @@
                 const measureCount = parseInt(measureSelect.value);
                 const timeSignature = timeSelect.value;
             
-            // Initialize empty measures
-            progressionMeasures = new Array(measureCount).fill(null);
-            currentMeasure = 0;
-            progressionActive = true;
-            
-            // Update UI
-            const staffContainer = document.getElementById('staffContainer');
-            staffContainer.classList.add('active');
-            document.querySelector('.play-progression-btn').disabled = true;
+                // Initialize empty measures
+                progressionMeasures = new Array(measureCount).fill(null);
+                currentMeasure = 0;
+                progressionActive = true;
+                
+                // Clear any existing chord selection and highlighting
+                selectedChord = null;
+                updateKeyInfo();
+                updateFretboard();
+                
+                // Hide cadence controls initially
+                document.getElementById('cadenceControls').style.display = 'none';
+                
+                // Update UI
+                const staffContainer = document.getElementById('staffContainer');
+                staffContainer.classList.add('active');
+                document.querySelector('.play-progression-btn').disabled = true;
             
             // Generate staff measures
             generateStaffMeasures(measureCount, timeSignature);
@@ -2921,6 +3225,9 @@
             document.getElementById('countInDisplay').style.display = 'none';
             document.getElementById('beatIndicator').style.display = 'none';
             
+            // Hide cadence options
+            document.getElementById('cadenceControls').style.display = 'none';
+            
             // Clear any chord highlighting
             selectedChord = null;
             updateKeyInfo();
@@ -2945,6 +3252,11 @@
                 // Initialize audio context if needed
                 if (!audioContext) {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                // Ensure mobile audio is unlocked
+                if (!isMobileAudioUnlocked) {
+                    unlockMobileAudio();
                 }
                 
                 if (audioContext.state === 'suspended') {
