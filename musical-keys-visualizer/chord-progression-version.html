@@ -2143,7 +2143,7 @@
             };
             
             // Get Roman numeral for current chord
-            const currentRoman = generateRomanNumeralForChord(chordSymbol, key);
+            const currentRoman = chordSymbolToRomanNumeral(chordSymbol, key);
             
             // Find matching cadences
             if (cadencePatterns[currentRoman]) {
@@ -2164,11 +2164,64 @@
             return cadences;
         }
 
-        function romanToChordSymbol(roman, key) {
-            const keyData = keys[key];
+        function chordSymbolToRomanNumeral(chordSymbol, key) {
+            const keyData = musicalKeys[key];
             if (!keyData) return null;
             
-            const scale = keyData.scale;
+            // Get the scale notes from the key data
+            const scale = keyData.notes || keyData.scale;
+            if (!scale) return null;
+            
+            // Extract the root note from the chord symbol (remove extensions like 7, m, dim, etc.)
+            let root = chordSymbol;
+            if (chordSymbol.includes('7')) {
+                root = chordSymbol.replace('7', '');
+            }
+            if (chordSymbol.includes('m') && !chordSymbol.includes('dim')) {
+                root = chordSymbol.replace('m', '');
+            }
+            if (chordSymbol.includes('dim')) {
+                root = chordSymbol.replace('dim', '');
+            }
+            
+            // Find the scale degree for this root
+            const scaleIndex = scale.indexOf(root);
+            if (scaleIndex === -1) return null;
+            
+            const isMinor = key.includes('m');
+            
+            // Generate the appropriate Roman numeral
+            if (!isMinor) {
+                const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                let roman = majorRomanNumerals[scaleIndex];
+                
+                // Add extensions
+                if (chordSymbol.includes('7')) {
+                    roman += '7';
+                }
+                
+                return roman;
+            } else {
+                const minorRomanNumerals = ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'];
+                let roman = minorRomanNumerals[scaleIndex];
+                
+                // Add extensions
+                if (chordSymbol.includes('7')) {
+                    roman += '7';
+                }
+                
+                return roman;
+            }
+        }
+
+        function romanToChordSymbol(roman, key) {
+            const keyData = musicalKeys[key];
+            if (!keyData) return null;
+            
+            // Get the scale notes from the key data
+            const scale = keyData.notes || keyData.scale;
+            if (!scale) return null;
+            
             const isMinor = key.includes('m');
             
             // Roman numeral to scale degree mapping
