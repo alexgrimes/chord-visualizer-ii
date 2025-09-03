@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -2713,7 +2713,7 @@
                     };
                     progressionMeasures[currentMeasure] = chordCopy;
                     
-                    // Set selected chord to show orange highlighting
+                    // Set selected chord to show orange highlighting for the current chord
                     selectedChord = chords[chordIndex];
                     
                     // Update the progression chart first
@@ -2727,6 +2727,9 @@
                     if (currentMeasure < progressionMeasures.length - 1) {
                         console.log(`Advancing cursor from measure ${currentMeasure} to ${currentMeasure + 1}`);
                         currentMeasure++;
+                        
+                        // Clear selected chord after advancing cursor so next selection shows orange
+                        selectedChord = null;
                         
                         // Update the progression chart again to show new cursor position
                         updateProgressionChart();
@@ -3159,7 +3162,7 @@
                         romanEl.textContent = generateRomanNumeralForChord(chord, progressionKey, index);
                         chordEl.style.color = '#333';
                     } else {
-                        chordEl.textContent = '?';
+                        chordEl.textContent = '—';
                         romanEl.textContent = '';
                         chordEl.style.color = '#999';
                     }
