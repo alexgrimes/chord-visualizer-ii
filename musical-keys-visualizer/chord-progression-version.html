@@ -2192,17 +2192,22 @@
         }
 
         function showCadenceOptions(chordSymbol, key) {
+            console.log('showCadenceOptions called with:', chordSymbol, key); // Debug log
+            
             const cadenceControls = document.getElementById('cadenceControls');
             const cadenceButtons = document.getElementById('cadenceButtons');
             
             if (!chordSymbol || !key) {
+                console.log('Missing chordSymbol or key, hiding controls'); // Debug log
                 cadenceControls.style.display = 'none';
                 return;
             }
             
             const cadences = getCadencesForChord(chordSymbol, key);
+            console.log('Found cadences:', cadences); // Debug log
             
             if (cadences.length === 0) {
+                console.log('No cadences found, hiding controls'); // Debug log
                 cadenceControls.style.display = 'none';
                 return;
             }
@@ -2220,6 +2225,7 @@
                 cadenceButtons.appendChild(button);
             });
             
+            console.log('Showing cadence controls'); // Debug log
             cadenceControls.style.display = 'block';
         }
 
@@ -2641,14 +2647,16 @@
                     
                     updateProgressionChart();
                     
-                    // Show cadence options for the newly added chord
-                    showCadenceOptions(chordCopy.symbol, selectedKey);
+                    // Show cadence options for the newly added chord using progression key
+                    showCadenceOptions(chordCopy.symbol, progressionKey);
                     
-                    // Move to next measure
+                    // Automatically move to next measure
                     if (currentMeasure < progressionMeasures.length - 1) {
                         currentMeasure++;
-                        // Keep the chord selected to show orange highlighting
                     }
+                    
+                    // Update the progression chart again to show new cursor position
+                    updateProgressionChart();
                     
                     updateActiveChordButton(chords[chordIndex]);
                     updateKeyInfo();
