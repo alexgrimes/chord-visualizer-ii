@@ -2687,6 +2687,8 @@
             // If progression is active, add chord to current measure
             if (progressionActive && progressionMeasures.length > 0) {
                 if (currentMeasure < progressionMeasures.length) {
+                    console.log(`Adding chord to measure ${currentMeasure}:`, chords[chordIndex]);
+                    
                     // Create a copy of the chord with mode and index information
                     const chordCopy = {
                         ...chords[chordIndex],
@@ -2698,18 +2700,23 @@
                     // Set selected chord to show orange highlighting
                     selectedChord = chords[chordIndex];
                     
+                    // Update the progression chart first
                     updateProgressionChart();
                     
-                    // Show cadence options for the newly added chord using progression key
+                    // Show cadence options for the newly added chord
+                    console.log('Calling showCadenceOptions with:', chordCopy.symbol, progressionKey);
                     showCadenceOptions(chordCopy.symbol, progressionKey);
                     
                     // Automatically move to next measure
                     if (currentMeasure < progressionMeasures.length - 1) {
+                        console.log(`Advancing cursor from measure ${currentMeasure} to ${currentMeasure + 1}`);
                         currentMeasure++;
+                        
+                        // Update the progression chart again to show new cursor position
+                        updateProgressionChart();
+                    } else {
+                        console.log('Reached the last measure, not advancing cursor');
                     }
-                    
-                    // Update the progression chart again to show new cursor position
-                    updateProgressionChart();
                     
                     updateActiveChordButton(chords[chordIndex]);
                     updateKeyInfo();
@@ -3123,6 +3130,8 @@
         }
 
         function updateProgressionChart() {
+            console.log(`Updating progression chart. Current measure: ${currentMeasure}`);
+            
             progressionMeasures.forEach((chord, index) => {
                 const chordEl = document.getElementById(`chord-${index}`);
                 const romanEl = document.getElementById(`roman-${index}`);
@@ -3139,8 +3148,17 @@
                         chordEl.style.color = '#999';
                     }
                     
-                    // Update active measure indicator
-                    measureEl.style.background = index === currentMeasure ? 'rgba(76, 175, 80, 0.1)' : '';
+                    // Enhanced cursor highlighting - current measure gets green background and border
+                    if (index === currentMeasure) {
+                        measureEl.style.background = 'rgba(76, 175, 80, 0.2)';
+                        measureEl.style.border = '2px solid #4CAF50';
+                        measureEl.style.borderRadius = '4px';
+                        console.log(`Highlighting measure ${index} as current`);
+                    } else {
+                        measureEl.style.background = '';
+                        measureEl.style.border = '';
+                        measureEl.style.borderRadius = '';
+                    }
                 } else {
                     console.warn(`Missing elements for measure ${index}:`, {
                         chordEl: !!chordEl,
