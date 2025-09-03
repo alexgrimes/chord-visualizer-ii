@@ -2105,79 +2105,128 @@
             return noteToSemitone(note) === noteToSemitone(chordRoot);
         }
 
-        // Cadence System
-        function getCadencesForChord(chordSymbol, key) {
+        // Cadence System - Get cadences that work well with the given chord
+        function getCadencesForChord(chordData, key) {
+            if (!chordData) return [];
+            
             const cadences = [];
+            const keyData = getCurrentKeyData();
+            if (!keyData) return [];
             
-            if (!chordSymbol || !key) return cadences;
-            
-            // Define common cadences based on chord function
-            const cadencePatterns = {
-                // Dominant function (V, V7, vii?) -> Tonic resolutions
-                'V': [
-                    { name: 'Authentic', target: 'I', description: 'Strong resolution to tonic' },
-                    { name: 'Deceptive', target: 'vi', description: 'Surprise resolution to relative minor' }
-                ],
-                'V7': [
-                    { name: 'Authentic', target: 'I', description: 'Classic V7?I resolution' },
-                    { name: 'Deceptive', target: 'vi', description: 'V7?vi deceptive cadence' }
-                ],
-                'vii?': [
-                    { name: 'Leading Tone', target: 'I', description: 'Leading tone resolution' }
-                ],
-                
-                // Subdominant function (IV, ii) -> Dominant or Tonic
-                'IV': [
-                    { name: 'Plagal', target: 'I', description: 'Amen cadence' },
-                    { name: 'Subdominant', target: 'V', description: 'IV?V motion' }
-                ],
-                'ii': [
-                    { name: 'ii-V', target: 'V', description: 'Classic ii?V motion' },
-                    { name: 'ii-V-I', target: 'V7', description: 'Setup for V7?I' }
-                ],
-                'ii7': [
-                    { name: 'ii7-V7', target: 'V7', description: 'Jazz ii7?V7 progression' }
-                ],
-                
-                // Tonic function (I, vi) -> Any direction
-                'I': [
-                    { name: 'Circle of 5ths', target: 'vi', description: 'I?vi motion' },
-                    { name: 'To Subdominant', target: 'IV', description: 'I?IV progression' },
-                    { name: 'To Dominant', target: 'V', description: 'I?V progression' }
-                ],
-                'vi': [
-                    { name: 'vi-IV', target: 'IV', description: 'Popular vi?IV motion' },
-                    { name: 'vi-ii', target: 'ii', description: 'vi?ii progression' },
-                    { name: 'Relative Major', target: 'I', description: 'Return to tonic' }
-                ],
-                
-                // Other common progressions
-                'iii': [
-                    { name: 'iii-vi', target: 'vi', description: 'iii?vi motion' },
-                    { name: 'iii-IV', target: 'IV', description: 'iii?IV progression' }
-                ]
-            };
-            
-            // Get Roman numeral for current chord
-            const currentRoman = chordSymbolToRomanNumeral(chordSymbol, key);
-            
-            // Find matching cadences
-            if (cadencePatterns[currentRoman]) {
-                cadencePatterns[currentRoman].forEach(pattern => {
-                    const targetChord = romanToChordSymbol(pattern.target, key);
-                    if (targetChord) {
-                        cadences.push({
-                            name: pattern.name,
-                            description: pattern.description,
-                            targetRoman: pattern.target,
-                            targetChord: targetChord,
-                            displayText: `${pattern.name} ?${pattern.target}`
-                        });
-                    }
-                });
+            // Only show cadences for major and minor scales
+            if (currentScaleType !== 'major' && currentScaleType !== 'minor') {
+                return [];
             }
             
-            return cadences;
+            const majorKeyCadences = [
+                { name: 'ii-V-I', chords: ['ii', 'V', 'I'], description: 'Classic jazz progression' },
+                { name: 'vi-IV-I-V', chords: ['vi', 'IV', 'I', 'V'], description: 'Pop progression' },
+                { name: 'I-vi-ii-V', chords: ['I', 'vi', 'ii', 'V'], description: 'Circle of fifths' },
+                { name: 'V-vi', chords: ['V', 'vi'], description: 'Deceptive cadence' },
+                { name: 'IV-V-I', chords: ['IV', 'V', 'I'], description: 'Plagal cadence' }
+            ];
+            
+            const minorKeyCadences = [
+                { name: 'ii°-V-i', chords: ['ii°', 'V', 'i'], description: 'Minor ii-V-i' },
+                { name: 'iv-V-i', chords: ['iv', 'V', 'i'], description: 'Minor plagal' },
+                { name: 'VI-VII-i', chords: ['VI', 'VII', 'i'], description: 'Modal minor' },
+                { name: 'i-VII-VI', chords: ['i', 'VII', 'VI'], description: 'Descending' }
+            ];
+            
+            const applicableCadences = (key && key.includes('m')) ? minorKeyCadences : majorKeyCadences;
+            return applicableCadences;
+        }
+
+        function applyCadence(cadence) {
+            console.log('Applying cadence:', cadence);
+            
+            let currentMeasureIndex = progressionData.currentMeasure || 0;
+            const keyData = getCurrentKeyData();
+            if (!keyData) return;
+            
+            cadence.chords.forEach((romanNumeral, index) => {
+                const measureIndex = currentMeasureIndex + index;
+                if (measureIndex < progressionData.totalMeasures) {
+                    const chord = getChordFromRomanNumeral(romanNumeral, keyData);
+                    if (chord) {
+                        progressionData.measures[measureIndex] = {
+                            chord: chord.symbol,
+                            roman: romanNumeral
+                        };
+                        // Also update the main progression measures array
+                        if (measureIndex < progressionMeasures.length) {
+                            progressionMeasures[measureIndex] = chord;
+                        }
+                    }
+                }
+            });
+            
+            updateProgressionChart();
+            document.getElementById('cadenceControls').style.display = 'none';
+        }
+
+        // Missing Scale Type Functions
+        function changeScaleType(newScaleType) {
+            currentScaleType = newScaleType;
+            updateKeyInfo();
+            updateFretboard();
+        }
+
+        function getCurrentKeyData() {
+            if (currentScaleType === 'major' || currentScaleType === 'minor') {
+                return musicalKeys[selectedKey];
+            } else {
+                return generateScaleData(selectedKey.replace(/m$/, ''), currentScaleType);
+            }
+        }
+
+        function getChordFromRomanNumeral(romanNumeral, keyData) {
+            if (!keyData || !keyData.triads) return null;
+            
+            // Simple mapping for common Roman numerals to chord indices
+            const romanToIndex = {
+                'I': 0, 'i': 0,
+                'ii': 1, 'ii°': 1,
+                'iii': 2, 'III': 2,
+                'IV': 3, 'iv': 3,
+                'V': 4, 'v': 4,
+                'vi': 5, 'VI': 5,
+                'vii°': 6, 'VII': 6
+            };
+            
+            const index = romanToIndex[romanNumeral];
+            if (index !== undefined && keyData.triads[index]) {
+                return keyData.triads[index];
+            }
+            
+            return null;
+        }
+
+        // Missing Modulation Functions
+        function addModulationListeners() {
+            document.querySelectorAll('.chord-button').forEach(button => {
+                button.addEventListener('dblclick', (e) => {
+                    const chordSymbol = button.textContent.trim();
+                    modulateToKey(chordSymbol);
+                });
+            });
+        }
+
+        function modulateToKey(chordSymbol) {
+            const rootNote = chordSymbol.replace(/[^A-G#b♯♭]/g, '');
+            console.log(`Modulating to key: ${rootNote}`);
+            
+            const button = Array.from(document.querySelectorAll('.chord-button'))
+                .find(btn => btn.textContent.trim() === chordSymbol);
+            if (button) {
+                button.style.transform = 'scale(1.2)';
+                button.style.transition = 'transform 0.2s ease';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 200);
+            }
+            
+            selectKey(rootNote);
         }
 
         function chordSymbolToRomanNumeral(chordSymbol, key) {
@@ -2272,7 +2321,9 @@
                 return;
             }
             
-            const cadences = getCadencesForChord(chordSymbol, key);
+            // Create a chord data object for the new cadence system
+            const chordData = { symbol: chordSymbol };
+            const cadences = getCadencesForChord(chordData, key);
             console.log('Found cadences:', cadences); // Debug log
             
             if (cadences.length === 0) {
@@ -2288,9 +2339,9 @@
             cadences.forEach(cadence => {
                 const button = document.createElement('button');
                 button.className = 'cadence-btn';
-                button.textContent = cadence.displayText;
+                button.textContent = cadence.name;
                 button.title = cadence.description;
-                button.onclick = () => applyCadence(cadence.targetChord);
+                button.onclick = () => applyCadence(cadence);
                 cadenceButtons.appendChild(button);
             });
             
@@ -2375,6 +2426,14 @@
         let isLooping = true;
         let countInActive = false;
         let cursorPosition = 0;
+        
+        // Missing global variables
+        let currentScaleType = 'major';
+        let progressionData = {
+            currentMeasure: 0,
+            totalMeasures: 4,
+            measures: []
+        };
 
         // Mobile audio unlock function
         function unlockMobileAudio() {
@@ -2409,44 +2468,38 @@
             updateSelectedButtons();
         }
 
+        // Initialize the Circle of Fifths with major keys only
         function createCircleOfFifths() {
-            const container = document.getElementById('circleOfFifths');
-            const centerX = 200;
-            const centerY = 200;
-            const majorRadius = 160;
-            const minorRadius = 110;
-
-            // Major keys (outer circle)
-            const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F?/G?', 'D?', 'A?', 'E?', 'B?', 'F'];
+            const circle = document.getElementById('circleOfFifths');
+            // Major keys only (remove minor keys from inner circle)
+            const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭', 'D♭', 'A♭', 'E♭', 'B♭', 'F'];
+            const keySignatures = KEY_SIGNATURES;
+            
             majorKeys.forEach((key, index) => {
-                const angle = (index * 30 - 90) * Math.PI / 180;
-                const x = centerX + majorRadius * Math.cos(angle) - 30;
-                const y = centerY + majorRadius * Math.sin(angle) - 30;
+                const angle = (index * 30) - 90; // 30 degrees apart, start at top
+                const radius = 140;
+                const x = 200 + radius * Math.cos(angle * Math.PI / 180);
+                const y = 200 + radius * Math.sin(angle * Math.PI / 180);
                 
-                const button = document.createElement('button');
-                button.className = 'circle-button major-key';
-                button.innerHTML = key;
-                button.style.left = x + 'px';
-                button.style.top = y + 'px';
-                button.onclick = () => selectKey(key);
-                container.appendChild(button);
-            });
-
-            // Minor keys (inner circle)
-            const minorKeys = ['Am', 'Em', 'Bm', 'F?m', 'C?m', 'G?m', 'D?m/E?m', 'B?m', 'Fm', 'Cm', 'Gm', 'Dm'];
-            minorKeys.forEach((key, index) => {
-                const angle = (index * 30 - 90) * Math.PI / 180;
-                const x = centerX + minorRadius * Math.cos(angle) - 30;
-                const y = centerY + minorRadius * Math.sin(angle) - 30;
+                const button = document.createElement('div');
+                button.className = 'circle-button';
+                button.style.left = (x - 40) + 'px';
+                button.style.top = (y - 40) + 'px';
                 
-                const button = document.createElement('button');
-                button.className = 'circle-button minor-key';
-                button.innerHTML = key;
-                button.style.left = x + 'px';
-                button.style.top = y + 'px';
-                button.onclick = () => selectKey(key);
-                container.appendChild(button);
+                // Add key name and signature
+                const keyDisplay = key === 'F♯/G♭' ? 'F♯' : key;
+                const signature = keySignatures[key]?.display || '';
+                
+                button.innerHTML = `
+                    <div>${keyDisplay}</div>
+                    <div class="key-signature">${signature}</div>
+                `;
+                
+                button.addEventListener('click', () => selectKey(key));
+                circle.appendChild(button);
             });
+            
+            updateCircleOfFifths();
         }
 
         function createInstrumentButtons() {
