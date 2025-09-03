@@ -1071,21 +1071,35 @@
                 justify-content: center;
             }
             
-            /* Mobile Layout Reordering: Chord Progression → Instruments → Fretboard */
-            .info-panel {
+            /* Mobile Layout Reordering: Use container flex to order all sections */
+            .container {
+                display: flex;
                 flex-direction: column;
             }
             
-            .key-info {
-                order: 1; /* Chord progression first */
+            .info-panel {
+                flex-direction: column;
+                order: 1; /* Key info and progression controls first */
             }
             
-            .instrument-panel {
-                order: 2; /* Instruments second */
+            .key-info {
+                order: 1; /* Key info first within info panel */
+            }
+            
+            .legend {
+                order: 2; /* Legend second */
+            }
+            
+            .position-controls {
+                order: 3; /* Position controls third */
             }
             
             .fretboard {
-                order: 3; /* Fretboard last */
+                order: 4; /* Fretboard fourth */
+            }
+            
+            .instrument-panel {
+                order: 5; /* Instruments last */
             }
             
             /* Make progression controls more prominent on mobile */
@@ -1127,98 +1141,6 @@
                     <div class="count-in-display" id="countInDisplay">4</div>
                 </div>
             </div>
-            <div class="instrument-panel">
-                <h3>Instruments</h3>
-                <div class="instrument-buttons" id="instrumentButtons"></div>
-                
-                <!-- Interactive Tuning Controls -->
-                <div class="tuning-controls" id="tuningControls">
-                    <h4>Tuning</h4>
-                    <div id="stringTunings"></div>
-                </div>
-
-                <!-- Chord Progression Controls -->
-                <div class="progression-controls" id="progressionControls">
-                    <h4>Chord Progression Composer</h4>
-                    
-                    <div class="progression-setup">
-                        <label>
-                            Key: 
-                            <select id="progressionKey">
-                                <option value="C">C Major</option>
-                                <option value="G">G Major</option>
-                                <option value="D">D Major</option>
-                                <option value="A">A Major</option>
-                                <option value="E">E Major</option>
-                                <option value="B">B Major</option>
-                                <option value="F♯/G♭">F♯/G♭ Major</option>
-                                <option value="F">F Major</option>
-                                <option value="B♭">B♭ Major</option>
-                                <option value="E♭">E♭ Major</option>
-                                <option value="A♭">A♭ Major</option>
-                                <option value="D♭">D♭ Major</option>
-                                <option value="Am">A Minor</option>
-                                <option value="Em">E Minor</option>
-                                <option value="Bm">B Minor</option>
-                                <option value="F♯m">F♯ Minor</option>
-                                <option value="C♯m">C♯ Minor</option>
-                                <option value="G♯m">G♯ Minor</option>
-                                <option value="D♯m/E♭m">D♯/E♭ Minor</option>
-                                <option value="Dm">D Minor</option>
-                                <option value="Gm">G Minor</option>
-                                <option value="Cm">C Minor</option>
-                                <option value="Fm">F Minor</option>
-                                <option value="B♭m">B♭ Minor</option>
-                            </select>
-                        </label>
-                        
-                        <label>
-                            Time Signature: 
-                            <select id="timeSignature">
-                                <option value="4/4" selected>4/4</option>
-                                <option value="3/4">3/4</option>
-                                <option value="2/4">2/4</option>
-                                <option value="6/8">6/8</option>
-                            </select>
-                        </label>
-                        
-                        <label>
-                            Measures: 
-                            <select id="measureCount">
-                                <option value="2">2</option>
-                                <option value="4" selected>4</option>
-                                <option value="8">8</option>
-                                <option value="12">12</option>
-                                <option value="16">16</option>
-                            </select>
-                        </label>
-                        
-                        <label>
-                            Tempo: 
-                            <input type="number" id="tempo" value="120" min="60" max="200" step="5">
-                            <span>BPM</span>
-                        </label>
-                    </div>
-                    
-                    <div class="progression-controls-row">
-                        <button class="create-progression-btn" onclick="createProgression()">Create Progression</button>
-                        <button class="play-progression-btn" onclick="playProgression()" disabled>Play</button>
-                        <button class="create-progression-btn" onclick="clearProgression()">Clear</button>
-                        <label>
-                            <input type="checkbox" id="loopProgression" checked>
-                            Loop
-                        </label>
-                    </div>
-                    
-                    <!-- Cadence Controls -->
-                    <div class="cadence-controls" id="cadenceControls" style="display: none;">
-                        <h5>Suggested Cadences</h5>
-                        <div class="cadence-buttons" id="cadenceButtons">
-                            <!-- Cadence buttons will be generated here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <!-- Legend -->
@@ -1252,6 +1174,100 @@
         <div class="fretboard">
             <div class="fretboard-zoom-container" id="fretboardZoomContainer">
                 <div id="fretboard"></div>
+            </div>
+        </div>
+        
+        <!-- Instrument Panel -->
+        <div class="instrument-panel">
+            <h3>Instruments</h3>
+            <div class="instrument-buttons" id="instrumentButtons"></div>
+            
+            <!-- Interactive Tuning Controls -->
+            <div class="tuning-controls" id="tuningControls">
+                <h4>Tuning</h4>
+                <div id="stringTunings"></div>
+            </div>
+
+            <!-- Chord Progression Controls -->
+            <div class="progression-controls" id="progressionControls">
+                <h4>Chord Progression Composer</h4>
+                
+                <div class="progression-setup">
+                    <label>
+                        Key: 
+                        <select id="progressionKey">
+                            <option value="C">C Major</option>
+                            <option value="G">G Major</option>
+                            <option value="D">D Major</option>
+                            <option value="A">A Major</option>
+                            <option value="E">E Major</option>
+                            <option value="B">B Major</option>
+                            <option value="F♯/G♭">F♯/G♭ Major</option>
+                            <option value="F">F Major</option>
+                            <option value="B♭">B♭ Major</option>
+                            <option value="E♭">E♭ Major</option>
+                            <option value="A♭">A♭ Major</option>
+                            <option value="D♭">D♭ Major</option>
+                            <option value="Am">A Minor</option>
+                            <option value="Em">E Minor</option>
+                            <option value="Bm">B Minor</option>
+                            <option value="F♯m">F♯ Minor</option>
+                            <option value="C♯m">C♯ Minor</option>
+                            <option value="G♯m">G♯ Minor</option>
+                            <option value="D♯m/E♭m">D♯/E♭ Minor</option>
+                            <option value="Dm">D Minor</option>
+                            <option value="Gm">G Minor</option>
+                            <option value="Cm">C Minor</option>
+                            <option value="Fm">F Minor</option>
+                            <option value="B♭m">B♭ Minor</option>
+                        </select>
+                    </label>
+                    
+                    <label>
+                        Time Signature: 
+                        <select id="timeSignature">
+                            <option value="4/4" selected>4/4</option>
+                            <option value="3/4">3/4</option>
+                            <option value="2/4">2/4</option>
+                            <option value="6/8">6/8</option>
+                        </select>
+                    </label>
+                    
+                    <label>
+                        Measures: 
+                        <select id="measureCount">
+                            <option value="2">2</option>
+                            <option value="4" selected>4</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="16">16</option>
+                        </select>
+                    </label>
+                    
+                    <label>
+                        Tempo: 
+                        <input type="number" id="tempo" value="120" min="60" max="200" step="5">
+                        <span>BPM</span>
+                    </label>
+                </div>
+                
+                <div class="progression-controls-row">
+                    <button class="create-progression-btn" onclick="createProgression()">Create Progression</button>
+                    <button class="play-progression-btn" onclick="playProgression()" disabled>Play</button>
+                    <button class="create-progression-btn" onclick="clearProgression()">Clear</button>
+                    <label>
+                        <input type="checkbox" id="loopProgression" checked>
+                        Loop
+                    </label>
+                </div>
+                
+                <!-- Cadence Controls -->
+                <div class="cadence-controls" id="cadenceControls" style="display: none;">
+                    <h5>Suggested Cadences</h5>
+                    <div class="cadence-buttons" id="cadenceButtons">
+                        <!-- Cadence buttons will be generated here -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
