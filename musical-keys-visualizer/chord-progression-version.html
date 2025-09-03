@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -309,7 +309,7 @@
             min-width: 800px;
         }
         
-        /* CSS Grid fretboard layout */
+        /* CSS Grid fingerboard layout */
         .fretboard-grid {
             display: grid;
             grid-template-columns: 60px repeat(var(--fret-count, 24), 1fr);
@@ -896,7 +896,7 @@
             margin: 25px 0; /* Increased margin to prevent dot clipping */
         }
 
-        /* Make fretboard elements smaller when zoomed */
+        /* Make fingerboard elements smaller when zoomed */
         .fretboard-grid.zoomed {
             /* Override the CSS custom property to make string rows closer together */
             grid-template-rows: repeat(var(--string-count, 6), 28px); /* Increased slightly to accommodate dots */
@@ -1003,7 +1003,7 @@
             display: block !important;
         }
 
-        /* Specifically prevent green in fretboard area */
+        /* Specifically prevent green in fingerboard area */
         .fretboard *[style*="90EE90"],
         .fretboard *[style*="#90EE90"],
         .fretboard *[style*="rgb(144, 238, 144)"] {
@@ -1095,7 +1095,7 @@
             }
             
             .fretboard {
-                order: 4; /* Fretboard fourth */
+                order: 4; /* fingerboard fourth */
             }
             
             .instrument-panel {
@@ -1161,7 +1161,7 @@
         
         <!-- Position Controls -->
         <div class="position-controls" id="positionControls" style="display: none;">
-            <span class="position-label">Fretboard Positions:</span>
+            <span class="position-label">Fingerboard Positions:</span>
             <div class="position-buttons" id="positionButtons">
                 <!-- Position buttons will be generated here -->
             </div>
@@ -1170,9 +1170,9 @@
             </div>
         </div>
         
-        <!-- Fretboard -->
-        <div class="fretboard">
-            <div class="fretboard-zoom-container" id="fretboardZoomContainer">
+        <!-- Fingerboard -->
+        <div class="fingerboard">
+            <div class="fretboard-zoom-container" id="fingerboardZoomContainer">
                 <div id="fretboard"></div>
             </div>
         </div>
@@ -1202,24 +1202,24 @@
                             <option value="A">A Major</option>
                             <option value="E">E Major</option>
                             <option value="B">B Major</option>
-                            <option value="F♯/G♭">F♯/G♭ Major</option>
+                            <option value="F?/G?">F?/G? Major</option>
                             <option value="F">F Major</option>
-                            <option value="B♭">B♭ Major</option>
-                            <option value="E♭">E♭ Major</option>
-                            <option value="A♭">A♭ Major</option>
-                            <option value="D♭">D♭ Major</option>
+                            <option value="B?">B? Major</option>
+                            <option value="E?">E? Major</option>
+                            <option value="A?">A? Major</option>
+                            <option value="D?">D? Major</option>
                             <option value="Am">A Minor</option>
                             <option value="Em">E Minor</option>
                             <option value="Bm">B Minor</option>
-                            <option value="F♯m">F♯ Minor</option>
-                            <option value="C♯m">C♯ Minor</option>
-                            <option value="G♯m">G♯ Minor</option>
-                            <option value="D♯m/E♭m">D♯/E♭ Minor</option>
+                            <option value="F?m">F? Minor</option>
+                            <option value="C?m">C? Minor</option>
+                            <option value="G?m">G? Minor</option>
+                            <option value="D?m/E?m">D?/E? Minor</option>
                             <option value="Dm">D Minor</option>
                             <option value="Gm">G Minor</option>
                             <option value="Cm">C Minor</option>
                             <option value="Fm">F Minor</option>
-                            <option value="B♭m">B♭ Minor</option>
+                            <option value="B?m">B? Minor</option>
                         </select>
                     </label>
                     
@@ -1275,43 +1275,43 @@
     <script>
         // Musical symbols using Unicode and font-specific characters
         const MUSIC_SYMBOLS = {
-            TREBLE_CLEF: '\uD834\uDD1E', // 𝄞
-            SHARP: '\u266F', // ♯
-            FLAT: '\u266D', // ♭
-            NATURAL: '\u266E', // ♮
-            QUARTER_NOTE: '\u2669', // ♩
-            EIGHTH_NOTE: '\u266A', // ♪
-            DOUBLE_BAR: '\uD834\uDD01', // 𝄁
+            TREBLE_CLEF: '\uD834\uDD1E', // ??
+            SHARP: '\u266F', // ?
+            FLAT: '\u266D', // ?
+            NATURAL: '\u266E', // ?
+            QUARTER_NOTE: '\u2669', // ?
+            EIGHTH_NOTE: '\u266A', // ?
+            DOUBLE_BAR: '\uD834\uDD01', // ??
         };
 
         // Key signature mappings
         const KEY_SIGNATURES = {
             'C': { sharps: [], flats: [], display: '' },
-            'G': { sharps: ['F'], flats: [], display: '♯' },
-            'D': { sharps: ['F', 'C'], flats: [], display: '♯♯' },
-            'A': { sharps: ['F', 'C', 'G'], flats: [], display: '♯♯♯' },
-            'E': { sharps: ['F', 'C', 'G', 'D'], flats: [], display: '♯♯♯♯' },
-            'B': { sharps: ['F', 'C', 'G', 'D', 'A'], flats: [], display: '♯♯♯♯♯' },
-            'F♯/G♭': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [], display: '♯♯♯♯♯♯' },
-            'F': { sharps: [], flats: ['B'], display: '♭' },
-            'B♭': { sharps: [], flats: ['B', 'E'], display: '♭♭' },
-            'E♭': { sharps: [], flats: ['B', 'E', 'A'], display: '♭♭♭' },
-            'A♭': { sharps: [], flats: ['B', 'E', 'A', 'D'], display: '♭♭♭♭' },
-            'D♭': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'], display: '♭♭♭♭♭' },
+            'G': { sharps: ['F'], flats: [], display: '?' },
+            'D': { sharps: ['F', 'C'], flats: [], display: '??' },
+            'A': { sharps: ['F', 'C', 'G'], flats: [], display: '???' },
+            'E': { sharps: ['F', 'C', 'G', 'D'], flats: [], display: '????' },
+            'B': { sharps: ['F', 'C', 'G', 'D', 'A'], flats: [], display: '?????' },
+            'F?/G?': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [], display: '??????' },
+            'F': { sharps: [], flats: ['B'], display: '?' },
+            'B?': { sharps: [], flats: ['B', 'E'], display: '??' },
+            'E?': { sharps: [], flats: ['B', 'E', 'A'], display: '???' },
+            'A?': { sharps: [], flats: ['B', 'E', 'A', 'D'], display: '????' },
+            'D?': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'], display: '?????' },
             
             // Minor keys
             'Am': { sharps: [], flats: [], display: '' },
-            'Em': { sharps: ['F'], flats: [], display: '♯' },
-            'Bm': { sharps: ['F', 'C'], flats: [], display: '♯♯' },
-            'F♯m': { sharps: ['F', 'C', 'G'], flats: [], display: '♯♯♯' },
-            'C♯m': { sharps: ['F', 'C', 'G', 'D'], flats: [], display: '♯♯♯♯' },
-            'G♯m': { sharps: ['F', 'C', 'G', 'D', 'A'], flats: [], display: '♯♯♯♯♯' },
-            'D♯m/E♭m': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [], display: '♯♯♯♯♯♯' },
-            'Dm': { sharps: [], flats: ['B'], display: '♭' },
-            'Gm': { sharps: [], flats: ['B', 'E'], display: '♭♭' },
-            'Cm': { sharps: [], flats: ['B', 'E', 'A'], display: '♭♭♭' },
-            'Fm': { sharps: [], flats: ['B', 'E', 'A', 'D'], display: '♭♭♭♭' },
-            'B♭m': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'], display: '♭♭♭♭♭' }
+            'Em': { sharps: ['F'], flats: [], display: '?' },
+            'Bm': { sharps: ['F', 'C'], flats: [], display: '??' },
+            'F?m': { sharps: ['F', 'C', 'G'], flats: [], display: '???' },
+            'C?m': { sharps: ['F', 'C', 'G', 'D'], flats: [], display: '????' },
+            'G?m': { sharps: ['F', 'C', 'G', 'D', 'A'], flats: [], display: '?????' },
+            'D?m/E?m': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [], display: '??????' },
+            'Dm': { sharps: [], flats: ['B'], display: '?' },
+            'Gm': { sharps: [], flats: ['B', 'E'], display: '??' },
+            'Cm': { sharps: [], flats: ['B', 'E', 'A'], display: '???' },
+            'Fm': { sharps: [], flats: ['B', 'E', 'A', 'D'], display: '????' },
+            'B?m': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'], display: '?????' }
         };
 
         // Musical data with proper sharp and flat symbols
@@ -1326,7 +1326,7 @@
                     { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['4', '6', '1'] },
                     { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['5', '7', '2'] },
                     { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['6', '1', '3'] },
-                    { symbol: 'B°', notes: ['B', 'D', 'F'], degrees: ['7', '2', '4'] }
+                    { symbol: 'B?', notes: ['B', 'D', 'F'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
                     { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'], degrees: ['1', '3', '5', '7'] },
@@ -1335,249 +1335,249 @@
                     { symbol: 'Fmaj7', notes: ['F', 'A', 'C', 'E'], degrees: ['4', '6', '1', '3'] },
                     { symbol: 'G7', notes: ['G', 'B', 'D', 'F'], degrees: ['5', '7', '2', '4'] },
                     { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'Bm7♭5', notes: ['B', 'D', 'F', 'A'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'Bm7?5', notes: ['B', 'D', 'F', 'A'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
             'G': { 
-                scale: ['G', 'A', 'B', 'C', 'D', 'E', 'F♯'],
-                signature: '1 sharp (F♯)',
+                scale: ['G', 'A', 'B', 'C', 'D', 'E', 'F?'],
+                signature: '1 sharp (F?)',
                 triads: [
                     { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['1', '3', '5'] },
                     { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['2', '4', '6'] },
-                    { symbol: 'Bm', notes: ['B', 'D', 'F♯'], degrees: ['3', '5', '7'] },
+                    { symbol: 'Bm', notes: ['B', 'D', 'F?'], degrees: ['3', '5', '7'] },
                     { symbol: 'C', notes: ['C', 'E', 'G'], degrees: ['4', '6', '1'] },
-                    { symbol: 'D', notes: ['D', 'F♯', 'A'], degrees: ['5', '7', '2'] },
+                    { symbol: 'D', notes: ['D', 'F?', 'A'], degrees: ['5', '7', '2'] },
                     { symbol: 'Em', notes: ['E', 'G', 'B'], degrees: ['6', '1', '3'] },
-                    { symbol: 'F♯°', notes: ['F♯', 'A', 'C'], degrees: ['7', '2', '4'] }
+                    { symbol: 'F??', notes: ['F?', 'A', 'C'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Gmaj7', notes: ['G', 'B', 'D', 'F♯'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'Gmaj7', notes: ['G', 'B', 'D', 'F?'], degrees: ['1', '3', '5', '7'] },
                     { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'Bm7', notes: ['B', 'D', 'F♯', 'A'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'Bm7', notes: ['B', 'D', 'F?', 'A'], degrees: ['3', '5', '7', '2'] },
                     { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'D7', notes: ['D', 'F♯', 'A', 'C'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'D7', notes: ['D', 'F?', 'A', 'C'], degrees: ['5', '7', '2', '4'] },
                     { symbol: 'Em7', notes: ['E', 'G', 'B', 'D'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'F♯m7♭5', notes: ['F♯', 'A', 'C', 'E'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'F?m7?5', notes: ['F?', 'A', 'C', 'E'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
             'D': { 
-                scale: ['D', 'E', 'F♯', 'G', 'A', 'B', 'C♯'],
-                signature: '2 sharps (F♯, C♯)',
+                scale: ['D', 'E', 'F?', 'G', 'A', 'B', 'C?'],
+                signature: '2 sharps (F?, C?)',
                 triads: [
-                    { symbol: 'D', notes: ['D', 'F♯', 'A'], degrees: ['1', '3', '5'] },
+                    { symbol: 'D', notes: ['D', 'F?', 'A'], degrees: ['1', '3', '5'] },
                     { symbol: 'Em', notes: ['E', 'G', 'B'], degrees: ['2', '4', '6'] },
-                    { symbol: 'F♯m', notes: ['F♯', 'A', 'C♯'], degrees: ['3', '5', '7'] },
+                    { symbol: 'F?m', notes: ['F?', 'A', 'C?'], degrees: ['3', '5', '7'] },
                     { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['4', '6', '1'] },
-                    { symbol: 'A', notes: ['A', 'C♯', 'E'], degrees: ['5', '7', '2'] },
-                    { symbol: 'Bm', notes: ['B', 'D', 'F♯'], degrees: ['6', '1', '3'] },
-                    { symbol: 'C♯°', notes: ['C♯', 'E', 'G'], degrees: ['7', '2', '4'] }
+                    { symbol: 'A', notes: ['A', 'C?', 'E'], degrees: ['5', '7', '2'] },
+                    { symbol: 'Bm', notes: ['B', 'D', 'F?'], degrees: ['6', '1', '3'] },
+                    { symbol: 'C??', notes: ['C?', 'E', 'G'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Dmaj7', notes: ['D', 'F♯', 'A', 'C♯'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'Dmaj7', notes: ['D', 'F?', 'A', 'C?'], degrees: ['1', '3', '5', '7'] },
                     { symbol: 'Em7', notes: ['E', 'G', 'B', 'D'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'F♯m7', notes: ['F♯', 'A', 'C♯', 'E'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'Gmaj7', notes: ['G', 'B', 'D', 'F♯'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'A7', notes: ['A', 'C♯', 'E', 'G'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'Bm7', notes: ['B', 'D', 'F♯', 'A'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'C♯m7♭5', notes: ['C♯', 'E', 'G', 'B'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'F?m7', notes: ['F?', 'A', 'C?', 'E'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'Gmaj7', notes: ['G', 'B', 'D', 'F?'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'A7', notes: ['A', 'C?', 'E', 'G'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'Bm7', notes: ['B', 'D', 'F?', 'A'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'C?m7?5', notes: ['C?', 'E', 'G', 'B'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
             'A': { 
-                scale: ['A', 'B', 'C♯', 'D', 'E', 'F♯', 'G♯'],
-                signature: '3 sharps (F♯, C♯, G♯)',
+                scale: ['A', 'B', 'C?', 'D', 'E', 'F?', 'G?'],
+                signature: '3 sharps (F?, C?, G?)',
                 triads: [
-                    { symbol: 'A', notes: ['A', 'C♯', 'E'], degrees: ['1', '3', '5'] },
-                    { symbol: 'Bm', notes: ['B', 'D', 'F♯'], degrees: ['2', '4', '6'] },
-                    { symbol: 'C♯m', notes: ['C♯', 'E', 'G♯'], degrees: ['3', '5', '7'] },
-                    { symbol: 'D', notes: ['D', 'F♯', 'A'], degrees: ['4', '6', '1'] },
-                    { symbol: 'E', notes: ['E', 'G♯', 'B'], degrees: ['5', '7', '2'] },
-                    { symbol: 'F♯m', notes: ['F♯', 'A', 'C♯'], degrees: ['6', '1', '3'] },
-                    { symbol: 'G♯°', notes: ['G♯', 'B', 'D'], degrees: ['7', '2', '4'] }
+                    { symbol: 'A', notes: ['A', 'C?', 'E'], degrees: ['1', '3', '5'] },
+                    { symbol: 'Bm', notes: ['B', 'D', 'F?'], degrees: ['2', '4', '6'] },
+                    { symbol: 'C?m', notes: ['C?', 'E', 'G?'], degrees: ['3', '5', '7'] },
+                    { symbol: 'D', notes: ['D', 'F?', 'A'], degrees: ['4', '6', '1'] },
+                    { symbol: 'E', notes: ['E', 'G?', 'B'], degrees: ['5', '7', '2'] },
+                    { symbol: 'F?m', notes: ['F?', 'A', 'C?'], degrees: ['6', '1', '3'] },
+                    { symbol: 'G??', notes: ['G?', 'B', 'D'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Amaj7', notes: ['A', 'C♯', 'E', 'G♯'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'Bm7', notes: ['B', 'D', 'F♯', 'A'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'C♯m7', notes: ['C♯', 'E', 'G♯', 'B'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'Dmaj7', notes: ['D', 'F♯', 'A', 'C♯'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'E7', notes: ['E', 'G♯', 'B', 'D'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'F♯m7', notes: ['F♯', 'A', 'C♯', 'E'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'G♯m7♭5', notes: ['G♯', 'B', 'D', 'F♯'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'Amaj7', notes: ['A', 'C?', 'E', 'G?'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'Bm7', notes: ['B', 'D', 'F?', 'A'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'C?m7', notes: ['C?', 'E', 'G?', 'B'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'Dmaj7', notes: ['D', 'F?', 'A', 'C?'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'E7', notes: ['E', 'G?', 'B', 'D'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'F?m7', notes: ['F?', 'A', 'C?', 'E'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'G?m7?5', notes: ['G?', 'B', 'D', 'F?'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
             'E': { 
-                scale: ['E', 'F♯', 'G♯', 'A', 'B', 'C♯', 'D♯'],
-                signature: '4 sharps (F♯, C♯, G♯, D♯)',
+                scale: ['E', 'F?', 'G?', 'A', 'B', 'C?', 'D?'],
+                signature: '4 sharps (F?, C?, G?, D?)',
                 triads: [
-                    { symbol: 'E', notes: ['E', 'G♯', 'B'], degrees: ['1', '3', '5'] },
-                    { symbol: 'F♯m', notes: ['F♯', 'A', 'C♯'], degrees: ['2', '4', '6'] },
-                    { symbol: 'G♯m', notes: ['G♯', 'B', 'D♯'], degrees: ['3', '5', '7'] },
-                    { symbol: 'A', notes: ['A', 'C♯', 'E'], degrees: ['4', '6', '1'] },
-                    { symbol: 'B', notes: ['B', 'D♯', 'F♯'], degrees: ['5', '7', '2'] },
-                    { symbol: 'C♯m', notes: ['C♯', 'E', 'G♯'], degrees: ['6', '1', '3'] },
-                    { symbol: 'D♯°', notes: ['D♯', 'F♯', 'A'], degrees: ['7', '2', '4'] }
+                    { symbol: 'E', notes: ['E', 'G?', 'B'], degrees: ['1', '3', '5'] },
+                    { symbol: 'F?m', notes: ['F?', 'A', 'C?'], degrees: ['2', '4', '6'] },
+                    { symbol: 'G?m', notes: ['G?', 'B', 'D?'], degrees: ['3', '5', '7'] },
+                    { symbol: 'A', notes: ['A', 'C?', 'E'], degrees: ['4', '6', '1'] },
+                    { symbol: 'B', notes: ['B', 'D?', 'F?'], degrees: ['5', '7', '2'] },
+                    { symbol: 'C?m', notes: ['C?', 'E', 'G?'], degrees: ['6', '1', '3'] },
+                    { symbol: 'D??', notes: ['D?', 'F?', 'A'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Emaj7', notes: ['E', 'G♯', 'B', 'D♯'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'F♯m7', notes: ['F♯', 'A', 'C♯', 'E'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'G♯m7', notes: ['G♯', 'B', 'D♯', 'F♯'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'Amaj7', notes: ['A', 'C♯', 'E', 'G♯'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'B7', notes: ['B', 'D♯', 'F♯', 'A'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'C♯m7', notes: ['C♯', 'E', 'G♯', 'B'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'D♯m7♭5', notes: ['D♯', 'F♯', 'A', 'C♯'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'Emaj7', notes: ['E', 'G?', 'B', 'D?'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'F?m7', notes: ['F?', 'A', 'C?', 'E'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'G?m7', notes: ['G?', 'B', 'D?', 'F?'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'Amaj7', notes: ['A', 'C?', 'E', 'G?'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'B7', notes: ['B', 'D?', 'F?', 'A'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'C?m7', notes: ['C?', 'E', 'G?', 'B'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'D?m7?5', notes: ['D?', 'F?', 'A', 'C?'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
             'B': { 
-                scale: ['B', 'C♯', 'D♯', 'E', 'F♯', 'G♯', 'A♯'],
-                signature: '5 sharps (F♯, C♯, G♯, D♯, A♯)',
+                scale: ['B', 'C?', 'D?', 'E', 'F?', 'G?', 'A?'],
+                signature: '5 sharps (F?, C?, G?, D?, A?)',
                 triads: [
-                    { symbol: 'B', notes: ['B', 'D♯', 'F♯'], degrees: ['1', '3', '5'] },
-                    { symbol: 'C♯m', notes: ['C♯', 'E', 'G♯'], degrees: ['2', '4', '6'] },
-                    { symbol: 'D♯m', notes: ['D♯', 'F♯', 'A♯'], degrees: ['3', '5', '7'] },
-                    { symbol: 'E', notes: ['E', 'G♯', 'B'], degrees: ['4', '6', '1'] },
-                    { symbol: 'F♯', notes: ['F♯', 'A♯', 'C♯'], degrees: ['5', '7', '2'] },
-                    { symbol: 'G♯m', notes: ['G♯', 'B', 'D♯'], degrees: ['6', '1', '3'] },
-                    { symbol: 'A♯°', notes: ['A♯', 'C♯', 'E'], degrees: ['7', '2', '4'] }
+                    { symbol: 'B', notes: ['B', 'D?', 'F?'], degrees: ['1', '3', '5'] },
+                    { symbol: 'C?m', notes: ['C?', 'E', 'G?'], degrees: ['2', '4', '6'] },
+                    { symbol: 'D?m', notes: ['D?', 'F?', 'A?'], degrees: ['3', '5', '7'] },
+                    { symbol: 'E', notes: ['E', 'G?', 'B'], degrees: ['4', '6', '1'] },
+                    { symbol: 'F?', notes: ['F?', 'A?', 'C?'], degrees: ['5', '7', '2'] },
+                    { symbol: 'G?m', notes: ['G?', 'B', 'D?'], degrees: ['6', '1', '3'] },
+                    { symbol: 'A??', notes: ['A?', 'C?', 'E'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Bmaj7', notes: ['B', 'D♯', 'F♯', 'A♯'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'C♯m7', notes: ['C♯', 'E', 'G♯', 'B'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'D♯m7', notes: ['D♯', 'F♯', 'A♯', 'C♯'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'Emaj7', notes: ['E', 'G♯', 'B', 'D♯'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'F♯7', notes: ['F♯', 'A♯', 'C♯', 'E'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'G♯m7', notes: ['G♯', 'B', 'D♯', 'F♯'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'A♯m7♭5', notes: ['A♯', 'C♯', 'E', 'G♯'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'Bmaj7', notes: ['B', 'D?', 'F?', 'A?'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'C?m7', notes: ['C?', 'E', 'G?', 'B'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'D?m7', notes: ['D?', 'F?', 'A?', 'C?'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'Emaj7', notes: ['E', 'G?', 'B', 'D?'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'F?7', notes: ['F?', 'A?', 'C?', 'E'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'G?m7', notes: ['G?', 'B', 'D?', 'F?'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'A?m7?5', notes: ['A?', 'C?', 'E', 'G?'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
-            'F♯/G♭': { 
-                scale: ['F♯', 'G♯', 'A♯', 'B', 'C♯', 'D♯', 'E♯'],
+            'F?/G?': { 
+                scale: ['F?', 'G?', 'A?', 'B', 'C?', 'D?', 'E?'],
                 signature: '6 sharps/6 flats',
                 triads: [
-                    { symbol: 'F♯', notes: ['F♯', 'A♯', 'C♯'], degrees: ['1', '3', '5'] },
-                    { symbol: 'G♯m', notes: ['G♯', 'B', 'D♯'], degrees: ['2', '4', '6'] },
-                    { symbol: 'A♯m', notes: ['A♯', 'C♯', 'E♯'], degrees: ['3', '5', '7'] },
-                    { symbol: 'B', notes: ['B', 'D♯', 'F♯'], degrees: ['4', '6', '1'] },
-                    { symbol: 'C♯', notes: ['C♯', 'E♯', 'G♯'], degrees: ['5', '7', '2'] },
-                    { symbol: 'D♯m', notes: ['D♯', 'F♯', 'A♯'], degrees: ['6', '1', '3'] },
-                    { symbol: 'E♯°', notes: ['E♯', 'G♯', 'B'], degrees: ['7', '2', '4'] }
+                    { symbol: 'F?', notes: ['F?', 'A?', 'C?'], degrees: ['1', '3', '5'] },
+                    { symbol: 'G?m', notes: ['G?', 'B', 'D?'], degrees: ['2', '4', '6'] },
+                    { symbol: 'A?m', notes: ['A?', 'C?', 'E?'], degrees: ['3', '5', '7'] },
+                    { symbol: 'B', notes: ['B', 'D?', 'F?'], degrees: ['4', '6', '1'] },
+                    { symbol: 'C?', notes: ['C?', 'E?', 'G?'], degrees: ['5', '7', '2'] },
+                    { symbol: 'D?m', notes: ['D?', 'F?', 'A?'], degrees: ['6', '1', '3'] },
+                    { symbol: 'E??', notes: ['E?', 'G?', 'B'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'F♯maj7', notes: ['F♯', 'A♯', 'C♯', 'E♯'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'G♯m7', notes: ['G♯', 'B', 'D♯', 'F♯'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'A♯m7', notes: ['A♯', 'C♯', 'E♯', 'G♯'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'Bmaj7', notes: ['B', 'D♯', 'F♯', 'A♯'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'C♯7', notes: ['C♯', 'E♯', 'G♯', 'B'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'D♯m7', notes: ['D♯', 'F♯', 'A♯', 'C♯'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'E♯m7♭5', notes: ['E♯', 'G♯', 'B', 'D♯'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'F?maj7', notes: ['F?', 'A?', 'C?', 'E?'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'G?m7', notes: ['G?', 'B', 'D?', 'F?'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'A?m7', notes: ['A?', 'C?', 'E?', 'G?'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'Bmaj7', notes: ['B', 'D?', 'F?', 'A?'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'C?7', notes: ['C?', 'E?', 'G?', 'B'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'D?m7', notes: ['D?', 'F?', 'A?', 'C?'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'E?m7?5', notes: ['E?', 'G?', 'B', 'D?'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
-            'D♭': { 
-                scale: ['D♭', 'E♭', 'F', 'G♭', 'A♭', 'B♭', 'C'],
-                signature: '5 flats (B♭, E♭, A♭, D♭, G♭)',
+            'D?': { 
+                scale: ['D?', 'E?', 'F', 'G?', 'A?', 'B?', 'C'],
+                signature: '5 flats (B?, E?, A?, D?, G?)',
                 triads: [
-                    { symbol: 'D♭', notes: ['D♭', 'F', 'A♭'], degrees: ['1', '3', '5'] },
-                    { symbol: 'E♭m', notes: ['E♭', 'G♭', 'B♭'], degrees: ['2', '4', '6'] },
-                    { symbol: 'Fm', notes: ['F', 'A♭', 'C'], degrees: ['3', '5', '7'] },
-                    { symbol: 'G♭', notes: ['G♭', 'B♭', 'D♭'], degrees: ['4', '6', '1'] },
-                    { symbol: 'A♭', notes: ['A♭', 'C', 'E♭'], degrees: ['5', '7', '2'] },
-                    { symbol: 'B♭m', notes: ['B♭', 'D♭', 'F'], degrees: ['6', '1', '3'] },
-                    { symbol: 'C°', notes: ['C', 'E♭', 'G♭'], degrees: ['7', '2', '4'] }
+                    { symbol: 'D?', notes: ['D?', 'F', 'A?'], degrees: ['1', '3', '5'] },
+                    { symbol: 'E?m', notes: ['E?', 'G?', 'B?'], degrees: ['2', '4', '6'] },
+                    { symbol: 'Fm', notes: ['F', 'A?', 'C'], degrees: ['3', '5', '7'] },
+                    { symbol: 'G?', notes: ['G?', 'B?', 'D?'], degrees: ['4', '6', '1'] },
+                    { symbol: 'A?', notes: ['A?', 'C', 'E?'], degrees: ['5', '7', '2'] },
+                    { symbol: 'B?m', notes: ['B?', 'D?', 'F'], degrees: ['6', '1', '3'] },
+                    { symbol: 'C?', notes: ['C', 'E?', 'G?'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'D♭maj7', notes: ['D♭', 'F', 'A♭', 'C'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'E♭m7', notes: ['E♭', 'G♭', 'B♭', 'D♭'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'Fm7', notes: ['F', 'A♭', 'C', 'E♭'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'G♭maj7', notes: ['G♭', 'B♭', 'D♭', 'F'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'A♭7', notes: ['A♭', 'C', 'E♭', 'G♭'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'B♭m7', notes: ['B♭', 'D♭', 'F', 'A♭'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'Cm7♭5', notes: ['C', 'E♭', 'G♭', 'B♭'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'D?maj7', notes: ['D?', 'F', 'A?', 'C'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'E?m7', notes: ['E?', 'G?', 'B?', 'D?'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'Fm7', notes: ['F', 'A?', 'C', 'E?'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'G?maj7', notes: ['G?', 'B?', 'D?', 'F'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'A?7', notes: ['A?', 'C', 'E?', 'G?'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'B?m7', notes: ['B?', 'D?', 'F', 'A?'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'Cm7?5', notes: ['C', 'E?', 'G?', 'B?'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
-            'A♭': { 
-                scale: ['A♭', 'B♭', 'C', 'D♭', 'E♭', 'F', 'G'],
-                signature: '4 flats (B♭, E♭, A♭, D♭)',
+            'A?': { 
+                scale: ['A?', 'B?', 'C', 'D?', 'E?', 'F', 'G'],
+                signature: '4 flats (B?, E?, A?, D?)',
                 triads: [
-                    { symbol: 'A♭', notes: ['A♭', 'C', 'E♭'], degrees: ['1', '3', '5'] },
-                    { symbol: 'B♭m', notes: ['B♭', 'D♭', 'F'], degrees: ['2', '4', '6'] },
-                    { symbol: 'Cm', notes: ['C', 'E♭', 'G'], degrees: ['3', '5', '7'] },
-                    { symbol: 'D♭', notes: ['D♭', 'F', 'A♭'], degrees: ['4', '6', '1'] },
-                    { symbol: 'E♭', notes: ['E♭', 'G', 'B♭'], degrees: ['5', '7', '2'] },
-                    { symbol: 'Fm', notes: ['F', 'A♭', 'C'], degrees: ['6', '1', '3'] },
-                    { symbol: 'G°', notes: ['G', 'B♭', 'D♭'], degrees: ['7', '2', '4'] }
+                    { symbol: 'A?', notes: ['A?', 'C', 'E?'], degrees: ['1', '3', '5'] },
+                    { symbol: 'B?m', notes: ['B?', 'D?', 'F'], degrees: ['2', '4', '6'] },
+                    { symbol: 'Cm', notes: ['C', 'E?', 'G'], degrees: ['3', '5', '7'] },
+                    { symbol: 'D?', notes: ['D?', 'F', 'A?'], degrees: ['4', '6', '1'] },
+                    { symbol: 'E?', notes: ['E?', 'G', 'B?'], degrees: ['5', '7', '2'] },
+                    { symbol: 'Fm', notes: ['F', 'A?', 'C'], degrees: ['6', '1', '3'] },
+                    { symbol: 'G?', notes: ['G', 'B?', 'D?'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'A♭maj7', notes: ['A♭', 'C', 'E♭', 'G'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'B♭m7', notes: ['B♭', 'D♭', 'F', 'A♭'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'Cm7', notes: ['C', 'E♭', 'G', 'B♭'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'D♭maj7', notes: ['D♭', 'F', 'A♭', 'C'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'E♭7', notes: ['E♭', 'G', 'B♭', 'D♭'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'Fm7', notes: ['F', 'A♭', 'C', 'E♭'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'Gm7♭5', notes: ['G', 'B♭', 'D♭', 'F'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'A?maj7', notes: ['A?', 'C', 'E?', 'G'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'B?m7', notes: ['B?', 'D?', 'F', 'A?'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'Cm7', notes: ['C', 'E?', 'G', 'B?'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'D?maj7', notes: ['D?', 'F', 'A?', 'C'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'E?7', notes: ['E?', 'G', 'B?', 'D?'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'Fm7', notes: ['F', 'A?', 'C', 'E?'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'Gm7?5', notes: ['G', 'B?', 'D?', 'F'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
-            'E♭': { 
-                scale: ['E♭', 'F', 'G', 'A♭', 'B♭', 'C', 'D'],
-                signature: '3 flats (B♭, E♭, A♭)',
+            'E?': { 
+                scale: ['E?', 'F', 'G', 'A?', 'B?', 'C', 'D'],
+                signature: '3 flats (B?, E?, A?)',
                 triads: [
-                    { symbol: 'E♭', notes: ['E♭', 'G', 'B♭'], degrees: ['1', '3', '5'] },
-                    { symbol: 'Fm', notes: ['F', 'A♭', 'C'], degrees: ['2', '4', '6'] },
-                    { symbol: 'Gm', notes: ['G', 'B♭', 'D'], degrees: ['3', '5', '7'] },
-                    { symbol: 'A♭', notes: ['A♭', 'C', 'E♭'], degrees: ['4', '6', '1'] },
-                    { symbol: 'B♭', notes: ['B♭', 'D', 'F'], degrees: ['5', '7', '2'] },
-                    { symbol: 'Cm', notes: ['C', 'E♭', 'G'], degrees: ['6', '1', '3'] },
-                    { symbol: 'D°', notes: ['D', 'F', 'A♭'], degrees: ['7', '2', '4'] }
+                    { symbol: 'E?', notes: ['E?', 'G', 'B?'], degrees: ['1', '3', '5'] },
+                    { symbol: 'Fm', notes: ['F', 'A?', 'C'], degrees: ['2', '4', '6'] },
+                    { symbol: 'Gm', notes: ['G', 'B?', 'D'], degrees: ['3', '5', '7'] },
+                    { symbol: 'A?', notes: ['A?', 'C', 'E?'], degrees: ['4', '6', '1'] },
+                    { symbol: 'B?', notes: ['B?', 'D', 'F'], degrees: ['5', '7', '2'] },
+                    { symbol: 'Cm', notes: ['C', 'E?', 'G'], degrees: ['6', '1', '3'] },
+                    { symbol: 'D?', notes: ['D', 'F', 'A?'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'E♭maj7', notes: ['E♭', 'G', 'B♭', 'D'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'Fm7', notes: ['F', 'A♭', 'C', 'E♭'], degrees: ['2', '4', '6', '1'] },
-                    { symbol: 'Gm7', notes: ['G', 'B♭', 'D', 'F'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'A♭maj7', notes: ['A♭', 'C', 'E♭', 'G'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'B♭7', notes: ['B♭', 'D', 'F', 'A♭'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'Cm7', notes: ['C', 'E♭', 'G', 'B♭'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'Dm7♭5', notes: ['D', 'F', 'A♭', 'C'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'E?maj7', notes: ['E?', 'G', 'B?', 'D'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'Fm7', notes: ['F', 'A?', 'C', 'E?'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'Gm7', notes: ['G', 'B?', 'D', 'F'], degrees: ['3', '5', '7', '2'] },
+                    { symbol: 'A?maj7', notes: ['A?', 'C', 'E?', 'G'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'B?7', notes: ['B?', 'D', 'F', 'A?'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'Cm7', notes: ['C', 'E?', 'G', 'B?'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'Dm7?5', notes: ['D', 'F', 'A?', 'C'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
-            'B♭': { 
-                scale: ['B♭', 'C', 'D', 'E♭', 'F', 'G', 'A'],
-                signature: '2 flats (B♭, E♭)',
+            'B?': { 
+                scale: ['B?', 'C', 'D', 'E?', 'F', 'G', 'A'],
+                signature: '2 flats (B?, E?)',
                 triads: [
-                    { symbol: 'B♭', notes: ['B♭', 'D', 'F'], degrees: ['1', '3', '5'] },
-                    { symbol: 'Cm', notes: ['C', 'E♭', 'G'], degrees: ['2', '4', '6'] },
+                    { symbol: 'B?', notes: ['B?', 'D', 'F'], degrees: ['1', '3', '5'] },
+                    { symbol: 'Cm', notes: ['C', 'E?', 'G'], degrees: ['2', '4', '6'] },
                     { symbol: 'Dm', notes: ['D', 'F', 'A'], degrees: ['3', '5', '7'] },
-                    { symbol: 'E♭', notes: ['E♭', 'G', 'B♭'], degrees: ['4', '6', '1'] },
+                    { symbol: 'E?', notes: ['E?', 'G', 'B?'], degrees: ['4', '6', '1'] },
                     { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['5', '7', '2'] },
-                    { symbol: 'Gm', notes: ['G', 'B♭', 'D'], degrees: ['6', '1', '3'] },
-                    { symbol: 'A°', notes: ['A', 'C', 'E♭'], degrees: ['7', '2', '4'] }
+                    { symbol: 'Gm', notes: ['G', 'B?', 'D'], degrees: ['6', '1', '3'] },
+                    { symbol: 'A?', notes: ['A', 'C', 'E?'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'B♭maj7', notes: ['B♭', 'D', 'F', 'A'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'Cm7', notes: ['C', 'E♭', 'G', 'B♭'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'B?maj7', notes: ['B?', 'D', 'F', 'A'], degrees: ['1', '3', '5', '7'] },
+                    { symbol: 'Cm7', notes: ['C', 'E?', 'G', 'B?'], degrees: ['2', '4', '6', '1'] },
                     { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'E♭maj7', notes: ['E♭', 'G', 'B♭', 'D'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'F7', notes: ['F', 'A', 'C', 'E♭'], degrees: ['5', '7', '2', '4'] },
-                    { symbol: 'Gm7', notes: ['G', 'B♭', 'D', 'F'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'Am7♭5', notes: ['A', 'C', 'E♭', 'G'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'E?maj7', notes: ['E?', 'G', 'B?', 'D'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'F7', notes: ['F', 'A', 'C', 'E?'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'Gm7', notes: ['G', 'B?', 'D', 'F'], degrees: ['6', '1', '3', '5'] },
+                    { symbol: 'Am7?5', notes: ['A', 'C', 'E?', 'G'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
             'F': { 
-                scale: ['F', 'G', 'A', 'B♭', 'C', 'D', 'E'],
-                signature: '1 flat (B♭)',
+                scale: ['F', 'G', 'A', 'B?', 'C', 'D', 'E'],
+                signature: '1 flat (B?)',
                 triads: [
                     { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['1', '3', '5'] },
-                    { symbol: 'Gm', notes: ['G', 'B♭', 'D'], degrees: ['2', '4', '6'] },
+                    { symbol: 'Gm', notes: ['G', 'B?', 'D'], degrees: ['2', '4', '6'] },
                     { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['3', '5', '7'] },
-                    { symbol: 'B♭', notes: ['B♭', 'D', 'F'], degrees: ['4', '6', '1'] },
+                    { symbol: 'B?', notes: ['B?', 'D', 'F'], degrees: ['4', '6', '1'] },
                     { symbol: 'C', notes: ['C', 'E', 'G'], degrees: ['5', '7', '2'] },
                     { symbol: 'Dm', notes: ['D', 'F', 'A'], degrees: ['6', '1', '3'] },
-                    { symbol: 'E°', notes: ['E', 'G', 'B♭'], degrees: ['7', '2', '4'] }
+                    { symbol: 'E?', notes: ['E', 'G', 'B?'], degrees: ['7', '2', '4'] }
                 ],
                 sevenths: [
                     { symbol: 'Fmaj7', notes: ['F', 'A', 'C', 'E'], degrees: ['1', '3', '5', '7'] },
-                    { symbol: 'Gm7', notes: ['G', 'B♭', 'D', 'F'], degrees: ['2', '4', '6', '1'] },
+                    { symbol: 'Gm7', notes: ['G', 'B?', 'D', 'F'], degrees: ['2', '4', '6', '1'] },
                     { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['3', '5', '7', '2'] },
-                    { symbol: 'B♭maj7', notes: ['B♭', 'D', 'F', 'A'], degrees: ['4', '6', '1', '3'] },
-                    { symbol: 'C7', notes: ['C', 'E', 'G', 'B♭'], degrees: ['5', '7', '2', '4'] },
+                    { symbol: 'B?maj7', notes: ['B?', 'D', 'F', 'A'], degrees: ['4', '6', '1', '3'] },
+                    { symbol: 'C7', notes: ['C', 'E', 'G', 'B?'], degrees: ['5', '7', '2', '4'] },
                     { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'], degrees: ['6', '1', '3', '5'] },
-                    { symbol: 'Em7♭5', notes: ['E', 'G', 'B♭', 'D'], degrees: ['7', '2', '4', '6'] }
+                    { symbol: 'Em7?5', notes: ['E', 'G', 'B?', 'D'], degrees: ['7', '2', '4', '6'] }
                 ]
             },
             
@@ -1586,264 +1586,264 @@
                 scale: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
                 signature: 'No sharps or flats',
                 triads: [
-                    { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'B°', notes: ['B', 'D', 'F'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'C', notes: ['C', 'E', 'G'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'Dm', notes: ['D', 'F', 'A'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'Em', notes: ['E', 'G', 'B'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'B?', notes: ['B', 'D', 'F'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'C', notes: ['C', 'E', 'G'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'Dm', notes: ['D', 'F', 'A'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'Em', notes: ['E', 'G', 'B'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'Bm7♭5', notes: ['B', 'D', 'F', 'A'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'Em7', notes: ['E', 'G', 'B', 'D'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'Fmaj7', notes: ['F', 'A', 'C', 'E'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'G7', notes: ['G', 'B', 'D', 'F'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'Bm7?5', notes: ['B', 'D', 'F', 'A'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'Em7', notes: ['E', 'G', 'B', 'D'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'Fmaj7', notes: ['F', 'A', 'C', 'E'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'G7', notes: ['G', 'B', 'D', 'F'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
             'Em': { 
-                scale: ['E', 'F♯', 'G', 'A', 'B', 'C', 'D'],
-                signature: '1 sharp (F♯)',
+                scale: ['E', 'F?', 'G', 'A', 'B', 'C', 'D'],
+                signature: '1 sharp (F?)',
                 triads: [
-                    { symbol: 'Em', notes: ['E', 'G', 'B'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'F♯°', notes: ['F♯', 'A', 'C'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'Bm', notes: ['B', 'D', 'F♯'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'C', notes: ['C', 'E', 'G'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'D', notes: ['D', 'F♯', 'A'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'Em', notes: ['E', 'G', 'B'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'F??', notes: ['F?', 'A', 'C'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'Bm', notes: ['B', 'D', 'F?'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'C', notes: ['C', 'E', 'G'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'D', notes: ['D', 'F?', 'A'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Em7', notes: ['E', 'G', 'B', 'D'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'F♯m7♭5', notes: ['F♯', 'A', 'C', 'E'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'Gmaj7', notes: ['G', 'B', 'D', 'F♯'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'Bm7', notes: ['B', 'D', 'F♯', 'A'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'D7', notes: ['D', 'F♯', 'A', 'C'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'Em7', notes: ['E', 'G', 'B', 'D'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'F?m7?5', notes: ['F?', 'A', 'C', 'E'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'Gmaj7', notes: ['G', 'B', 'D', 'F?'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'Bm7', notes: ['B', 'D', 'F?', 'A'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'D7', notes: ['D', 'F?', 'A', 'C'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
             'Bm': { 
-                scale: ['B', 'C♯', 'D', 'E', 'F♯', 'G', 'A'],
-                signature: '2 sharps (F♯, C♯)',
+                scale: ['B', 'C?', 'D', 'E', 'F?', 'G', 'A'],
+                signature: '2 sharps (F?, C?)',
                 triads: [
-                    { symbol: 'Bm', notes: ['B', 'D', 'F♯'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'C♯°', notes: ['C♯', 'E', 'G'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'D', notes: ['D', 'F♯', 'A'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'Em', notes: ['E', 'G', 'B'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'F♯m', notes: ['F♯', 'A', 'C♯'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'A', notes: ['A', 'C♯', 'E'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'Bm', notes: ['B', 'D', 'F?'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'C??', notes: ['C?', 'E', 'G'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'D', notes: ['D', 'F?', 'A'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'Em', notes: ['E', 'G', 'B'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'F?m', notes: ['F?', 'A', 'C?'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'G', notes: ['G', 'B', 'D'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'A', notes: ['A', 'C?', 'E'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Bm7', notes: ['B', 'D', 'F♯', 'A'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'C♯m7♭5', notes: ['C♯', 'E', 'G', 'B'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'Dmaj7', notes: ['D', 'F♯', 'A', 'C♯'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'Em7', notes: ['E', 'G', 'B', 'D'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'F♯m7', notes: ['F♯', 'A', 'C♯', 'E'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'Gmaj7', notes: ['G', 'B', 'D', 'F♯'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'A7', notes: ['A', 'C♯', 'E', 'G'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'Bm7', notes: ['B', 'D', 'F?', 'A'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'C?m7?5', notes: ['C?', 'E', 'G', 'B'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'Dmaj7', notes: ['D', 'F?', 'A', 'C?'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'Em7', notes: ['E', 'G', 'B', 'D'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'F?m7', notes: ['F?', 'A', 'C?', 'E'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'Gmaj7', notes: ['G', 'B', 'D', 'F?'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'A7', notes: ['A', 'C?', 'E', 'G'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
-            'F♯m': { 
-                scale: ['F♯', 'G♯', 'A', 'B', 'C♯', 'D', 'E'],
-                signature: '3 sharps (F♯, C♯, G♯)',
+            'F?m': { 
+                scale: ['F?', 'G?', 'A', 'B', 'C?', 'D', 'E'],
+                signature: '3 sharps (F?, C?, G?)',
                 triads: [
-                    { symbol: 'F♯m', notes: ['F♯', 'A', 'C♯'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'G♯°', notes: ['G♯', 'B', 'D'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'A', notes: ['A', 'C♯', 'E'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'Bm', notes: ['B', 'D', 'F♯'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'C♯m', notes: ['C♯', 'E', 'G♯'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'D', notes: ['D', 'F♯', 'A'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'E', notes: ['E', 'G♯', 'B'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'F?m', notes: ['F?', 'A', 'C?'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'G??', notes: ['G?', 'B', 'D'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'A', notes: ['A', 'C?', 'E'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'Bm', notes: ['B', 'D', 'F?'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'C?m', notes: ['C?', 'E', 'G?'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'D', notes: ['D', 'F?', 'A'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'E', notes: ['E', 'G?', 'B'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'F♯m7', notes: ['F♯', 'A', 'C♯', 'E'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'G♯m7♭5', notes: ['G♯', 'B', 'D', 'F♯'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'Amaj7', notes: ['A', 'C♯', 'E', 'G♯'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'Bm7', notes: ['B', 'D', 'F♯', 'A'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'C♯m7', notes: ['C♯', 'E', 'G♯', 'B'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'Dmaj7', notes: ['D', 'F♯', 'A', 'C♯'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'E7', notes: ['E', 'G♯', 'B', 'D'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'F?m7', notes: ['F?', 'A', 'C?', 'E'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'G?m7?5', notes: ['G?', 'B', 'D', 'F?'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'Amaj7', notes: ['A', 'C?', 'E', 'G?'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'Bm7', notes: ['B', 'D', 'F?', 'A'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'C?m7', notes: ['C?', 'E', 'G?', 'B'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'Dmaj7', notes: ['D', 'F?', 'A', 'C?'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'E7', notes: ['E', 'G?', 'B', 'D'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
-            'C♯m': { 
-                scale: ['C♯', 'D♯', 'E', 'F♯', 'G♯', 'A', 'B'],
-                signature: '4 sharps (F♯, C♯, G♯, D♯)',
+            'C?m': { 
+                scale: ['C?', 'D?', 'E', 'F?', 'G?', 'A', 'B'],
+                signature: '4 sharps (F?, C?, G?, D?)',
                 triads: [
-                    { symbol: 'C♯m', notes: ['C♯', 'E', 'G♯'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'D♯°', notes: ['D♯', 'F♯', 'A'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'E', notes: ['E', 'G♯', 'B'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'F♯m', notes: ['F♯', 'A', 'C♯'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'G♯m', notes: ['G♯', 'B', 'D♯'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'A', notes: ['A', 'C♯', 'E'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'B', notes: ['B', 'D♯', 'F♯'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'C?m', notes: ['C?', 'E', 'G?'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'D??', notes: ['D?', 'F?', 'A'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'E', notes: ['E', 'G?', 'B'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'F?m', notes: ['F?', 'A', 'C?'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'G?m', notes: ['G?', 'B', 'D?'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'A', notes: ['A', 'C?', 'E'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'B', notes: ['B', 'D?', 'F?'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'C♯m7', notes: ['C♯', 'E', 'G♯', 'B'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'D♯m7♭5', notes: ['D♯', 'F♯', 'A', 'C♯'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'Emaj7', notes: ['E', 'G♯', 'B', 'D♯'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'F♯m7', notes: ['F♯', 'A', 'C♯', 'E'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'G♯m7', notes: ['G♯', 'B', 'D♯', 'F♯'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'Amaj7', notes: ['A', 'C♯', 'E', 'G♯'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'B7', notes: ['B', 'D♯', 'F♯', 'A'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'C?m7', notes: ['C?', 'E', 'G?', 'B'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'D?m7?5', notes: ['D?', 'F?', 'A', 'C?'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'Emaj7', notes: ['E', 'G?', 'B', 'D?'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'F?m7', notes: ['F?', 'A', 'C?', 'E'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'G?m7', notes: ['G?', 'B', 'D?', 'F?'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'Amaj7', notes: ['A', 'C?', 'E', 'G?'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'B7', notes: ['B', 'D?', 'F?', 'A'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
-            'G♯m': { 
-                scale: ['G♯', 'A♯', 'B', 'C♯', 'D♯', 'E', 'F♯'],
-                signature: '5 sharps (F♯, C♯, G♯, D♯, A♯)',
+            'G?m': { 
+                scale: ['G?', 'A?', 'B', 'C?', 'D?', 'E', 'F?'],
+                signature: '5 sharps (F?, C?, G?, D?, A?)',
                 triads: [
-                    { symbol: 'G♯m', notes: ['G♯', 'B', 'D♯'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'A♯°', notes: ['A♯', 'C♯', 'E'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'B', notes: ['B', 'D♯', 'F♯'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'C♯m', notes: ['C♯', 'E', 'G♯'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'D♯m', notes: ['D♯', 'F♯', 'A♯'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'E', notes: ['E', 'G♯', 'B'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'F♯', notes: ['F♯', 'A♯', 'C♯'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'G?m', notes: ['G?', 'B', 'D?'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'A??', notes: ['A?', 'C?', 'E'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'B', notes: ['B', 'D?', 'F?'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'C?m', notes: ['C?', 'E', 'G?'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'D?m', notes: ['D?', 'F?', 'A?'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'E', notes: ['E', 'G?', 'B'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'F?', notes: ['F?', 'A?', 'C?'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'G♯m7', notes: ['G♯', 'B', 'D♯', 'F♯'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'A♯m7♭5', notes: ['A♯', 'C♯', 'E', 'G♯'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'Bmaj7', notes: ['B', 'D♯', 'F♯', 'A♯'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'C♯m7', notes: ['C♯', 'E', 'G♯', 'B'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'D♯m7', notes: ['D♯', 'F♯', 'A♯', 'C♯'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'Emaj7', notes: ['E', 'G♯', 'B', 'D♯'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'F♯7', notes: ['F♯', 'A♯', 'C♯', 'E'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'G?m7', notes: ['G?', 'B', 'D?', 'F?'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'A?m7?5', notes: ['A?', 'C?', 'E', 'G?'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'Bmaj7', notes: ['B', 'D?', 'F?', 'A?'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'C?m7', notes: ['C?', 'E', 'G?', 'B'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'D?m7', notes: ['D?', 'F?', 'A?', 'C?'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'Emaj7', notes: ['E', 'G?', 'B', 'D?'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'F?7', notes: ['F?', 'A?', 'C?', 'E'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
-            'D♯m/E♭m': { 
-                scale: ['D♯', 'E♯', 'F♯', 'G♯', 'A♯', 'B', 'C♯'],
+            'D?m/E?m': { 
+                scale: ['D?', 'E?', 'F?', 'G?', 'A?', 'B', 'C?'],
                 signature: '6 sharps/6 flats',
                 triads: [
-                    { symbol: 'D♯m', notes: ['D♯', 'F♯', 'A♯'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'E♯°', notes: ['E♯', 'G♯', 'B'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'F♯', notes: ['F♯', 'A♯', 'C♯'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'G♯m', notes: ['G♯', 'B', 'D♯'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'A♯m', notes: ['A♯', 'C♯', 'E♯'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'B', notes: ['B', 'D♯', 'F♯'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'C♯', notes: ['C♯', 'E♯', 'G♯'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'D?m', notes: ['D?', 'F?', 'A?'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'E??', notes: ['E?', 'G?', 'B'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'F?', notes: ['F?', 'A?', 'C?'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'G?m', notes: ['G?', 'B', 'D?'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'A?m', notes: ['A?', 'C?', 'E?'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'B', notes: ['B', 'D?', 'F?'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'C?', notes: ['C?', 'E?', 'G?'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'D♯m7', notes: ['D♯', 'F♯', 'A♯', 'C♯'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'E♯m7♭5', notes: ['E♯', 'G♯', 'B', 'D♯'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'F♯maj7', notes: ['F♯', 'A♯', 'C♯', 'E♯'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'G♯m7', notes: ['G♯', 'B', 'D♯', 'F♯'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'A♯m7', notes: ['A♯', 'C♯', 'E♯', 'G♯'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'Bmaj7', notes: ['B', 'D♯', 'F♯', 'A♯'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'C♯7', notes: ['C♯', 'E♯', 'G♯', 'B'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'D?m7', notes: ['D?', 'F?', 'A?', 'C?'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'E?m7?5', notes: ['E?', 'G?', 'B', 'D?'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'F?maj7', notes: ['F?', 'A?', 'C?', 'E?'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'G?m7', notes: ['G?', 'B', 'D?', 'F?'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'A?m7', notes: ['A?', 'C?', 'E?', 'G?'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'Bmaj7', notes: ['B', 'D?', 'F?', 'A?'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'C?7', notes: ['C?', 'E?', 'G?', 'B'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
-            'B♭m': { 
-                scale: ['B♭', 'C', 'D♭', 'E♭', 'F', 'G♭', 'A♭'],
-                signature: '5 flats (B♭, E♭, A♭, D♭, G♭)',
+            'B?m': { 
+                scale: ['B?', 'C', 'D?', 'E?', 'F', 'G?', 'A?'],
+                signature: '5 flats (B?, E?, A?, D?, G?)',
                 triads: [
-                    { symbol: 'B♭m', notes: ['B♭', 'D♭', 'F'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'C°', notes: ['C', 'E♭', 'G♭'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'D♭', notes: ['D♭', 'F', 'A♭'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'E♭m', notes: ['E♭', 'G♭', 'B♭'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'Fm', notes: ['F', 'A♭', 'C'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'G♭', notes: ['G♭', 'B♭', 'D♭'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'A♭', notes: ['A♭', 'C', 'E♭'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'B?m', notes: ['B?', 'D?', 'F'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'C?', notes: ['C', 'E?', 'G?'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'D?', notes: ['D?', 'F', 'A?'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'E?m', notes: ['E?', 'G?', 'B?'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'Fm', notes: ['F', 'A?', 'C'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'G?', notes: ['G?', 'B?', 'D?'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'A?', notes: ['A?', 'C', 'E?'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'B♭m7', notes: ['B♭', 'D♭', 'F', 'A♭'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'Cm7♭5', notes: ['C', 'E♭', 'G♭', 'B♭'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'D♭maj7', notes: ['D♭', 'F', 'A♭', 'C'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'E♭m7', notes: ['E♭', 'G♭', 'B♭', 'D♭'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'Fm7', notes: ['F', 'A♭', 'C', 'E♭'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'G♭maj7', notes: ['G♭', 'B♭', 'D♭', 'F'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'A♭7', notes: ['A♭', 'C', 'E♭', 'G♭'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'B?m7', notes: ['B?', 'D?', 'F', 'A?'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'Cm7?5', notes: ['C', 'E?', 'G?', 'B?'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'D?maj7', notes: ['D?', 'F', 'A?', 'C'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'E?m7', notes: ['E?', 'G?', 'B?', 'D?'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'Fm7', notes: ['F', 'A?', 'C', 'E?'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'G?maj7', notes: ['G?', 'B?', 'D?', 'F'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'A?7', notes: ['A?', 'C', 'E?', 'G?'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
             'Fm': { 
-                scale: ['F', 'G', 'A♭', 'B♭', 'C', 'D♭', 'E♭'],
-                signature: '4 flats (B♭, E♭, A♭, D♭)',
+                scale: ['F', 'G', 'A?', 'B?', 'C', 'D?', 'E?'],
+                signature: '4 flats (B?, E?, A?, D?)',
                 triads: [
-                    { symbol: 'Fm', notes: ['F', 'A♭', 'C'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'G°', notes: ['G', 'B♭', 'D♭'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'A♭', notes: ['A♭', 'C', 'E♭'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'B♭m', notes: ['B♭', 'D♭', 'F'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'Cm', notes: ['C', 'E♭', 'G'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'D♭', notes: ['D♭', 'F', 'A♭'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'E♭', notes: ['E♭', 'G', 'B♭'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'Fm', notes: ['F', 'A?', 'C'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'G?', notes: ['G', 'B?', 'D?'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'A?', notes: ['A?', 'C', 'E?'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'B?m', notes: ['B?', 'D?', 'F'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'Cm', notes: ['C', 'E?', 'G'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'D?', notes: ['D?', 'F', 'A?'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'E?', notes: ['E?', 'G', 'B?'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Fm7', notes: ['F', 'A♭', 'C', 'E♭'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'Gm7♭5', notes: ['G', 'B♭', 'D♭', 'F'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'A♭maj7', notes: ['A♭', 'C', 'E♭', 'G'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'B♭m7', notes: ['B♭', 'D♭', 'F', 'A♭'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'Cm7', notes: ['C', 'E♭', 'G', 'B♭'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'D♭maj7', notes: ['D♭', 'F', 'A♭', 'C'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'E♭7', notes: ['E♭', 'G', 'B♭', 'D♭'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'Fm7', notes: ['F', 'A?', 'C', 'E?'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'Gm7?5', notes: ['G', 'B?', 'D?', 'F'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'A?maj7', notes: ['A?', 'C', 'E?', 'G'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'B?m7', notes: ['B?', 'D?', 'F', 'A?'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'Cm7', notes: ['C', 'E?', 'G', 'B?'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'D?maj7', notes: ['D?', 'F', 'A?', 'C'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'E?7', notes: ['E?', 'G', 'B?', 'D?'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
             'Cm': { 
-                scale: ['C', 'D', 'E♭', 'F', 'G', 'A♭', 'B♭'],
-                signature: '3 flats (B♭, E♭, A♭)',
+                scale: ['C', 'D', 'E?', 'F', 'G', 'A?', 'B?'],
+                signature: '3 flats (B?, E?, A?)',
                 triads: [
-                    { symbol: 'Cm', notes: ['C', 'E♭', 'G'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'D°', notes: ['D', 'F', 'A♭'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'E♭', notes: ['E♭', 'G', 'B♭'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'Fm', notes: ['F', 'A♭', 'C'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'Gm', notes: ['G', 'B♭', 'D'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'A♭', notes: ['A♭', 'C', 'E♭'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'B♭', notes: ['B♭', 'D', 'F'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'Cm', notes: ['C', 'E?', 'G'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'D?', notes: ['D', 'F', 'A?'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'E?', notes: ['E?', 'G', 'B?'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'Fm', notes: ['F', 'A?', 'C'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'Gm', notes: ['G', 'B?', 'D'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'A?', notes: ['A?', 'C', 'E?'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'B?', notes: ['B?', 'D', 'F'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Cm7', notes: ['C', 'E♭', 'G', 'B♭'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'Dm7♭5', notes: ['D', 'F', 'A♭', 'C'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'E♭maj7', notes: ['E♭', 'G', 'B♭', 'D'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'Fm7', notes: ['F', 'A♭', 'C', 'E♭'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'Gm7', notes: ['G', 'B♭', 'D', 'F'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'A♭maj7', notes: ['A♭', 'C', 'E♭', 'G'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'B♭7', notes: ['B♭', 'D', 'F', 'A♭'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'Cm7', notes: ['C', 'E?', 'G', 'B?'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'Dm7?5', notes: ['D', 'F', 'A?', 'C'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'E?maj7', notes: ['E?', 'G', 'B?', 'D'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'Fm7', notes: ['F', 'A?', 'C', 'E?'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'Gm7', notes: ['G', 'B?', 'D', 'F'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'A?maj7', notes: ['A?', 'C', 'E?', 'G'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'B?7', notes: ['B?', 'D', 'F', 'A?'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
             'Gm': { 
-                scale: ['G', 'A', 'B♭', 'C', 'D', 'E♭', 'F'],
-                signature: '2 flats (B♭, E♭)',
+                scale: ['G', 'A', 'B?', 'C', 'D', 'E?', 'F'],
+                signature: '2 flats (B?, E?)',
                 triads: [
-                    { symbol: 'Gm', notes: ['G', 'B♭', 'D'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'A°', notes: ['A', 'C', 'E♭'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'B♭', notes: ['B♭', 'D', 'F'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'Cm', notes: ['C', 'E♭', 'G'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'Dm', notes: ['D', 'F', 'A'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'E♭', notes: ['E♭', 'G', 'B♭'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'Gm', notes: ['G', 'B?', 'D'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'A?', notes: ['A', 'C', 'E?'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'B?', notes: ['B?', 'D', 'F'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'Cm', notes: ['C', 'E?', 'G'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'Dm', notes: ['D', 'F', 'A'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'E?', notes: ['E?', 'G', 'B?'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Gm7', notes: ['G', 'B♭', 'D', 'F'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'Am7♭5', notes: ['A', 'C', 'E♭', 'G'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'B♭maj7', notes: ['B♭', 'D', 'F', 'A'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'Cm7', notes: ['C', 'E♭', 'G', 'B♭'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'E♭maj7', notes: ['E♭', 'G', 'B♭', 'D'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'F7', notes: ['F', 'A', 'C', 'E♭'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'Gm7', notes: ['G', 'B?', 'D', 'F'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'Am7?5', notes: ['A', 'C', 'E?', 'G'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'B?maj7', notes: ['B?', 'D', 'F', 'A'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'Cm7', notes: ['C', 'E?', 'G', 'B?'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'E?maj7', notes: ['E?', 'G', 'B?', 'D'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'F7', notes: ['F', 'A', 'C', 'E?'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             },
             'Dm': { 
-                scale: ['D', 'E', 'F', 'G', 'A', 'B♭', 'C'],
-                signature: '1 flat (B♭)',
+                scale: ['D', 'E', 'F', 'G', 'A', 'B?', 'C'],
+                signature: '1 flat (B?)',
                 triads: [
-                    { symbol: 'Dm', notes: ['D', 'F', 'A'], degrees: ['1', '♭3', '5'] },
-                    { symbol: 'E°', notes: ['E', 'G', 'B♭'], degrees: ['2', '4', '♭6'] },
-                    { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['♭3', '5', '♭7'] },
-                    { symbol: 'Gm', notes: ['G', 'B♭', 'D'], degrees: ['4', '♭6', '1'] },
-                    { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['5', '♭7', '2'] },
-                    { symbol: 'B♭', notes: ['B♭', 'D', 'F'], degrees: ['♭6', '1', '♭3'] },
-                    { symbol: 'C', notes: ['C', 'E', 'G'], degrees: ['♭7', '2', '4'] }
+                    { symbol: 'Dm', notes: ['D', 'F', 'A'], degrees: ['1', '?3', '5'] },
+                    { symbol: 'E?', notes: ['E', 'G', 'B?'], degrees: ['2', '4', '?6'] },
+                    { symbol: 'F', notes: ['F', 'A', 'C'], degrees: ['?3', '5', '?7'] },
+                    { symbol: 'Gm', notes: ['G', 'B?', 'D'], degrees: ['4', '?6', '1'] },
+                    { symbol: 'Am', notes: ['A', 'C', 'E'], degrees: ['5', '?7', '2'] },
+                    { symbol: 'B?', notes: ['B?', 'D', 'F'], degrees: ['?6', '1', '?3'] },
+                    { symbol: 'C', notes: ['C', 'E', 'G'], degrees: ['?7', '2', '4'] }
                 ],
                 sevenths: [
-                    { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'], degrees: ['1', '♭3', '5', '♭7'] },
-                    { symbol: 'Em7♭5', notes: ['E', 'G', 'B♭', 'D'], degrees: ['2', '4', '♭6', '1'] },
-                    { symbol: 'Fmaj7', notes: ['F', 'A', 'C', 'E'], degrees: ['♭3', '5', '♭7', '2'] },
-                    { symbol: 'Gm7', notes: ['G', 'B♭', 'D', 'F'], degrees: ['4', '♭6', '1', '♭3'] },
-                    { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['5', '♭7', '2', '4'] },
-                    { symbol: 'B♭maj7', notes: ['B♭', 'D', 'F', 'A'], degrees: ['♭6', '1', '♭3', '5'] },
-                    { symbol: 'C7', notes: ['C', 'E', 'G', 'B♭'], degrees: ['♭7', '2', '4', '♭6'] }
+                    { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'], degrees: ['1', '?3', '5', '?7'] },
+                    { symbol: 'Em7?5', notes: ['E', 'G', 'B?', 'D'], degrees: ['2', '4', '?6', '1'] },
+                    { symbol: 'Fmaj7', notes: ['F', 'A', 'C', 'E'], degrees: ['?3', '5', '?7', '2'] },
+                    { symbol: 'Gm7', notes: ['G', 'B?', 'D', 'F'], degrees: ['4', '?6', '1', '?3'] },
+                    { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'], degrees: ['5', '?7', '2', '4'] },
+                    { symbol: 'B?maj7', notes: ['B?', 'D', 'F', 'A'], degrees: ['?6', '1', '?3', '5'] },
+                    { symbol: 'C7', notes: ['C', 'E', 'G', 'B?'], degrees: ['?7', '2', '4', '?6'] }
                 ]
             }
         };
@@ -1856,16 +1856,16 @@
             'A': { sharps: ['F', 'C', 'G'], flats: [] },
             'E': { sharps: ['F', 'C', 'G', 'D'], flats: [] },
             'B': { sharps: ['F', 'C', 'G', 'D', 'A'], flats: [] },
-            'F♯/G♭': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [] },
+            'F?/G?': { sharps: ['F', 'C', 'G', 'D', 'A', 'E'], flats: [] },
             'F': { sharps: [], flats: ['B'] },
-            'B♭': { sharps: [], flats: ['B', 'E'] },
-            'E♭': { sharps: [], flats: ['B', 'E', 'A'] },
-            'A♭': { sharps: [], flats: ['B', 'E', 'A', 'D'] },
-            'D♭': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'] }
+            'B?': { sharps: [], flats: ['B', 'E'] },
+            'E?': { sharps: [], flats: ['B', 'E', 'A'] },
+            'A?': { sharps: [], flats: ['B', 'E', 'A', 'D'] },
+            'D?': { sharps: [], flats: ['B', 'E', 'A', 'D', 'G'] }
         };
 
         // All possible notes for tuning selection
-        const allNotes = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
+        const allNotes = ['C', 'C?/D?', 'D', 'D?/E?', 'E', 'F', 'F?/G?', 'G', 'G?/A?', 'A', 'A?/B?', 'B'];
 
         // Calculate note name based on scale degrees for proper chord spelling
         function getScaleDegreeNote(rootNote, interval, key) {
@@ -1885,11 +1885,11 @@
                 // Calculate what the natural 7th would be
                 const rootSemitone = noteToSemitone(rootNote);
                 const naturalSeventhSemitone = (rootSemitone + 11) % 12; // Major 7th
-                const flatSeventhSemitone = (rootSemitone + 10) % 12; // Minor 7th (♭7)
+                const flatSeventhSemitone = (rootSemitone + 10) % 12; // Minor 7th (?7)
                 
                 // If the scale's 7th degree is the natural 7th, we need to flat it
                 if (noteToSemitone(seventhNote) === naturalSeventhSemitone) {
-                    return seventhNote + '♭';
+                    return seventhNote + '?';
                 }
                 // If the scale's 7th degree is already a flatted note relative to the natural 7th
                 else if (noteToSemitone(seventhNote) === flatSeventhSemitone) {
@@ -1897,7 +1897,7 @@
                 }
                 // Otherwise calculate the proper flat 7th
                 else {
-                    return seventhNote + '♭';
+                    return seventhNote + '?';
                 }
             }
             
@@ -1919,9 +1919,9 @@
             const diff = (targetSemitone - scaleNoteSemitone + 12) % 12;
             
             if (diff === 1) {
-                return targetScaleNote + '♯';
+                return targetScaleNote + '?';
             } else if (diff === 11) {
-                return targetScaleNote + '♭';
+                return targetScaleNote + '?';
             }
             
             return targetScaleNote;
@@ -1956,7 +1956,7 @@
                 const root = note;
                 const third = getScaleDegreeNote(root, 2, key); // Major third (scale degree 3)
                 const fifth = getScaleDegreeNote(root, 4, key); // Perfect fifth (scale degree 5)
-                const seventh = getScaleDegreeNote(root, 6, key); // Minor 7th (scale degree ♭7)
+                const seventh = getScaleDegreeNote(root, 6, key); // Minor 7th (scale degree ?7)
                 
                 // Get scale degree roman numeral (what degree this chord is built on)
                 const scaleDegreeRomans = ['I7', 'II7', 'III7', 'IV7', 'V7', 'VI7', 'VII7'];
@@ -1966,13 +1966,13 @@
                 // C7 (I7) resolves to F (IV), D7 (II7) resolves to G (V), etc.
                 const targetIndex = (index + 3) % 7; // Perfect fourth up = fifth down
                 const targetRomanNumerals = isMinor ? 
-                    ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'] :
-                    ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                    ['i', 'ii?', '?III', 'iv', 'v', '?VI', '?VII'] :
+                    ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii?'];
                     
                 secondaryDominants.push({
                     symbol: `${root}7`,
                     notes: [root, third, fifth, seventh],
-                    degrees: ['1', '3', '5', '♭7'],
+                    degrees: ['1', '3', '5', '?7'],
                     scaleDegree: scaleDegreeRoman,
                     target: targetRomanNumerals[targetIndex]
                 });
@@ -1992,11 +1992,11 @@
             
             // Define the chromatic passing tones with their correct flat spellings
             const passingToneIntervals = [
-                { semitoneOffset: 1, roman: isMinor ? '♭ii°7' : '♭ii°7', flatSpelling: true },    // Between 1 and 2
-                { semitoneOffset: 3, roman: isMinor ? '♭iii°7' : '♭iii°7', flatSpelling: true },  // Between 2 and 3
-                { semitoneOffset: 6, roman: isMinor ? '♭v°7' : '♭v°7', flatSpelling: true },      // Between 4 and 5
-                { semitoneOffset: 8, roman: isMinor ? '♭vi°7' : '♭vi°7', flatSpelling: true },    // Between 5 and 6
-                { semitoneOffset: 10, roman: isMinor ? '♭vii°7' : '♭vii°7', flatSpelling: true }  // Between 6 and 7
+                { semitoneOffset: 1, roman: isMinor ? '?ii?7' : '?ii?7', flatSpelling: true },    // Between 1 and 2
+                { semitoneOffset: 3, roman: isMinor ? '?iii?7' : '?iii?7', flatSpelling: true },  // Between 2 and 3
+                { semitoneOffset: 6, roman: isMinor ? '?v?7' : '?v?7', flatSpelling: true },      // Between 4 and 5
+                { semitoneOffset: 8, roman: isMinor ? '?vi?7' : '?vi?7', flatSpelling: true },    // Between 5 and 6
+                { semitoneOffset: 10, roman: isMinor ? '?vii?7' : '?vii?7', flatSpelling: true }  // Between 6 and 7
             ];
             
             // Get the tonic note (first scale degree) as reference
@@ -2012,9 +2012,9 @@
                 const seventh = semitoneToNoteFlat((passingToneSemitone + 9) % 12); // Diminished seventh
                 
                 diminishedPassing.push({
-                    symbol: `${root}°7`,
+                    symbol: `${root}?7`,
                     notes: [root, third, fifth, seventh],
-                    degrees: ['1', '♭3', '♭5', '♭♭7'],
+                    degrees: ['1', '?3', '?5', '??7'],
                     roman: passingInfo.roman
                 });
             });
@@ -2024,7 +2024,7 @@
         
         // Helper function to force flat spellings for diminished chords
         function semitoneToNoteFlat(semitone) {
-            const flatNotes = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+            const flatNotes = ['C', 'D?', 'D', 'E?', 'E', 'F', 'G?', 'G', 'A?', 'A', 'B?', 'B'];
             return flatNotes[semitone];
         }
 
@@ -2063,9 +2063,9 @@
         // Note mapping functions
         function noteToSemitone(note) {
             const noteMap = {
-                'C': 0, 'C♯': 1, 'D♭': 1, 'C♯/D♭': 1, 'D': 2, 'D♯': 3, 'E♭': 3, 'D♯/E♭': 3,
-                'E': 4, 'E♯': 5, 'F': 5, 'F♯': 6, 'G♭': 6, 'F♯/G♭': 6, 'G': 7, 'G♯': 8, 'A♭': 8, 'G♯/A♭': 8,
-                'A': 9, 'A♯': 10, 'B♭': 10, 'A♯/B♭': 10, 'B': 11, 'B♯': 0
+                'C': 0, 'C?': 1, 'D?': 1, 'C?/D?': 1, 'D': 2, 'D?': 3, 'E?': 3, 'D?/E?': 3,
+                'E': 4, 'E?': 5, 'F': 5, 'F?': 6, 'G?': 6, 'F?/G?': 6, 'G': 7, 'G?': 8, 'A?': 8, 'G?/A?': 8,
+                'A': 9, 'A?': 10, 'B?': 10, 'A?/B?': 10, 'B': 11, 'B?': 0
             };
             return noteMap[note] !== undefined ? noteMap[note] : 0;
         }
@@ -2076,11 +2076,11 @@
             
             if (keyInfo.flats.length > 0) {
                 // Use flat names for flat keys
-                const flatNotes = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+                const flatNotes = ['C', 'D?', 'D', 'E?', 'E', 'F', 'G?', 'G', 'A?', 'A', 'B?', 'B'];
                 return flatNotes[semitone % 12];
             } else {
                 // Use sharp names for sharp keys
-                const sharpNotes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+                const sharpNotes = ['C', 'C?', 'D', 'D?', 'E', 'F', 'F?', 'G', 'G?', 'A', 'A?', 'B'];
                 return sharpNotes[semitone % 12];
             }
         }
@@ -2113,48 +2113,48 @@
             
             // Define common cadences based on chord function
             const cadencePatterns = {
-                // Dominant function (V, V7, vii°) -> Tonic resolutions
+                // Dominant function (V, V7, vii?) -> Tonic resolutions
                 'V': [
                     { name: 'Authentic', target: 'I', description: 'Strong resolution to tonic' },
                     { name: 'Deceptive', target: 'vi', description: 'Surprise resolution to relative minor' }
                 ],
                 'V7': [
-                    { name: 'Authentic', target: 'I', description: 'Classic V7→I resolution' },
-                    { name: 'Deceptive', target: 'vi', description: 'V7→vi deceptive cadence' }
+                    { name: 'Authentic', target: 'I', description: 'Classic V7?I resolution' },
+                    { name: 'Deceptive', target: 'vi', description: 'V7?vi deceptive cadence' }
                 ],
-                'vii°': [
+                'vii?': [
                     { name: 'Leading Tone', target: 'I', description: 'Leading tone resolution' }
                 ],
                 
                 // Subdominant function (IV, ii) -> Dominant or Tonic
                 'IV': [
                     { name: 'Plagal', target: 'I', description: 'Amen cadence' },
-                    { name: 'Subdominant', target: 'V', description: 'IV→V motion' }
+                    { name: 'Subdominant', target: 'V', description: 'IV?V motion' }
                 ],
                 'ii': [
-                    { name: 'ii-V', target: 'V', description: 'Classic ii→V motion' },
-                    { name: 'ii-V-I', target: 'V7', description: 'Setup for V7→I' }
+                    { name: 'ii-V', target: 'V', description: 'Classic ii?V motion' },
+                    { name: 'ii-V-I', target: 'V7', description: 'Setup for V7?I' }
                 ],
                 'ii7': [
-                    { name: 'ii7-V7', target: 'V7', description: 'Jazz ii7→V7 progression' }
+                    { name: 'ii7-V7', target: 'V7', description: 'Jazz ii7?V7 progression' }
                 ],
                 
                 // Tonic function (I, vi) -> Any direction
                 'I': [
-                    { name: 'Circle of 5ths', target: 'vi', description: 'I→vi motion' },
-                    { name: 'To Subdominant', target: 'IV', description: 'I→IV progression' },
-                    { name: 'To Dominant', target: 'V', description: 'I→V progression' }
+                    { name: 'Circle of 5ths', target: 'vi', description: 'I?vi motion' },
+                    { name: 'To Subdominant', target: 'IV', description: 'I?IV progression' },
+                    { name: 'To Dominant', target: 'V', description: 'I?V progression' }
                 ],
                 'vi': [
-                    { name: 'vi-IV', target: 'IV', description: 'Popular vi→IV motion' },
-                    { name: 'vi-ii', target: 'ii', description: 'vi→ii progression' },
+                    { name: 'vi-IV', target: 'IV', description: 'Popular vi?IV motion' },
+                    { name: 'vi-ii', target: 'ii', description: 'vi?ii progression' },
                     { name: 'Relative Major', target: 'I', description: 'Return to tonic' }
                 ],
                 
                 // Other common progressions
                 'iii': [
-                    { name: 'iii-vi', target: 'vi', description: 'iii→vi motion' },
-                    { name: 'iii-IV', target: 'IV', description: 'iii→IV progression' }
+                    { name: 'iii-vi', target: 'vi', description: 'iii?vi motion' },
+                    { name: 'iii-IV', target: 'IV', description: 'iii?IV progression' }
                 ]
             };
             
@@ -2171,7 +2171,7 @@
                             description: pattern.description,
                             targetRoman: pattern.target,
                             targetChord: targetChord,
-                            displayText: `${pattern.name} →${pattern.target}`
+                            displayText: `${pattern.name} ?${pattern.target}`
                         });
                     }
                 });
@@ -2208,7 +2208,7 @@
             
             // Generate the appropriate Roman numeral
             if (!isMinor) {
-                const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii?'];
                 let roman = majorRomanNumerals[scaleIndex];
                 
                 // Add extensions
@@ -2218,7 +2218,7 @@
                 
                 return roman;
             } else {
-                const minorRomanNumerals = ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'];
+                const minorRomanNumerals = ['i', 'ii?', '?III', 'iv', 'v', '?VI', '?VII'];
                 let roman = minorRomanNumerals[scaleIndex];
                 
                 // Add extensions
@@ -2242,8 +2242,8 @@
             
             // Roman numeral to scale degree mapping
             const romanMap = {
-                'I': 0, 'ii': 1, 'iii': 2, 'IV': 3, 'V': 4, 'vi': 5, 'vii°': 6,
-                'i': 0, 'ii°': 1, 'III': 2, 'iv': 3, 'v': 4, 'VI': 5, 'VII': 6
+                'I': 0, 'ii': 1, 'iii': 2, 'IV': 3, 'V': 4, 'vi': 5, 'vii?': 6,
+                'i': 0, 'ii?': 1, 'III': 2, 'iv': 3, 'v': 4, 'VI': 5, 'VII': 6
             };
             
             const degree = romanMap[roman];
@@ -2254,8 +2254,8 @@
             // Determine chord quality based on roman numeral
             if (roman === 'V7') return root + '7';
             if (roman === 'ii7') return root + 'm7';
-            if (roman === 'vii°') return root + 'dim';
-            if (roman === 'ii°') return root + 'dim';
+            if (roman === 'vii?') return root + 'dim';
+            if (roman === 'ii?') return root + 'dim';
             if (roman.toLowerCase() === roman) return root + 'm'; // lowercase = minor
             return root; // uppercase = major
         }
@@ -2417,7 +2417,7 @@
             const minorRadius = 110;
 
             // Major keys (outer circle)
-            const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭', 'D♭', 'A♭', 'E♭', 'B♭', 'F'];
+            const majorKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F?/G?', 'D?', 'A?', 'E?', 'B?', 'F'];
             majorKeys.forEach((key, index) => {
                 const angle = (index * 30 - 90) * Math.PI / 180;
                 const x = centerX + majorRadius * Math.cos(angle) - 30;
@@ -2433,7 +2433,7 @@
             });
 
             // Minor keys (inner circle)
-            const minorKeys = ['Am', 'Em', 'Bm', 'F♯m', 'C♯m', 'G♯m', 'D♯m/E♭m', 'B♭m', 'Fm', 'Cm', 'Gm', 'Dm'];
+            const minorKeys = ['Am', 'Em', 'Bm', 'F?m', 'C?m', 'G?m', 'D?m/E?m', 'B?m', 'Fm', 'Cm', 'Gm', 'Dm'];
             minorKeys.forEach((key, index) => {
                 const angle = (index * 30 - 90) * Math.PI / 180;
                 const x = centerX + minorRadius * Math.cos(angle) - 30;
@@ -2523,7 +2523,7 @@
             // Hide cadence controls when changing keys
             document.getElementById('cadenceControls').style.display = 'none';
             
-            // Reset fretboard zoom when key changes
+            // Reset fingerboard zoom when key changes
             resetZoom();
             
             updateKeyInfo();
@@ -2560,10 +2560,10 @@
                 case 'triads':
                 case 'sevenths':
                     if (!isMinor) {
-                        const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                        const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii?'];
                         return majorRomanNumerals[chordIndex];
                     } else {
-                        const minorRomanNumerals = ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'];
+                        const minorRomanNumerals = ['i', 'ii?', '?III', 'iv', 'v', '?VI', '?VII'];
                         return minorRomanNumerals[chordIndex];
                     }
                 case 'secondary':
@@ -2579,7 +2579,7 @@
                     if (diminishedChords[chordIndex] && diminishedChords[chordIndex].roman) {
                         return diminishedChords[chordIndex].roman;
                     }
-                    return '°7';
+                    return '?7';
             }
         }
         
@@ -2755,7 +2755,7 @@
         function updateFretboard() {
             const instrument = instruments[selectedInstrument];
             const keyData = musicalKeys[selectedKey];
-            const container = document.getElementById('fretboard');
+            const container = document.getElementById('fingerboard');
             
             if (!keyData) return;
             
@@ -2902,27 +2902,27 @@
                 btn.classList.toggle('active', btn.id === `position-${positionKey}`);
             });
             
-            // Apply zoom to fretboard directly - don't call updateFretboard()
+            // Apply zoom to fingerboard directly - don't call updateFretboard()
             applyPositionZoom(position.frets);
         }
 
         function applyPositionZoom(fretRange) {
-            const fretboard = document.getElementById('fretboard');
-            const zoomContainer = document.getElementById('fretboardZoomContainer');
-            const fretboardGrid = fretboard.querySelector('.fretboard-grid');
+            const fingerboard = document.getElementById('fingerboard');
+            const zoomContainer = document.getElementById('fingerboardZoomContainer');
+            const fingerboardGrid = fingerboard.querySelector('.fretboard-grid');
             
-            if (!fretboardGrid) return;
+            if (!fingerboardGrid) return;
             
             // Add zoom classes
             zoomContainer.classList.add('zoomed');
-            fretboardGrid.classList.add('zoomed');
+            fingerboardGrid.classList.add('zoomed');
             
             const minFret = Math.min(...fretRange);
             const maxFret = Math.max(...fretRange);
             const contextRange = 2; // Show 2 frets on each side with reduced opacity
             
             // Show all frets but with different opacity levels
-            const allFretCells = fretboardGrid.querySelectorAll('.fret-cell');
+            const allFretCells = fingerboardGrid.querySelectorAll('.fret-cell');
             allFretCells.forEach(cell => {
                 const gridColumnMatch = cell.style.gridColumn?.match(/(\d+)/);
                 if (gridColumnMatch) {
@@ -2977,7 +2977,7 @@
             // Scroll to center the position
             setTimeout(() => {
                 const targetFret = Math.floor((minFret + maxFret) / 2);
-                const targetElement = fretboardGrid.querySelector(`[style*="grid-column: ${targetFret + 2}"]`);
+                const targetElement = fingerboardGrid.querySelector(`[style*="grid-column: ${targetFret + 2}"]`);
                 
                 if (targetElement && zoomContainer.scrollTo) {
                     const containerWidth = zoomContainer.offsetWidth;
@@ -3009,12 +3009,12 @@
             currentPosition = null;
             isPositionZoomed = false;
             
-            const zoomContainer = document.getElementById('fretboardZoomContainer');
-            const fretboardGrid = document.querySelector('.fretboard-grid');
+            const zoomContainer = document.getElementById('fingerboardZoomContainer');
+            const fingerboardGrid = document.querySelector('.fretboard-grid');
             
             // Remove zoom classes
             if (zoomContainer) zoomContainer.classList.remove('zoomed');
-            if (fretboardGrid) fretboardGrid.classList.remove('zoomed');
+            if (fingerboardGrid) fingerboardGrid.classList.remove('zoomed');
             
             // Clear button states
             document.querySelectorAll('.position-btn').forEach(btn => {
@@ -3128,7 +3128,7 @@
                     
                     measure.innerHTML = `
                         <div class="roman-numeral" id="roman-${measureIndex}"></div>
-                        <div class="chord-symbol" id="chord-${measureIndex}">—</div>
+                        <div class="chord-symbol" id="chord-${measureIndex}">?</div>
                     `;
                     
                     measure.onclick = () => selectMeasure(measureIndex);
@@ -3159,7 +3159,7 @@
                         romanEl.textContent = generateRomanNumeralForChord(chord, progressionKey, index);
                         chordEl.style.color = '#333';
                     } else {
-                        chordEl.textContent = '—';
+                        chordEl.textContent = '?';
                         romanEl.textContent = '';
                         chordEl.style.color = '#999';
                     }
@@ -3245,15 +3245,15 @@
                 if (chord.roman) {
                     return chord.roman;
                 }
-                return '°7';
+                return '?7';
             } else {
                 // Standard diatonic roman numerals
                 if (isMinor) {
-                    const minorRomanNumerals = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
+                    const minorRomanNumerals = ['i', 'ii?', 'III', 'iv', 'v', 'VI', 'VII'];
                     const numeral = minorRomanNumerals[chordPosition] || 'i';
                     return chordMode === 'sevenths' ? numeral + '7' : numeral;
                 } else {
-                    const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                    const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii?'];
                     const numeral = majorRomanNumerals[chordPosition] || 'I';
                     return chordMode === 'sevenths' ? numeral + '7' : numeral;
                 }
@@ -3264,7 +3264,7 @@
             // Fallback method for calculating roman numerals
             const isMinor = key.includes('m');
             const keyRoot = key.replace('m', '').split('/')[0];
-            const chordRoot = chord.symbol.replace(/[^A-G♯♭]/g, '');
+            const chordRoot = chord.symbol.replace(/[^A-G??]/g, '');
             
             // Scale degrees mapping
             const keyData = musicalKeys[key];
@@ -3277,10 +3277,10 @@
             if (scalePosition === -1) return chordRoot;
             
             if (isMinor) {
-                const minorRomanNumerals = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
+                const minorRomanNumerals = ['i', 'ii?', 'III', 'iv', 'v', 'VI', 'VII'];
                 return minorRomanNumerals[scalePosition] || 'i';
             } else {
-                const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii?'];
                 return majorRomanNumerals[scalePosition] || 'I';
             }
         }
@@ -3445,7 +3445,7 @@
                     m.style.background = index === i ? 'rgba(255, 255, 0, 0.1)' : '';
                 });
                 
-                // Highlight chord on fretboard
+                // Highlight chord on fingerboard
                 selectedChord = chord;
                 updateFretboard();
                 
@@ -3502,7 +3502,7 @@
             document.getElementById('countInDisplay').style.display = 'none';
             document.getElementById('beatIndicator').style.display = 'none';
             
-            // Keep chord chart and fretboard as they were - don't clear chord highlighting
+            // Keep chord chart and fingerboard as they were - don't clear chord highlighting
         }
 
         async function playChordSound(chord, duration) {
@@ -3540,9 +3540,9 @@
         function getChordFrequencies(noteNames) {
             // Simple note to frequency mapping (middle octave)
             const noteFrequencies = {
-                'C': 261.63, 'C♯': 277.18, 'D♭': 277.18, 'D': 293.66, 'D♯': 311.13, 'E♭': 311.13,
-                'E': 329.63, 'F': 349.23, 'F♯': 369.99, 'G♭': 369.99, 'G': 392.00, 'G♯': 415.30, 
-                'A♭': 415.30, 'A': 440.00, 'A♯': 466.16, 'B♭': 466.16, 'B': 493.88
+                'C': 261.63, 'C?': 277.18, 'D?': 277.18, 'D': 293.66, 'D?': 311.13, 'E?': 311.13,
+                'E': 329.63, 'F': 349.23, 'F?': 369.99, 'G?': 369.99, 'G': 392.00, 'G?': 415.30, 
+                'A?': 415.30, 'A': 440.00, 'A?': 466.16, 'B?': 466.16, 'B': 493.88
             };
             
             return noteNames.map(note => noteFrequencies[note] || 440).slice(0, 4); // Limit to 4 voices
