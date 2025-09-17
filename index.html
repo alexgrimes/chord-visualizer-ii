@@ -3809,7 +3809,11 @@
             
             container.innerHTML = '';
             
-            instrument.strings.forEach((string, index) => {
+            // Reverse the strings array so String 1 is the highest pitch (thinnest) string
+            const reversedStrings = [...instrument.strings].reverse();
+            const reversedTuning = [...currentTuning].reverse();
+            
+            reversedStrings.forEach((string, index) => {
                 const stringDiv = document.createElement('div');
                 stringDiv.className = 'string-tuning';
                 
@@ -3823,14 +3827,16 @@
                     const option = document.createElement('option');
                     option.value = note;
                     option.textContent = note;
-                    if (note === currentTuning[index]) {
+                    if (note === reversedTuning[index]) {
                         option.selected = true;
                     }
                     select.appendChild(option);
                 });
                 
                 select.onchange = (e) => {
-                    currentTuning[index] = e.target.value;
+                    // Calculate the original index (reverse the index back)
+                    const originalIndex = instrument.strings.length - 1 - index;
+                    currentTuning[originalIndex] = e.target.value;
                     updateFretboard();
                 };
                 
