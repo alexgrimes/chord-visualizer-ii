@@ -2611,21 +2611,25 @@
 
         // Generate secondary dominants for a key
         function generateSecondaryDominants(key) {
-            const keyData = musicalKeys[key];
+            // Use current scale data instead of predefined key data
+            const keyData = getCurrentKeyData();
             if (!keyData || !keyData.scale) return [];
             
             const scaleNotes = keyData.scale;
-            const isMinor = key.includes('m');
+            const isMinorScale = selectedScale === 'minor';
             
             // Build dominant 7th chords ON each scale degree (in diatonic order)
             const secondaryDominants = [];
             
             scaleNotes.forEach((note, index) => {
-                // Build dominant 7th chord on this scale degree using proper scale degree spelling
+                // Build dominant 7th chord on this scale degree using chromatic intervals
                 const root = note;
-                const third = getScaleDegreeNote(root, 2, key); // Major third (scale degree 3)
-                const fifth = getScaleDegreeNote(root, 4, key); // Perfect fifth (scale degree 5)
-                const seventh = getScaleDegreeNote(root, 6, key); // Minor 7th (scale degree ♭7)
+                const rootSemitone = noteToSemitone(root);
+                
+                // Build dominant 7th chord: Root + Major 3rd + Perfect 5th + Minor 7th
+                const third = semitoneToNote((rootSemitone + 4) % 12, selectedKey);
+                const fifth = semitoneToNote((rootSemitone + 7) % 12, selectedKey);
+                const seventh = semitoneToNote((rootSemitone + 10) % 12, selectedKey);
                 
                 // Get scale degree roman numeral (what degree this chord is built on)
                 const scaleDegreeRomans = ['I7', 'II7', 'III7', 'IV7', 'V7', 'VI7', 'VII7'];
@@ -2634,7 +2638,7 @@
                 // Get target roman numeral (what this chord resolves to - a fifth below from the chord root)
                 // C7 (I7) resolves to F (IV), D7 (II7) resolves to G (V), etc.
                 const targetIndex = (index + 3) % 7; // Perfect fourth up = fifth down
-                const targetRomanNumerals = isMinor ? 
+                const targetRomanNumerals = isMinorScale ? 
                     ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'] :
                     ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
                     
@@ -2652,39 +2656,43 @@
 
         // Generate diminished passing chords for a key
         function generateDiminishedPassing(key) {
-            const keyData = musicalKeys[key];
+            // Use current scale data instead of predefined key data
+            const keyData = getCurrentKeyData();
             if (!keyData || !keyData.scale) return [];
             
             const scaleNotes = keyData.scale;
             const diminishedPassing = [];
-            const isMinor = key.includes('m');
+            const isMinorScale = selectedScale === 'minor';
             
-            // Define the chromatic passing tones with their correct flat spellings
-            const passingToneIntervals = [
-                { semitoneOffset: 1, roman: isMinor ? '♭ii°7' : '♭ii°7', flatSpelling: true },    // Between 1 and 2
-                { semitoneOffset: 3, roman: isMinor ? '♭iii°7' : '♭iii°7', flatSpelling: true },  // Between 2 and 3
-                { semitoneOffset: 6, roman: isMinor ? '♭v°7' : '♭v°7', flatSpelling: true },      // Between 4 and 5
-                { semitoneOffset: 8, roman: isMinor ? '♭vi°7' : '♭vi°7', flatSpelling: true },    // Between 5 and 6
-                { semitoneOffset: 10, roman: isMinor ? '♭vii°7' : '♭vii°7', flatSpelling: true }  // Between 6 and 7
-            ];
+            // Get all semitone positions of scale notes
+            const scalePositions = scaleNotes.map(note => noteToSemitone(note));
+            const tonicSemitone = scalePositions[0];
             
-            // Get the tonic note (first scale degree) as reference
-            const tonicSemitone = noteToSemitone(scaleNotes[0]);
+            // Find chromatic gaps between scale notes (within one octave)
+            const chromaticPositions = [];
+            for (let i = 0; i < 12; i++) {
+                const currentSemitone = (tonicSemitone + i) % 12;
+                if (!scalePositions.includes(currentSemitone)) {
+                    chromaticPositions.push(currentSemitone);
+                }
+            }
             
-            passingToneIntervals.forEach(passingInfo => {
-                const passingToneSemitone = (tonicSemitone + passingInfo.semitoneOffset) % 12;
-                
+            // Generate diminished 7th chords on chromatic passing tones
+            chromaticPositions.forEach((passingToneSemitone, index) => {
                 // Force flat spelling for diminished passing chord roots
                 const root = semitoneToNoteFlat(passingToneSemitone);
                 const third = semitoneToNoteFlat((passingToneSemitone + 3) % 12); // Minor third
                 const fifth = semitoneToNoteFlat((passingToneSemitone + 6) % 12); // Diminished fifth
                 const seventh = semitoneToNoteFlat((passingToneSemitone + 9) % 12); // Diminished seventh
                 
+                // Calculate which scale degrees this chord passes between
+                const romanNumeral = `${root}°7`;
+                
                 diminishedPassing.push({
                     symbol: `${root}°7`,
                     notes: [root, third, fifth, seventh],
                     degrees: ['1', '♭3', '♭5', '♭♭7'],
-                    roman: passingInfo.roman
+                    roman: romanNumeral
                 });
             });
             
@@ -3730,6 +3738,10 @@
             initializeTuning();
             generatePositionButtons(); // Generate position buttons on startup
             
+            // Set default to C major
+            selectedScale = 'major';
+            selectedKey = 'C';
+            
             // Initialize the default key selection
             selectKey('C'); // This will properly set up all the initial state
             
@@ -3800,7 +3812,7 @@
 
         function initializeTuning() {
             const instrument = instruments[selectedInstrument];
-            currentTuning = { ...instrument.defaultTuning };
+            currentTuning = [...instrument.defaultTuning];
             createTuningControls();
         }
 
@@ -4048,15 +4060,8 @@
         }
 
         function isHomeScale() {
-            // Home scale is the natural major/minor scale that corresponds to the selected key
-            return (selectedScale === 'major' && !selectedKey.includes('m')) || 
-                   (selectedScale === 'minor' && selectedKey.includes('m'));
-        }
-
-        function isHomeScale() {
-            // Home scale is the natural major/minor scale that corresponds to the selected key
-            return (selectedScale === 'major' && !selectedKey.includes('m')) || 
-                   (selectedScale === 'minor' && selectedKey.includes('m'));
+            // Allow secondary dominants and diminished passing chords for major and natural minor scales
+            return selectedScale === 'major' || selectedScale === 'minor';
         }
 
         function toggleChordMode(mode) {
