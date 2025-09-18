@@ -1244,12 +1244,17 @@
             background: rgba(190, 190, 190, 0.85) !important; /* Darker semi-transparent gray for 12th fret */
         }
 
-        /* Enhanced nut line styling */
-        .fretboard-grid.zoomed .fret-cell[style*="grid-column: 2"]::after {
-            background: linear-gradient(to bottom, #34495e 0%, #2c3e50 50%, #34495e 100%);
-            width: 6px;
-            border-radius: 2px;
-            box-shadow: 0 0 8px rgba(52, 73, 94, 0.5);
+        /* Nut line styling - using class-based approach */
+        .fret-cell.nut-line::after {
+            background-color: #000 !important;
+            width: 3px !important;
+        }
+        
+        .fretboard-grid.zoomed .fret-cell.nut-line::after {
+            background-color: #000 !important;
+            width: 6px !important;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         .fret-cell.hidden-position,
@@ -3295,44 +3300,57 @@
             
             // Test each note as potential bass note
             customChordNotes.forEach(bassNote => {
-                const remainingNotes = customChordNotes.filter(note => note !== bassNote);
-                
-                if (remainingNotes.length >= 2) {
-                    // Try each remaining note as potential upper structure root
-                    remainingNotes.forEach(potentialRoot => {
-                        const otherNotes = remainingNotes.filter(note => note !== potentialRoot);
-                        const allUpperNotes = [potentialRoot, ...otherNotes];
+                // Test each note (including bass) as potential root of the complete chord
+                customChordNotes.forEach(potentialRoot => {
+                    // Skip if bass and root are the same (that would be root position, not a slash chord)
+                    if (bassNote === potentialRoot) return;
+                    
+                    // Calculate intervals from potential root using ALL notes
+                    const rootSemitone = noteToSemitone(potentialRoot);
+                    const testIntervals = customChordNotes.map(note => {
+                        return (noteToSemitone(note) - rootSemitone + 12) % 12;
+                    }).sort((a, b) => a - b);
+                    
+                    // Test against chord templates (focus on basic chords for slash recognition)
+                    const basicTemplates = ['major', 'minor', 'dominant7', 'major7', 'minor7', 'diminished'];
+                    
+                    basicTemplates.forEach(templateName => {
+                        const template = CHORD_TEMPLATES[templateName];
+                        if (!template) return;
                         
-                        // Calculate intervals from this potential root
-                        const rootSemitone = noteToSemitone(potentialRoot);
-                        const upperIntervals = allUpperNotes.map(note => {
-                            return (noteToSemitone(note) - rootSemitone + 12) % 12;
-                        }).sort((a, b) => a - b);
+                        const score = scoreChordMatch(testIntervals, template);
                         
-                        // Test against common chord templates (focus on complete chords)
-                        const commonTemplates = ['major', 'minor', 'dominant7', 'major7', 'minor7', 'diminished', 'halfDiminished7'];
-                        
-                        commonTemplates.forEach(templateName => {
-                            const template = CHORD_TEMPLATES[templateName];
-                            if (template) {
-                                const score = scoreChordMatch(upperIntervals, template);
-                                
-                                if (score >= 0.8) { // Higher threshold for slash chords
-                                    const slashSymbol = `${potentialRoot}${template.symbol}/${bassNote}`;
-                                    slashSuggestions.push({
-                                        symbol: slashSymbol,
-                                        score: score,
-                                        priority: 0.5, // High priority for slash chords
-                                        type: 'slash'
-                                    });
-                                }
-                            }
-                        });
+                        if (score >= 0.75) { // Good threshold for slash chord recognition
+                            const upperChordSymbol = potentialRoot + template.symbol;
+                            const slashChordSymbol = upperChordSymbol + '/' + bassNote;
+                            
+                            slashSuggestions.push({
+                                symbol: slashChordSymbol,
+                                score: score + 0.1, // Small bonus for inversion recognition
+                                priority: 0.5, // High priority for slash chords
+                                intervals: testIntervals,
+                                type: 'slash',
+                                isSlashChord: true
+                            });
+                        }
                     });
-                }
+                });
             });
             
-            return slashSuggestions;
+            // Remove duplicates and sort by score
+            const uniqueSlashSuggestions = [];
+            const seenSymbols = new Set();
+            
+            slashSuggestions.sort((a, b) => b.score - a.score);
+            
+            for (let suggestion of slashSuggestions) {
+                if (!seenSymbols.has(suggestion.symbol)) {
+                    seenSymbols.add(suggestion.symbol);
+                    uniqueSlashSuggestions.push(suggestion);
+                }
+            }
+            
+            return uniqueSlashSuggestions;
         }
 
         // Position zoom state
@@ -4948,6 +4966,12 @@
                     
                     const gridColumn = fret + 2; // +2 because column 1 is string label, fret 0 is column 2
                     
+                    // Add nut-line class for fret 0 (nut)
+                    let nutLineClass = '';
+                    if (fret === 0) {
+                        nutLineClass = 'nut-line';
+                    }
+                    
                     // Add subtle background shading for traditional fret positions
                     let fretPositionClass = '';
                     if (fret === 12) {
@@ -4956,7 +4980,7 @@
                         fretPositionClass = 'fret-position'; // Regular shading for other positions
                     }
                     
-                    html += `<div class="fret-cell ${fretPositionClass}" style="grid-row: ${stringIndex + 1}; grid-column: ${gridColumn};">`;
+                    html += `<div class="fret-cell ${fretPositionClass} ${nutLineClass}" style="grid-row: ${stringIndex + 1}; grid-column: ${gridColumn};">`;
                     if (showNote) {
                         // Add custom chord creation classes and click handlers
                         let customClasses = '';
@@ -5065,6 +5089,12 @@
             const maxFret = Math.max(...fretRange);
             const contextRange = 2; // Show 2 frets on each side with reduced opacity
             
+            // Determine if open strings should be visible (only for lower positions)
+            const showOpenStrings = minFret <= 3; // Only show open strings for positions that naturally include them
+            
+            // Calculate center position for scrolling
+            const centerFret = Math.floor((minFret + maxFret) / 2);
+            
             // Show all frets but with different opacity levels
             const allFretCells = fretboardGrid.querySelectorAll('.fret-cell');
             allFretCells.forEach(cell => {
@@ -5073,9 +5103,14 @@
                     const fretNumber = parseInt(gridColumnMatch[1]) - 2; // Adjust for string labels
                     
                     if (fretNumber === 0) {
-                        // Open strings - keep visible with normal opacity
-                        cell.style.opacity = '1';
-                        cell.style.display = '';
+                        // Open strings - only show if position naturally includes them
+                        if (showOpenStrings) {
+                            cell.style.opacity = '1';
+                            cell.style.display = '';
+                        } else {
+                            cell.style.opacity = '0.1';
+                            cell.style.display = '';
+                        }
                         cell.classList.remove('position-target', 'context-fret');
                     } else if (fretNumber >= minFret && fretNumber <= maxFret) {
                         // Target position - full opacity with highlight
@@ -5102,11 +5137,18 @@
             const allFretMarkers = document.querySelectorAll('.fret-marker');
             allFretMarkers.forEach((marker, index) => {
                 if (index === 0) {
-                    // Keep string labels visible
+                    // String labels - always visible
                     marker.style.opacity = '1';
                 } else {
                     const fretNumber = index - 1;
-                    if (fretNumber >= minFret && fretNumber <= maxFret) {
+                    if (fretNumber === 0) {
+                        // Nut line - only show if position naturally includes open strings
+                        if (showOpenStrings) {
+                            marker.style.opacity = '1';
+                        } else {
+                            marker.style.opacity = '0.1';
+                        }
+                    } else if (fretNumber >= minFret && fretNumber <= maxFret) {
                         marker.style.opacity = '1';
                         marker.classList.add('position-target');
                     } else if (fretNumber >= (minFret - contextRange) && fretNumber <= (maxFret + contextRange)) {
@@ -5121,19 +5163,32 @@
             // Scroll to center the position
             setTimeout(() => {
                 const targetFret = Math.floor((minFret + maxFret) / 2);
-                const targetElement = fretboardGrid.querySelector(`[style*="grid-column: ${targetFret + 2}"]`);
+                
+                // Find a target element in the position range
+                let targetElement = null;
+                for (let fret = minFret; fret <= maxFret && !targetElement; fret++) {
+                    targetElement = fretboardGrid.querySelector(`[style*="grid-column: ${fret + 2}"]`);
+                }
                 
                 if (targetElement && zoomContainer.scrollTo) {
                     const containerWidth = zoomContainer.offsetWidth;
+                    const elementWidth = targetElement.offsetWidth;
                     const targetLeft = targetElement.offsetLeft;
-                    const scrollPosition = Math.max(0, targetLeft - (containerWidth / 2));
+                    
+                    // Calculate scroll position to center the position
+                    const scrollPosition = Math.max(0, targetLeft - (containerWidth / 2) + (elementWidth / 2));
                     
                     zoomContainer.scrollTo({
                         left: scrollPosition,
                         behavior: 'smooth'
                     });
+                } else if (zoomContainer.scrollLeft !== undefined) {
+                    // Fallback: calculate approximate scroll position
+                    const fretWidth = 50; // Approximate fret width
+                    const scrollPosition = Math.max(0, (targetFret * fretWidth) - (zoomContainer.offsetWidth / 2));
+                    zoomContainer.scrollLeft = scrollPosition;
                 }
-            }, 100);
+            }, 150); // Slightly longer delay to ensure DOM is updated
         }
 
         // Function to actively clean up any accidental green styling
