@@ -847,6 +847,15 @@
             color: white;
         }
 
+        .arpeggio-toggle-btn {
+            background: #607D8B;
+            color: white;
+        }
+
+        .arpeggio-toggle-btn:hover {
+            background: #455A64;
+        }
+
         /* Clickable note dots in custom chord mode */
         .note-dot.clickable {
             cursor: pointer;
@@ -1256,6 +1265,33 @@
             border-radius: 0;
             box-shadow: none;
         }
+        
+        /* Arpeggio line styling */
+        .arpeggio-line {
+            pointer-events: none;
+            z-index: 15; /* Above strings but below notes */
+            stroke: #000 !important;
+            stroke-width: 3 !important;
+            fill: none;
+            opacity: 1 !important;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+        }
+        
+        .arpeggio-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        @keyframes drawArpeggio {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
 
         .fret-cell.hidden-position,
         .fret-marker.hidden-position {
@@ -1556,6 +1592,7 @@
                     <button class="play-chord-btn" id="playCustomChordBtn" onclick="playCustomChord()" disabled>Hear Chord</button>
                     <button class="add-chord-btn" id="addCustomChordBtn" onclick="addCustomChordToProgression()" disabled>Add to Progression</button>
                     <button class="clear-chord-btn" onclick="clearCustomChord()">Clear</button>
+                    <button class="arpeggio-toggle-btn" id="arpeggioToggleBtn" onclick="toggleArpeggioLines()">Hide Arpeggio</button>
                 </div>
             </div>
         </div>
@@ -3356,24 +3393,25 @@
         // Position zoom state
         let currentPosition = null;
         let isPositionZoomed = false;
+        let arpeggioLinesEnabled = true;
 
         // Position definitions (fret ranges)
         const POSITIONS = {
-            'I': { frets: [1, 2, 3, 4, 5, 6], label: 'I' },
-            'II': { frets: [2, 3, 4, 5, 6, 7], label: 'II' },
-            'III': { frets: [3, 4, 5, 6, 7, 8], label: 'III' },
-            'IV': { frets: [4, 5, 6, 7, 8, 9], label: 'IV' },
-            'V': { frets: [5, 6, 7, 8, 9, 10], label: 'V' },
-            'VI': { frets: [6, 7, 8, 9, 10, 11], label: 'VI' },
-            'VII': { frets: [7, 8, 9, 10, 11, 12], label: 'VII' },
-            'VIII': { frets: [8, 9, 10, 11, 12, 13], label: 'VIII' },
-            'IX': { frets: [9, 10, 11, 12, 13, 14], label: 'IX' },
-            'X': { frets: [10, 11, 12, 13, 14, 15], label: 'X' },
-            'XI': { frets: [11, 12, 13, 14, 15, 16], label: 'XI' },
-            'XII': { frets: [12, 13, 14, 15, 16, 17], label: 'XII' },
-            'XIII': { frets: [13, 14, 15, 16, 17, 18], label: 'XIII' },
-            'XIV': { frets: [14, 15, 16, 17, 18, 19], label: 'XIV' },
-            'XV': { frets: [15, 16, 17, 18, 19, 20], label: 'XV' },
+            'I': { frets: [1, 2, 3, 4, 5], label: 'I' },
+            'II': { frets: [2, 3, 4, 5, 6], label: 'II' },
+            'III': { frets: [3, 4, 5, 6, 7], label: 'III' },
+            'IV': { frets: [4, 5, 6, 7, 8], label: 'IV' },
+            'V': { frets: [5, 6, 7, 8, 9], label: 'V' },
+            'VI': { frets: [6, 7, 8, 9, 10], label: 'VI' },
+            'VII': { frets: [7, 8, 9, 10, 11], label: 'VII' },
+            'VIII': { frets: [8, 9, 10, 11, 12], label: 'VIII' },
+            'IX': { frets: [9, 10, 11, 12, 13], label: 'IX' },
+            'X': { frets: [10, 11, 12, 13, 14], label: 'X' },
+            'XI': { frets: [11, 12, 13, 14, 15], label: 'XI' },
+            'XII': { frets: [12, 13, 14, 15, 16], label: 'XII' },
+            'XIII': { frets: [13, 14, 15, 16, 17], label: 'XIII' },
+            'XIV': { frets: [14, 15, 16, 17, 18], label: 'XIV' },
+            'XV': { frets: [15, 16, 17, 18, 19], label: 'XV' },
             'XVI': { frets: [16, 17, 18, 19, 20, 21], label: 'XVI' },
             'XVII': { frets: [17, 18, 19, 20, 21, 22], label: 'XVII' }
         };
@@ -5015,6 +5053,11 @@
                 const position = POSITIONS[currentPosition];
                 applyPositionZoom(position.frets);
             }
+            
+            // Draw arpeggio lines after fretboard is updated (with small delay for DOM to settle)
+            setTimeout(() => {
+                drawArpeggioLines();
+            }, 150);
         }
 
         // Position Functions
@@ -5087,7 +5130,9 @@
             
             const minFret = Math.min(...fretRange);
             const maxFret = Math.max(...fretRange);
-            const contextRange = 2; // Show 2 frets on each side with reduced opacity
+            const contextRange = 0; // Show only the position frets without context
+            
+            console.log(`Position zoom: showing frets ${minFret} to ${maxFret} (range: [${fretRange.join(', ')}])`);
             
             // Determine if open strings should be visible (only for lower positions)
             const showOpenStrings = minFret <= 3; // Only show open strings for positions that naturally include them
@@ -5098,10 +5143,23 @@
             // Show all frets but with different opacity levels
             const allFretCells = fretboardGrid.querySelectorAll('.fret-cell');
             allFretCells.forEach(cell => {
-                const gridColumnMatch = cell.style.gridColumn?.match(/(\d+)/);
-                if (gridColumnMatch) {
-                    const fretNumber = parseInt(gridColumnMatch[1]) - 2; // Adjust for string labels
-                    
+                // Parse both grid-column and grid-area formats
+                let fretNumber = null;
+                const style = cell.getAttribute('style');
+                
+                // Try grid-area first (newer format)
+                const gridAreaMatch = style.match(/grid-area:\s*(\d+)\s*\/\s*(\d+)/);
+                if (gridAreaMatch) {
+                    fretNumber = parseInt(gridAreaMatch[2]) - 2; // Column - 2 for string labels
+                } else {
+                    // Fallback to grid-column (older format)
+                    const gridColumnMatch = style.match(/grid-column:\s*(\d+)/);
+                    if (gridColumnMatch) {
+                        fretNumber = parseInt(gridColumnMatch[1]) - 2;
+                    }
+                }
+                
+                if (fretNumber !== null) {
                     if (fretNumber === 0) {
                         // Open strings - only show if position naturally includes them
                         if (showOpenStrings) {
@@ -5130,7 +5188,7 @@
                         cell.style.display = '';
                         cell.classList.remove('position-target', 'context-fret');
                     }
-                }
+                } // Close the if (fretNumber !== null) block
             });
             
             // Update fret markers with same logic
@@ -5191,6 +5249,258 @@
             }, 150); // Slightly longer delay to ensure DOM is updated
         }
 
+        // Arpeggio line functions
+        function drawArpeggioLines() {
+            console.log('drawArpeggioLines called, isPositionZoomed:', isPositionZoomed);
+            
+            // Only draw arpeggio lines in position mode and if enabled
+            if (!isPositionZoomed || !arpeggioLinesEnabled) {
+                console.log('Not drawing arpeggio lines - position mode:', isPositionZoomed, 'enabled:', arpeggioLinesEnabled);
+                return;
+            }
+            
+            // Clear existing arpeggio lines
+            clearArpeggioLines();
+            
+            // Get chord notes to connect
+            let chordNotes = [];
+            
+            // Check if we have a selected preset chord
+            if (selectedChord && selectedChord.notes) {
+                chordNotes = selectedChord.notes;
+                console.log('Using preset chord notes:', chordNotes);
+            }
+            // Check if we have custom chord notes
+            else if (customChordNotes && customChordNotes.length > 0) {
+                chordNotes = customChordNotes;
+                console.log('Using custom chord notes:', chordNotes);
+            }
+            
+            if (chordNotes.length < 2) {
+                console.log('Not enough chord notes:', chordNotes.length);
+                return; // Need at least 2 notes to draw lines
+            }
+            
+            // Get all note positions on the fretboard that match chord notes
+            const notePositions = getChordNotePositions(chordNotes);
+            console.log('Found note positions:', notePositions.length);
+            
+            if (notePositions.length < 2) {
+                console.log('Not enough visible note positions:', notePositions.length);
+                return;
+            }
+            
+            // Sort positions from low string to high string (6th to 1st)
+            const sortedPositions = sortNotePositionsByString(notePositions);
+            console.log('Sorted positions:', sortedPositions);
+            
+            // Create arpeggio lines connecting the positions
+            createArpeggioSVG(sortedPositions);
+        }
+        
+        function getChordNotePositions(chordNotes) {
+            const positions = [];
+            const fretboardGrid = document.querySelector('.fretboard-grid');
+            if (!fretboardGrid) return positions;
+            
+            // Get current position range
+            const currentPositionRange = currentPosition ? POSITIONS[currentPosition].frets : null;
+            console.log('Current position range:', currentPositionRange);
+            
+            // Get all note dots that are currently visible
+            const noteDots = fretboardGrid.querySelectorAll('.note-dot');
+            console.log('Total note dots found:', noteDots.length);
+            
+            noteDots.forEach((dot, index) => {
+                const noteName = dot.textContent.trim();
+                
+                // Check if this note is in our chord
+                if (chordNotes.includes(noteName)) {
+                    const cell = dot.closest('.fret-cell');
+                    if (!cell) return;
+                    
+                    // Extract position information from the cell
+                    const style = cell.getAttribute('style');
+                    const gridAreaMatch = style.match(/grid-area:\s*(\d+)\s*\/\s*(\d+)/);
+                    
+                    if (gridAreaMatch) {
+                        const stringIndex = parseInt(gridAreaMatch[1]) - 1;
+                        const fretNumber = parseInt(gridAreaMatch[2]) - 2; // Adjust for string labels
+                        
+                        // Only include notes that are in the current position range
+                        if (currentPositionRange && !currentPositionRange.includes(fretNumber)) {
+                            console.log(`Skipping ${noteName} at fret ${fretNumber} - not in position range`);
+                            return;
+                        }
+                        
+                        // Only include notes that are actually visible (not too faded)
+                        const opacity = parseFloat(cell.style.opacity || '1');
+                        if (opacity < 0.5) {
+                            console.log(`Skipping ${noteName} at fret ${fretNumber} - too faded (opacity: ${opacity})`);
+                            return;
+                        }
+                        
+                        console.log(`Including ${noteName} at string=${stringIndex}, fret=${fretNumber}`);
+                        
+                        // Calculate pitch (for sorting)
+                        const pitch = calculateNotePitch(noteName, stringIndex, fretNumber);
+                        
+                        positions.push({
+                            element: dot,
+                            cell: cell,
+                            stringIndex: stringIndex,
+                            fretNumber: fretNumber,
+                            noteName: noteName,
+                            pitch: pitch,
+                            x: cell.offsetLeft + cell.offsetWidth / 2,
+                            y: cell.offsetTop + cell.offsetHeight / 2
+                        });
+                    }
+                }
+            });
+            
+            console.log('Final positions array:', positions);
+            return positions;
+        }
+        
+        function calculateNotePitch(noteName, stringIndex, fretNumber) {
+            // Get the instrument's tuning
+            const instrument = instruments[selectedInstrument];
+            const stringOrder = [...Object.values(currentTuning)];
+            
+            // Get the open string note for this string
+            const openStringNote = stringOrder[stringIndex];
+            if (!openStringNote) return 0;
+            
+            // Calculate the absolute semitone value from C0
+            const openStringSemitone = noteToSemitone(openStringNote);
+            
+            // We need to add the appropriate octave offset based on standard guitar tuning
+            // For guitar: String 0 (6th string) = lowest, String 5 (1st string) = highest
+            let octaveOffset = 0;
+            if (selectedInstrument === 'guitar') {
+                // Standard guitar tuning octaves (string 0 = 6th string = lowest)
+                const guitarOctaves = [2, 2, 3, 3, 3, 4]; // E2, A2, D3, G3, B3, E4
+                octaveOffset = (guitarOctaves[stringIndex] || 3) * 12;
+            } else if (selectedInstrument === 'bass') {
+                // Standard bass tuning octaves  
+                const bassOctaves = [1, 1, 2, 2]; // E1, A1, D2, G2
+                octaveOffset = (bassOctaves[stringIndex] || 2) * 12;
+            } else {
+                // Default octaves for other instruments
+                octaveOffset = (3 + stringIndex) * 12; // Progressive octaves
+            }
+            
+            // Calculate final pitch: base semitone + octave + fret
+            const finalPitch = (openStringSemitone % 12) + octaveOffset + fretNumber;
+            
+            console.log(`Pitch calc: ${noteName} on string ${stringIndex} (${openStringNote}) fret ${fretNumber} = semitone ${finalPitch}`);
+            
+            return finalPitch;
+        }
+        
+        function sortNotePositionsByString(positions) {
+            // Sort by string index in reverse order (highest index first = 6th string first)
+            // Due to stringOrder.reverse(), stringIndex 5 = 6th string (bottom), stringIndex 0 = 1st string (top)
+            // We want arpeggio to go from 6th string to 1st string (bottom to top visually)
+            return positions.sort((a, b) => {
+                // Primary sort: by string index in reverse order (higher index = lower string = earlier in arpeggio)
+                if (a.stringIndex !== b.stringIndex) {
+                    return b.stringIndex - a.stringIndex;
+                }
+                // Secondary sort: by fret position if on same string
+                return a.fretNumber - b.fretNumber;
+            });
+        }
+        
+        function createArpeggioSVG(sortedPositions) {
+            console.log('createArpeggioSVG called with positions:', sortedPositions);
+            const fretboardGrid = document.querySelector('.fretboard-grid');
+            if (!fretboardGrid) {
+                console.log('No fretboard grid found');
+                return;
+            }
+            
+            // Remove any existing arpeggio container
+            clearArpeggioLines();
+            
+            // Create SVG container
+            const svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svgContainer.classList.add('arpeggio-container');
+            svgContainer.setAttribute('viewBox', `0 0 ${fretboardGrid.offsetWidth} ${fretboardGrid.offsetHeight}`);
+            svgContainer.style.width = '100%';
+            svgContainer.style.height = '100%';
+            console.log('Created SVG container:', svgContainer);
+            
+            // Create path element
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.classList.add('arpeggio-line');
+            
+            // Build the path data with straight lines
+            let pathData = '';
+            
+            sortedPositions.forEach((position, index) => {
+                const x = position.x;
+                const y = position.y;
+                console.log(`Position ${index}: x=${x}, y=${y}`);
+                
+                if (index === 0) {
+                    pathData += `M ${x} ${y}`;
+                } else {
+                    // Create straight lines to the next point
+                    pathData += ` L ${x} ${y}`;
+                }
+            });
+            
+            console.log('Path data:', pathData);
+            path.setAttribute('d', pathData);
+            
+            // Ensure the line is black
+            path.style.stroke = '#000000';
+            path.style.strokeWidth = '3';
+            path.style.fill = 'none';
+            
+            svgContainer.appendChild(path);
+            
+            // Add the SVG to the fretboard
+            fretboardGrid.appendChild(svgContainer);
+            console.log('Added SVG to fretboard');
+            
+            // Add subtle animation
+            const pathLength = path.getTotalLength();
+            path.style.strokeDasharray = pathLength;
+            path.style.strokeDashoffset = pathLength;
+            path.style.animation = 'drawArpeggio 0.8s ease-in-out forwards';
+            console.log('Applied animation, path length:', pathLength);
+        }
+        
+        function clearArpeggioLines() {
+            const fretboardGrid = document.querySelector('.fretboard-grid');
+            if (!fretboardGrid) return;
+            
+            const existingArpeggios = fretboardGrid.querySelectorAll('.arpeggio-container');
+            existingArpeggios.forEach(arpeggio => arpeggio.remove());
+        }
+
+        function toggleArpeggioLines() {
+            arpeggioLinesEnabled = !arpeggioLinesEnabled;
+            const toggleBtn = document.getElementById('arpeggioToggleBtn');
+            
+            if (arpeggioLinesEnabled) {
+                toggleBtn.textContent = 'Hide Arpeggio';
+                // Redraw arpeggio lines if in position mode
+                if (isPositionZoomed) {
+                    drawArpeggioLines();
+                }
+            } else {
+                toggleBtn.textContent = 'Show Arpeggio';
+                // Clear existing arpeggio lines
+                clearArpeggioLines();
+            }
+            
+            console.log('Arpeggio lines enabled:', arpeggioLinesEnabled);
+        }
+
         // Function to actively clean up any accidental green styling
         function cleanupGreenStyling() {
             document.querySelectorAll('*').forEach(element => {
@@ -5210,6 +5520,9 @@
             
             const zoomContainer = document.getElementById('fretboardZoomContainer');
             const fretboardGrid = document.querySelector('.fretboard-grid');
+            
+            // Clear arpeggio lines when exiting position mode
+            clearArpeggioLines();
             
             // Remove zoom classes
             if (zoomContainer) zoomContainer.classList.remove('zoomed');
