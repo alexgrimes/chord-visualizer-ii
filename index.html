@@ -5352,8 +5352,8 @@
                             fretNumber: fretNumber,
                             noteName: noteName,
                             pitch: pitch,
-                            x: cell.offsetLeft + cell.offsetWidth / 2,
-                            y: cell.offsetTop + cell.offsetHeight / 2
+                            x: null, // Will be calculated later relative to fretboard
+                            y: null  // Will be calculated later relative to fretboard
                         });
                     }
                 }
@@ -5424,13 +5424,23 @@
             // Remove any existing arpeggio container
             clearArpeggioLines();
             
+            // Get fretboard bounds for relative positioning
+            const fretboardRect = fretboardGrid.getBoundingClientRect();
+            
+            // Calculate positions relative to fretboard
+            sortedPositions.forEach(position => {
+                const cellRect = position.cell.getBoundingClientRect();
+                position.x = cellRect.left - fretboardRect.left + cellRect.width / 2;
+                position.y = cellRect.top - fretboardRect.top + cellRect.height / 2;
+            });
+            
             // Create SVG container
             const svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svgContainer.classList.add('arpeggio-container');
-            svgContainer.setAttribute('viewBox', `0 0 ${fretboardGrid.offsetWidth} ${fretboardGrid.offsetHeight}`);
+            svgContainer.setAttribute('viewBox', `0 0 ${fretboardRect.width} ${fretboardRect.height}`);
             svgContainer.style.width = '100%';
             svgContainer.style.height = '100%';
-            console.log('Created SVG container:', svgContainer);
+            console.log('Created SVG container with viewBox:', `0 0 ${fretboardRect.width} ${fretboardRect.height}`);
             
             // Create path element
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
