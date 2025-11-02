@@ -19,6 +19,12 @@
       font-display: swap;
     }
     </style>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -1303,6 +1309,544 @@
             position: static !important;
         }
 
+        /* Header Bar Styles */
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            margin: -20px -20px 20px -20px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .app-header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-header .user-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .progressions-dropdown {
+            position: relative;
+        }
+
+        .dropdown-button {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .dropdown-button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .category-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .user-role-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .user-role-badge.teacher {
+            background: #ffd700;
+            color: #333;
+        }
+
+        .user-role-badge.student {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .modal-footer a {
+            color: #667eea;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .modal-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .save-progression-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .btn-save-progression {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-save-progression:hover {
+            background: #45a049;
+        }
+
+        .btn-share-progression {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-share-progression:hover {
+            background: #0b7dda;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Browse Library Styles */
+        .browse-modal {
+            max-width: 900px;
+            width: 95%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .browse-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-close:hover {
+            color: #333;
+        }
+
+        .browse-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-top: 20px;
+        }
+
+        .collection-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            background: #f5f5f5;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: #e8e8e8;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .packs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .pack-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pack-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .pack-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .pack-card.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+        }
+
+        .pack-icon {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .pack-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .pack-description {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .pack-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .difficulty-badge, .time-badge, .progression-count {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .difficulty-badge.beginner { background: #c8e6c9; color: #2e7d32; }
+        .difficulty-badge.intermediate { background: #fff9c4; color: #f57f17; }
+        .difficulty-badge.advanced { background: #ffcdd2; color: #c62828; }
+
+        .pack-detail {
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .btn-back {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .btn-back:hover {
+            background: #e8e8e8;
+        }
+
+        .pack-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .pack-header h3 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+
+        .pack-header p {
+            margin: 0 0 15px 0;
+            opacity: 0.9;
+        }
+
+        .progressions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .progression-item {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progression-item:hover {
+            background: #f0f0f0;
+            border-color: #667eea;
+        }
+
+        .progression-info h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .progression-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .btn-load-progression {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-load-progression:hover {
+            background: #45a049;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .btn-browse-library {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-browse-library:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+        }
+
         /* Ensure position buttons stay in their container */
         .position-btn {
             position: relative !important;
@@ -1429,7 +1973,138 @@
     </style>
 </head>
 <body>
+    <!-- Authentication Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <h2 id="authModalTitle">Welcome to Chord Visualizer II</h2>
+            <div id="authModalContent">
+                <div class="form-group">
+                    <label for="authEmail">Email</label>
+                    <input type="email" id="authEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group" id="roleSelectionGroup" style="display: none;">
+                    <label for="userRole">I am a:</label>
+                    <select id="userRole">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                    </select>
+                </div>
+                <div class="form-group" id="teacherCodeGroup" style="display: none;">
+                    <label for="teacherCode">Teacher Code</label>
+                    <input type="text" id="teacherCode" placeholder="Enter teacher code">
+                    <small style="color: #666;">Contact your administrator for the teacher code</small>
+                </div>
+                <button class="btn-primary" id="authSubmitBtn">Sign In</button>
+                <div class="modal-footer">
+                    <span id="authSwitchText">Don't have an account? <a id="authSwitchLink">Create one</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Save Progression Modal -->
+    <div class="modal-overlay" id="saveModal">
+        <div class="modal">
+            <h2>Save Progression</h2>
+            <div class="form-group">
+                <label for="progressionName">Progression Name</label>
+                <input type="text" id="progressionName" placeholder="e.g., Beatles Progressions">
+            </div>
+            <div class="form-group">
+                <label for="progressionCategories">Categories (comma-separated)</label>
+                <input type="text" id="progressionCategories" placeholder="e.g., Rock, Beatles, I-IV-V">
+            </div>
+            <button class="btn-primary" id="saveProgressionBtn">Save</button>
+            <button class="btn-secondary" onclick="closeSaveModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Share Progression Modal -->
+    <div class="modal-overlay" id="shareModal">
+        <div class="modal">
+            <h2>Share Progression</h2>
+            <div class="form-group">
+                <label>Share with Students (enter email addresses)</label>
+                <input type="text" id="shareEmails" placeholder="student1@email.com, student2@email.com">
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="makePublic"> Make Public
+                </label>
+            </div>
+            <div id="publicLinkContainer" style="display: none; margin-top: 10px;">
+                <label>Public Link:</label>
+                <input type="text" id="publicLink" readonly style="margin-top: 5px;">
+                <button class="btn-secondary" onclick="copyPublicLink()">Copy Link</button>
+            </div>
+            <button class="btn-primary" id="shareProgressionBtn">Share</button>
+            <button class="btn-secondary" onclick="closeShareModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Browse Library Modal -->
+    <div class="modal-overlay" id="browseLibraryModal">
+        <div class="modal browse-modal">
+            <div class="browse-header">
+                <h2>📚 Browse Progression Library</h2>
+                <button class="btn-close" onclick="closeBrowseLibrary()">✕</button>
+            </div>
+            
+            <div class="browse-content">
+                <!-- Collection Tabs -->
+                <div class="collection-tabs" id="collectionTabs">
+                    <button class="tab-btn active" data-collection="all">All Collections</button>
+                    <button class="tab-btn" data-collection="foundational">Foundational Forms</button>
+                </div>
+                
+                <!-- Packs Grid -->
+                <div class="packs-grid" id="packsGrid">
+                    <div class="loading">Loading packs...</div>
+                </div>
+                
+                <!-- Pack Detail View -->
+                <div class="pack-detail" id="packDetail" style="display: none;">
+                    <button class="btn-back" onclick="showPacksGrid()">← Back to Packs</button>
+                    <div class="pack-header">
+                        <h3 id="packTitle"></h3>
+                        <p id="packDescription"></p>
+                        <div class="pack-meta">
+                            <span class="difficulty-badge" id="packDifficulty"></span>
+                            <span class="time-badge" id="packTime"></span>
+                        </div>
+                    </div>
+                    <div class="progressions-list" id="progressionsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
+        <!-- Header Bar -->
+        <div class="app-header" id="appHeader" style="display: none;">
+            <div class="logo">
+                🎵 Chord Visualizer II
+            </div>
+            <div class="user-controls">
+                <button class="btn-browse-library" onclick="showBrowseLibrary()">📚 Browse Library</button>
+                <div class="progressions-dropdown">
+                    <button class="dropdown-button" onclick="toggleProgressionsDropdown()">
+                        My Progressions ▼
+                    </button>
+                    <div class="dropdown-content" id="progressionsDropdown">
+                        <div class="dropdown-item" style="justify-content: center; color: #999;">
+                            No saved progressions yet
+                        </div>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <span id="userName">Guest</span>
+                    <span class="user-role-badge" id="userRoleBadge">Student</span>
+                </div>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
         <h1>Chord Visualizer II</h1>
         
         <!-- Circle of Fifths -->
@@ -1534,6 +2209,12 @@
                             Loop
                         </label>
                     </div>
+
+                    <!-- Save/Share Controls (shown when logged in) -->
+                    <div class="save-progression-controls hidden" id="saveShareControls">
+                        <button class="btn-save-progression" onclick="showSaveModal()">💾 Save Progression</button>
+                        <button class="btn-share-progression" onclick="showShareModal()">📤 Share</button>
+                    </div>
                     
                     <!-- Cadence Controls -->
                     <div class="cadence-controls" id="cadenceControls" style="display: none;">
@@ -1611,6 +2292,1132 @@
     </div>
 
     <script>
+        // ===== FIREBASE CONFIGURATION AND AUTHENTICATION =====
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCeSRoepr9w5isE_UatuR7SAzMUBnbWyCY",
+            authDomain: "chord-visualizer-ii.firebaseapp.com",
+            projectId: "chord-visualizer-ii",
+            storageBucket: "chord-visualizer-ii.firebasestorage.app",
+            messagingSenderId: "780005067787",
+            appId: "1:780005067787:web:b1fa14ba7916ce582c0b0e",
+            measurementId: "G-7SWM0DJNE4"
+        };
+
+        // Initialize Firebase
+        let firebaseApp, auth, db, analytics;
+        let currentUser = null;
+        let isAuthMode = 'signin'; // 'signin' or 'signup'
+
+        try {
+            firebaseApp = firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+            analytics = firebase.analytics();
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Firebase initialization error:', error);
+        }
+
+        // Teacher code (change this to a secure code)
+        const TEACHER_CODE = "MUSIC2025";
+
+        // Authentication State Observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                currentUser = user;
+                loadUserProfile(user.uid);
+            } else {
+                currentUser = null;
+                showAuthModal();
+            }
+        });
+
+        // Show/Hide Authentication Modal
+        function showAuthModal() {
+            document.getElementById('authModal').classList.add('show');
+            document.getElementById('appHeader').style.display = 'none';
+            document.getElementById('saveShareControls').classList.add('hidden');
+        }
+
+        function hideAuthModal() {
+            document.getElementById('authModal').classList.remove('show');
+        }
+
+        // Switch between Sign In and Sign Up
+        document.getElementById('authSwitchLink').addEventListener('click', () => {
+            isAuthMode = isAuthMode === 'signin' ? 'signup' : 'signin';
+            updateAuthModal();
+        });
+
+        function updateAuthModal() {
+            const title = document.getElementById('authModalTitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const switchText = document.getElementById('authSwitchText');
+            const switchLink = document.getElementById('authSwitchLink');
+            const roleGroup = document.getElementById('roleSelectionGroup');
+            
+            if (isAuthMode === 'signup') {
+                title.textContent = 'Create Account';
+                submitBtn.textContent = 'Sign Up';
+                switchText.innerHTML = 'Already have an account? ';
+                switchLink.textContent = 'Sign in';
+                roleGroup.style.display = 'block';
+            } else {
+                title.textContent = 'Welcome Back';
+                submitBtn.textContent = 'Sign In';
+                switchText.innerHTML = "Don't have an account? ";
+                switchLink.textContent = 'Create one';
+                roleGroup.style.display = 'none';
+            }
+        }
+
+        // Show teacher code input when teacher is selected
+        document.getElementById('userRole').addEventListener('change', (e) => {
+            const teacherCodeGroup = document.getElementById('teacherCodeGroup');
+            teacherCodeGroup.style.display = e.target.value === 'teacher' ? 'block' : 'none';
+        });
+
+        // Handle Authentication Submit
+        document.getElementById('authSubmitBtn').addEventListener('click', async () => {
+            const email = document.getElementById('authEmail').value.trim();
+            
+            if (!email) {
+                alert('Please enter your email');
+                return;
+            }
+
+            try {
+                if (isAuthMode === 'signup') {
+                    // Create new account
+                    const role = document.getElementById('userRole').value;
+                    
+                    // Verify teacher code if teacher role selected
+                    if (role === 'teacher') {
+                        const teacherCode = document.getElementById('teacherCode').value.trim();
+                        if (teacherCode !== TEACHER_CODE) {
+                            alert('Invalid teacher code. Please contact your administrator.');
+                            return;
+                        }
+                    }
+                    
+                    // Create user with email link (passwordless)
+                    const actionCodeSettings = {
+                        url: window.location.href,
+                        handleCodeInApp: true,
+                    };
+                    
+                    await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+                    window.localStorage.setItem('emailForSignIn', email);
+                    window.localStorage.setItem('pendingRole', role);
+                    
+                    alert('Sign-in link sent! Please check your email to complete registration.');
+                } else {
+                    // Sign in existing user
+                    const actionCodeSettings = {
+                        url: window.location.href,
+                        handleCodeInApp: true,
+                    };
+                    
+                    await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+                    window.localStorage.setItem('emailForSignIn', email);
+                    
+                    alert('Sign-in link sent! Please check your email.');
+                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Handle email link sign-in
+        if (auth.isSignInWithEmailLink(window.location.href)) {
+            let email = window.localStorage.getItem('emailForSignIn');
+            if (!email) {
+                email = window.prompt('Please provide your email for confirmation');
+            }
+            
+            if (email) {
+                auth.signInWithEmailLink(email, window.location.href)
+                    .then(async (result) => {
+                        window.localStorage.removeItem('emailForSignIn');
+                        const pendingRole = window.localStorage.getItem('pendingRole');
+                        
+                        // Create user profile if new user
+                        const userDoc = await db.collection('users').doc(result.user.uid).get();
+                        if (!userDoc.exists) {
+                            await db.collection('users').doc(result.user.uid).set({
+                                email: email,
+                                username: email.split('@')[0],
+                                role: pendingRole || 'student',
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        }
+                        
+                        window.localStorage.removeItem('pendingRole');
+                        
+                        // Clear the URL parameters and reload to clean state
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        window.location.reload();
+                    })
+                    .catch((error) => {
+                        console.error('Sign-in error:', error);
+                        alert('Error signing in: ' + error.message + '. Please try the link again.');
+                    });
+            }
+        }
+
+        // Load User Profile
+        async function loadUserProfile(userId) {
+            try {
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    document.getElementById('userName').textContent = userData.username || userData.email.split('@')[0];
+                    document.getElementById('userRoleBadge').textContent = userData.role || 'student';
+                    document.getElementById('userRoleBadge').className = `user-role-badge ${userData.role || 'student'}`;
+                    
+                    // Show header and save/share controls
+                    document.getElementById('appHeader').style.display = 'flex';
+                    document.getElementById('saveShareControls').classList.remove('hidden');
+                    hideAuthModal();
+                    
+                    // Load user's progressions
+                    loadUserProgressions(userId);
+                    
+                    // Track login analytics
+                    analytics.logEvent('login', { method: 'email' });
+                }
+            } catch (error) {
+                console.error('Error loading user profile:', error);
+            }
+        }
+
+        // Logout
+        async function logout() {
+            try {
+                await auth.signOut();
+                document.getElementById('appHeader').style.display = 'none';
+                document.getElementById('saveShareControls').classList.add('hidden');
+                showAuthModal();
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Error logging out: ' + error.message);
+            }
+        }
+
+        // ===== PROGRESSION SAVE/LOAD/SHARE FUNCTIONS =====
+        
+        // Show Save Modal
+        function showSaveModal() {
+            if (!currentUser) {
+                alert('Please sign in to save progressions');
+                return;
+            }
+            
+            if (progressionMeasures.length === 0) {
+                alert('Create a progression first before saving');
+                return;
+            }
+            
+            document.getElementById('saveModal').classList.add('show');
+        }
+
+        function closeSaveModal() {
+            document.getElementById('saveModal').classList.remove('show');
+            document.getElementById('progressionName').value = '';
+            document.getElementById('progressionCategories').value = '';
+        }
+
+        // Save Progression
+        document.getElementById('saveProgressionBtn').addEventListener('click', async () => {
+            const name = document.getElementById('progressionName').value.trim();
+            const categoriesInput = document.getElementById('progressionCategories').value.trim();
+            
+            if (!name) {
+                alert('Please enter a progression name');
+                return;
+            }
+            
+            console.log('Attempting to save progression...');
+            console.log('Current user:', currentUser);
+            console.log('Progression measures:', progressionMeasures);
+            console.log('Selected key:', selectedKey);
+            console.log('Selected scale:', selectedScale);
+            
+            const categories = categoriesInput ? categoriesInput.split(',').map(c => c.trim()) : [];
+            
+            try {
+                const progressionData = {
+                    name: name,
+                    key: selectedKey,
+                    scale: selectedScale,
+                    timeSignature: '4/4', // Can be made dynamic later
+                    tempo: parseInt(document.getElementById('tempo').value) || 120,
+                    measures: progressionMeasures.map(chord => ({
+                        symbol: chord ? chord.symbol : null,
+                        notes: chord ? chord.notes : null
+                    })),
+                    ownerId: currentUser.uid,
+                    sharedWith: [],
+                    isPublic: false,
+                    publicLink: null,
+                    categories: categories,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastModified: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                console.log('Progression data to save:', progressionData);
+                
+                const docRef = await db.collection('progressions').add(progressionData);
+                console.log('Progression saved with ID:', docRef.id);
+                
+                alert('Progression saved successfully!');
+                closeSaveModal();
+                await loadUserProgressions(currentUser.uid);
+                
+                // Track save analytics
+                analytics.logEvent('save_progression', { 
+                    progression_name: name,
+                    category_count: categories.length 
+                });
+            } catch (error) {
+                console.error('Error saving progression:', error);
+                alert('Error saving progression: ' + error.message);
+            }
+        });
+
+        // Load User Progressions
+        async function loadUserProgressions(userId) {
+            console.log('loadUserProgressions called for userId:', userId);
+            try {
+                // Load own progressions
+                const ownProgressions = await db.collection('progressions')
+                    .where('ownerId', '==', userId)
+                    .orderBy('lastModified', 'desc')
+                    .get();
+                
+                console.log('Own progressions count:', ownProgressions.size);
+                
+                // Load shared progressions
+                const sharedProgressions = await db.collection('progressions')
+                    .where('sharedWith', 'array-contains', userId)
+                    .orderBy('lastModified', 'desc')
+                    .get();
+                
+                console.log('Shared progressions count:', sharedProgressions.size);
+                
+                const dropdown = document.getElementById('progressionsDropdown');
+                dropdown.innerHTML = '';
+                
+                let hasProgressions = false;
+                
+                if (!ownProgressions.empty) {
+                    hasProgressions = true;
+                    dropdown.innerHTML += '<div style="padding: 8px 16px; font-weight: bold; background: #f5f5f5;">My Progressions</div>';
+                    ownProgressions.forEach(doc => {
+                        const data = doc.data();
+                        console.log('Adding progression to dropdown:', doc.id, data.name);
+                        dropdown.innerHTML += createProgressionItem(doc.id, data, true);
+                    });
+                }
+                
+                if (!sharedProgressions.empty) {
+                    hasProgressions = true;
+                    dropdown.innerHTML += '<div style="padding: 8px 16px; font-weight: bold; background: #f5f5f5; border-top: 1px solid #ddd;">Shared with Me</div>';
+                    sharedProgressions.forEach(doc => {
+                        const data = doc.data();
+                        dropdown.innerHTML += createProgressionItem(doc.id, data, false);
+                    });
+                }
+                
+                if (!hasProgressions) {
+                    dropdown.innerHTML = '<div class="dropdown-item" style="justify-content: center; color: #999;">No saved progressions yet</div>';
+                }
+            } catch (error) {
+                console.error('Error loading progressions:', error);
+            }
+        }
+
+        function createProgressionItem(id, data, isOwner) {
+            const categories = data.categories && data.categories.length > 0 
+                ? data.categories.map(c => `<span class="category-badge">${c}</span>`).join(' ')
+                : '';
+            
+            return `
+                <div class="dropdown-item" onclick="loadProgression('${id}')">
+                    <div>
+                        <div style="font-weight: 500;">${data.name}</div>
+                        <div style="font-size: 11px; color: #999;">${data.key} ${data.scale}</div>
+                        ${categories}
+                    </div>
+                    ${isOwner ? '<span style="font-size: 11px; color: #999;">👤</span>' : '<span style="font-size: 11px; color: #999;">📤</span>'}
+                </div>
+            `;
+        }
+
+        // Load Progression
+        async function loadProgression(progressionId) {
+            console.log('loadProgression called with ID:', progressionId);
+            try {
+                const doc = await db.collection('progressions').doc(progressionId).get();
+                console.log('Document exists:', doc.exists);
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    console.log('Loaded progression data:', data);
+                    
+                    // Set key and scale
+                    selectedKey = data.key;
+                    selectedScale = data.scale;
+                    console.log('Set key:', selectedKey, 'scale:', selectedScale);
+                    updateKeyInfo();
+                    
+                    // Set tempo
+                    document.getElementById('tempo').value = data.tempo || 120;
+                    console.log('Set tempo:', data.tempo);
+                    
+                    // Load measures
+                    progressionMeasures = data.measures.map(m => 
+                        m.symbol ? { symbol: m.symbol, notes: m.notes } : null
+                    );
+                    console.log('Loaded progressionMeasures:', progressionMeasures);
+                    
+                    // Activate progression mode
+                    progressionActive = true;
+                    selectedMeasureIndex = 0;
+                    
+                    // Show staff container
+                    const staffContainer = document.getElementById('staffContainer');
+                    staffContainer.classList.add('active');
+                    
+                    // Generate the staff UI if it doesn't exist
+                    console.log('Generating staff measures...');
+                    generateStaffMeasures(progressionMeasures.length, data.timeSignature || '4/4');
+                    
+                    console.log('Updating progression chart...');
+                    updateProgressionChart();
+                    
+                    console.log('Closing dropdown...');
+                    toggleProgressionsDropdown(); // Close dropdown
+                    
+                    // Update the circle of fifths to highlight the selected key
+                    selectKey(selectedKey);
+                    
+                    // Track load analytics
+                    analytics.logEvent('load_progression', { progression_id: progressionId });
+                } else {
+                    console.error('Progression document does not exist');
+                    alert('Progression not found');
+                }
+            } catch (error) {
+                console.error('Error loading progression:', error);
+                alert('Error loading progression: ' + error.message);
+            }
+        }
+
+        // Toggle Progressions Dropdown
+        function toggleProgressionsDropdown() {
+            const dropdown = document.getElementById('progressionsDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!e.target.matches('.dropdown-button') && !e.target.closest('.progressions-dropdown')) {
+                document.getElementById('progressionsDropdown').classList.remove('show');
+            }
+        });
+
+        // Show Share Modal
+        function showShareModal() {
+            if (!currentUser) {
+                alert('Please sign in to share progressions');
+                return;
+            }
+            
+            if (progressionMeasures.length === 0) {
+                alert('Create a progression first before sharing');
+                return;
+            }
+            
+            document.getElementById('shareModal').classList.add('show');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('show');
+            document.getElementById('shareEmails').value = '';
+            document.getElementById('makePublic').checked = false;
+            document.getElementById('publicLinkContainer').style.display = 'none';
+        }
+
+        // Handle Make Public checkbox
+        document.getElementById('makePublic').addEventListener('change', (e) => {
+            document.getElementById('publicLinkContainer').style.display = e.target.checked ? 'block' : 'none';
+        });
+
+        // Share Progression
+        document.getElementById('shareProgressionBtn').addEventListener('click', async () => {
+            // First save the progression if not already saved
+            const name = prompt('Enter a name for this progression:');
+            if (!name) return;
+            
+            try {
+                const isPublic = document.getElementById('makePublic').checked;
+                const publicLink = isPublic ? generatePublicLink() : null;
+                
+                const progressionData = {
+                    name: name,
+                    key: selectedKey,
+                    scale: selectedScale,
+                    timeSignature: '4/4',
+                    tempo: parseInt(document.getElementById('tempo').value) || 120,
+                    measures: progressionMeasures.map(chord => ({
+                        symbol: chord ? chord.symbol : null,
+                        notes: chord ? chord.notes : null
+                    })),
+                    ownerId: currentUser.uid,
+                    sharedWith: [],
+                    isPublic: isPublic,
+                    publicLink: publicLink,
+                    categories: [],
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastModified: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                // Save progression
+                const docRef = await db.collection('progressions').add(progressionData);
+                
+                // Handle email sharing
+                const emailsInput = document.getElementById('shareEmails').value.trim();
+                if (emailsInput) {
+                    const emails = emailsInput.split(',').map(e => e.trim());
+                    
+                    // Find users by email and add to sharedWith array
+                    const usersSnapshot = await db.collection('users').where('email', 'in', emails).get();
+                    const userIds = usersSnapshot.docs.map(doc => doc.id);
+                    
+                    if (userIds.length > 0) {
+                        await docRef.update({
+                            sharedWith: firebase.firestore.FieldValue.arrayUnion(...userIds)
+                        });
+                    }
+                }
+                
+                // Show public link if applicable
+                if (isPublic) {
+                    const fullLink = `${window.location.origin}${window.location.pathname}?shared=${publicLink}`;
+                    document.getElementById('publicLink').value = fullLink;
+                }
+                
+                alert('Progression shared successfully!');
+                loadUserProgressions(currentUser.uid);
+                
+                // Track share analytics
+                analytics.logEvent('share_progression', { 
+                    is_public: isPublic,
+                    recipient_count: emailsInput ? emailsInput.split(',').length : 0
+                });
+            } catch (error) {
+                console.error('Error sharing progression:', error);
+                alert('Error sharing progression: ' + error.message);
+            }
+        });
+
+        function generatePublicLink() {
+            return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        }
+
+        function copyPublicLink() {
+            const linkInput = document.getElementById('publicLink');
+            linkInput.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
+        }
+
+        // Check for shared progression in URL
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sharedLink = urlParams.get('shared');
+            
+            if (sharedLink) {
+                loadSharedProgression(sharedLink);
+            }
+        });
+
+        async function loadSharedProgression(publicLink) {
+            try {
+                const snapshot = await db.collection('progressions')
+                    .where('publicLink', '==', publicLink)
+                    .where('isPublic', '==', true)
+                    .limit(1)
+                    .get();
+                
+                if (!snapshot.empty) {
+                    const data = snapshot.docs[0].data();
+                    
+                    // Set key and scale
+                    selectedKey = data.key;
+                    selectedScale = data.scale;
+                    updateKeyInfo();
+                    
+                    // Set tempo
+                    document.getElementById('tempo').value = data.tempo || 120;
+                    
+                    // Load measures
+                    progressionMeasures = data.measures.map(m => 
+                        m.symbol ? { symbol: m.symbol, notes: m.notes } : null
+                    );
+                    
+                    // Activate progression mode
+                    progressionActive = true;
+                    selectedMeasureIndex = 0;
+                    
+                    // Show staff container
+                    const staffContainer = document.getElementById('staffContainer');
+                    staffContainer.classList.add('active');
+                    
+                    // Generate the staff UI if it doesn't exist
+                    generateStaffMeasures(progressionMeasures.length, data.timeSignature || '4/4');
+                    
+                    updateProgressionChart();
+                    
+                    // Update the circle of fifths to highlight the selected key
+                    selectKey(selectedKey);
+                }
+            } catch (error) {
+                console.error('Error loading shared progression:', error);
+            }
+        }
+
+        // ===== BROWSE LIBRARY SYSTEM =====
+        
+        // Initialize library with sample data (run once)
+        async function initializeLibrary() {
+            try {
+                // Check if library is already initialized
+                const libCheck = await db.collection('collections').limit(1).get();
+                if (!libCheck.empty) {
+                    console.log('Library already initialized');
+                    return;
+                }
+                
+                console.log('Initializing library...');
+                
+                // Create Foundational Forms collection
+                const foundationalRef = await db.collection('collections').add({
+                    name: "Foundational Forms",
+                    description: "Essential progressions for learning music theory",
+                    order: 1,
+                    tier: "free",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Create Blues Essentials pack
+                const bluesPackRef = await db.collection('packs').add({
+                    collectionId: foundationalRef.id,
+                    name: "Blues Essentials",
+                    description: "Core blues progressions every musician should know",
+                    icon: "🎸",
+                    difficulty: "beginner",
+                    estimatedTime: "15 min",
+                    tier: "free",
+                    order: 1,
+                    progressionCount: 0,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Create Jazz Standards pack
+                const jazzPackRef = await db.collection('packs').add({
+                    collectionId: foundationalRef.id,
+                    name: "Jazz Standards",
+                    description: "Classic jazz progressions including ii-V-I and Rhythm Changes",
+                    icon: "🎺",
+                    difficulty: "intermediate",
+                    estimatedTime: "25 min",
+                    tier: "student",
+                    order: 2,
+                    progressionCount: 0,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Create Pop/Rock pack
+                const popPackRef = await db.collection('packs').add({
+                    collectionId: foundationalRef.id,
+                    name: "Pop/Rock Standards",
+                    description: "Popular progressions from I-V-vi-IV to I-IV-V",
+                    icon: "🎤",
+                    difficulty: "beginner",
+                    estimatedTime: "10 min",
+                    tier: "free",
+                    order: 3,
+                    progressionCount: 0,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Add sample progressions
+                await addSampleProgressions(bluesPackRef.id, 'blues');
+                await addSampleProgressions(jazzPackRef.id, 'jazz');
+                await addSampleProgressions(popPackRef.id, 'pop');
+                
+                console.log('Library initialized successfully!');
+                alert('Library initialized! Refresh the page to see the packs.');
+            } catch (error) {
+                console.error('Error initializing library:', error);
+                alert('Error initializing library: ' + error.message);
+            }
+        }
+        
+        async function addSampleProgressions(packId, type = 'blues') {
+            if (type === 'blues') {
+                // 12-Bar Blues in C
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "12-Bar Blues",
+                    key: "C",
+                    scale: "major",
+                    timeSignature: "4/4",
+                    tempo: 120,
+                    measures: [
+                        { symbol: 'C7', notes: ['C', 'E', 'G', 'Bb'] },
+                        { symbol: 'C7', notes: ['C', 'E', 'G', 'Bb'] },
+                        { symbol: 'C7', notes: ['C', 'E', 'G', 'Bb'] },
+                        { symbol: 'C7', notes: ['C', 'E', 'G', 'Bb'] },
+                        { symbol: 'F7', notes: ['F', 'A', 'C', 'Eb'] },
+                        { symbol: 'F7', notes: ['F', 'A', 'C', 'Eb'] },
+                        { symbol: 'C7', notes: ['C', 'E', 'G', 'Bb'] },
+                        { symbol: 'C7', notes: ['C', 'E', 'G', 'Bb'] },
+                        { symbol: 'G7', notes: ['G', 'B', 'D', 'F'] },
+                        { symbol: 'F7', notes: ['F', 'A', 'C', 'Eb'] },
+                        { symbol: 'C7', notes: ['C', 'E', 'G', 'Bb'] },
+                        { symbol: 'G7', notes: ['G', 'B', 'D', 'F'] }
+                    ],
+                    romanNumerals: "I7-I7-I7-I7 | IV7-IV7-I7-I7 | V7-IV7-I7-V7",
+                    description: "The most essential blues progression. Master this first!",
+                    learningObjectives: ["Understand 12-bar form", "Practice I-IV-V movement", "Learn dominant 7th chords"],
+                    tier: "free",
+                    order: 1,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Minor Blues
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "Minor Blues",
+                    key: "Am",
+                    scale: "minor",
+                    timeSignature: "4/4",
+                    tempo: 110,
+                    measures: [
+                        { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'] },
+                        { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'] },
+                        { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'] },
+                        { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'] },
+                        { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'] },
+                        { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'] },
+                        { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'] },
+                        { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'] },
+                        { symbol: 'E7', notes: ['E', 'G#', 'B', 'D'] },
+                        { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'] },
+                        { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'] },
+                        { symbol: 'E7', notes: ['E', 'G#', 'B', 'D'] }
+                    ],
+                    romanNumerals: "i7-i7-i7-i7 | iv7-iv7-i7-i7 | V7-iv7-i7-V7",
+                    description: "Blues with a darker, more emotional minor sound. Notice the major V7!",
+                    learningObjectives: ["Minor blues form", "Harmonic minor sound", "i-iv-V progression"],
+                    tier: "free",
+                    order: 2,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Update pack progression count
+                await db.collection('packs').doc(packId).update({
+                    progressionCount: firebase.firestore.FieldValue.increment(2)
+                });
+            } else if (type === 'jazz') {
+                // Rhythm Changes A section
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "Rhythm Changes (A Section)",
+                    key: "Bb",
+                    scale: "major",
+                    timeSignature: "4/4",
+                    tempo: 180,
+                    measures: [
+                        { symbol: 'Bbmaj7', notes: ['Bb', 'D', 'F', 'A'] },
+                        { symbol: 'G7', notes: ['G', 'B', 'D', 'F'] },
+                        { symbol: 'Cm7', notes: ['C', 'Eb', 'G', 'Bb'] },
+                        { symbol: 'F7', notes: ['F', 'A', 'C', 'Eb'] },
+                        { symbol: 'Bbmaj7', notes: ['Bb', 'D', 'F', 'A'] },
+                        { symbol: 'G7', notes: ['G', 'B', 'D', 'F'] },
+                        { symbol: 'Cm7', notes: ['C', 'Eb', 'G', 'Bb'] },
+                        { symbol: 'F7', notes: ['F', 'A', 'C', 'Eb'] }
+                    ],
+                    romanNumerals: "Imaj7-VI7-ii7-V7 | Imaj7-VI7-ii7-V7",
+                    description: "Based on 'I Got Rhythm'. The foundation of bebop! Notice the VI7 (secondary dominant).",
+                    learningObjectives: ["Rhythm changes form", "Secondary dominants", "Fast tempo jazz"],
+                    tier: "student",
+                    order: 1,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // ii-V-I
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "ii-V-I (The Jazz Cadence)",
+                    key: "C",
+                    scale: "major",
+                    timeSignature: "4/4",
+                    tempo: 140,
+                    measures: [
+                        { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'] },
+                        { symbol: 'G7', notes: ['G', 'B', 'D', 'F'] },
+                        { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'] },
+                        { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'] }
+                    ],
+                    romanNumerals: "ii7-V7-Imaj7-Imaj7",
+                    description: "The most important progression in jazz! Every jazz musician must know this.",
+                    learningObjectives: ["Master the ii-V-I", "Voice leading", "Jazz harmony fundamentals"],
+                    tier: "student",
+                    order: 2,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // I-vi-ii-V (Ice Cream Changes)
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "I-vi-ii-V (Ice Cream Changes)",
+                    key: "C",
+                    scale: "major",
+                    timeSignature: "4/4",
+                    tempo: 100,
+                    measures: [
+                        { symbol: 'Cmaj7', notes: ['C', 'E', 'G', 'B'] },
+                        { symbol: 'Am7', notes: ['A', 'C', 'E', 'G'] },
+                        { symbol: 'Dm7', notes: ['D', 'F', 'A', 'C'] },
+                        { symbol: 'G7', notes: ['G', 'B', 'D', 'F'] }
+                    ],
+                    romanNumerals: "Imaj7-vi7-ii7-V7",
+                    description: "Smooth descending bassline. Used in 'Heart and Soul', 'Blue Moon', many standards.",
+                    learningObjectives: ["Circle of fifths progression", "Smooth voice leading", "Standard jazz form"],
+                    tier: "student",
+                    order: 3,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                await db.collection('packs').doc(packId).update({
+                    progressionCount: firebase.firestore.FieldValue.increment(3)
+                });
+            } else if (type === 'pop') {
+                // I-V-vi-IV (Axis of Awesome)
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "I-V-vi-IV (Axis of Awesome)",
+                    key: "C",
+                    scale: "major",
+                    timeSignature: "4/4",
+                    tempo: 100,
+                    measures: [
+                        { symbol: 'C', notes: ['C', 'E', 'G'] },
+                        { symbol: 'G', notes: ['G', 'B', 'D'] },
+                        { symbol: 'Am', notes: ['A', 'C', 'E'] },
+                        { symbol: 'F', notes: ['F', 'A', 'C'] }
+                    ],
+                    romanNumerals: "I-V-vi-IV",
+                    description: "Used in hundreds of pop songs! Let It Be, Don't Stop Believin', With or Without You",
+                    learningObjectives: ["Learn the most popular pop progression", "Understand diatonic harmony"],
+                    tier: "free",
+                    order: 1,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // I-IV-V (Classic Rock)
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "I-IV-V (Classic Rock)",
+                    key: "A",
+                    scale: "major",
+                    timeSignature: "4/4",
+                    tempo: 120,
+                    measures: [
+                        { symbol: 'A', notes: ['A', 'C#', 'E'] },
+                        { symbol: 'D', notes: ['D', 'F#', 'A'] },
+                        { symbol: 'E', notes: ['E', 'G#', 'B'] },
+                        { symbol: 'A', notes: ['A', 'C#', 'E'] }
+                    ],
+                    romanNumerals: "I-IV-V-I",
+                    description: "Rock & roll's foundation! La Bamba, Wild Thing, Twist and Shout.",
+                    learningObjectives: ["Basic three-chord rock", "Power chord movement", "I-IV-V relationships"],
+                    tier: "free",
+                    order: 2,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // vi-IV-I-V (Sensitive)
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "vi-IV-I-V (Sensitive Progression)",
+                    key: "G",
+                    scale: "major",
+                    timeSignature: "4/4",
+                    tempo: 80,
+                    measures: [
+                        { symbol: 'Em', notes: ['E', 'G', 'B'] },
+                        { symbol: 'C', notes: ['C', 'E', 'G'] },
+                        { symbol: 'G', notes: ['G', 'B', 'D'] },
+                        { symbol: 'D', notes: ['D', 'F#', 'A'] }
+                    ],
+                    romanNumerals: "vi-IV-I-V",
+                    description: "Emotional and introspective. Used in Zombie, Grenade, Let Her Go.",
+                    learningObjectives: ["Minor start for emotional effect", "Rotation of I-V-vi-IV"],
+                    tier: "free",
+                    order: 3,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Pachelbel's Canon
+                await db.collection('library_progressions').add({
+                    packId: packId,
+                    name: "Pachelbel's Canon",
+                    key: "D",
+                    scale: "major",
+                    timeSignature: "4/4",
+                    tempo: 70,
+                    measures: [
+                        { symbol: 'D', notes: ['D', 'F#', 'A'] },
+                        { symbol: 'A', notes: ['A', 'C#', 'E'] },
+                        { symbol: 'Bm', notes: ['B', 'D', 'F#'] },
+                        { symbol: 'F#m', notes: ['F#', 'A', 'C#'] },
+                        { symbol: 'G', notes: ['G', 'B', 'D'] },
+                        { symbol: 'D', notes: ['D', 'F#', 'A'] },
+                        { symbol: 'G', notes: ['G', 'B', 'D'] },
+                        { symbol: 'A', notes: ['A', 'C#', 'E'] }
+                    ],
+                    romanNumerals: "I-V-vi-iii-IV-I-IV-V",
+                    description: "The famous Baroque progression. Descending bassline: D-C#-B-A-G-F#-G-A.",
+                    learningObjectives: ["Stepwise bass motion", "Classical harmony", "Extended 8-bar form"],
+                    tier: "free",
+                    order: 4,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                await db.collection('packs').doc(packId).update({
+                    progressionCount: firebase.firestore.FieldValue.increment(4)
+                });
+            }
+        }
+        
+        // Browse Library Functions
+        function showBrowseLibrary() {
+            document.getElementById('browseLibraryModal').classList.add('show');
+            loadCollections('all');
+        }
+        
+        function closeBrowseLibrary() {
+            document.getElementById('browseLibraryModal').classList.remove('show');
+        }
+        
+        async function loadCollections(filter = 'all') {
+            const packsGrid = document.getElementById('packsGrid');
+            packsGrid.innerHTML = '<div class="loading">Loading packs...</div>';
+            
+            try {
+                let query = db.collection('packs').orderBy('order');
+                
+                if (filter !== 'all') {
+                    const collections = await db.collection('collections')
+                        .where('name', '==', getCollectionName(filter))
+                        .get();
+                    
+                    if (!collections.empty) {
+                        const collectionId = collections.docs[0].id;
+                        query = query.where('collectionId', '==', collectionId);
+                    }
+                }
+                
+                const packs = await query.get();
+                
+                if (packs.empty) {
+                    packsGrid.innerHTML = `
+                        <div class="loading">
+                            No packs found yet<br><br>
+                            <button class="btn-primary" onclick="initializeLibrary()">Initialize Sample Library</button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                packsGrid.innerHTML = '';
+                packs.forEach(doc => {
+                    const pack = doc.data();
+                    const isLocked = shouldLockPack(pack.tier);
+                    
+                    const card = document.createElement('div');
+                    card.className = `pack-card ${isLocked ? 'locked' : ''}`;
+                    card.innerHTML = `
+                        <div class="pack-icon">${pack.icon || '📁'}</div>
+                        <div class="pack-name">${pack.name}</div>
+                        <div class="pack-description">${pack.description}</div>
+                        <div class="pack-meta">
+                            <span class="difficulty-badge ${pack.difficulty}">${pack.difficulty}</span>
+                            <span class="time-badge">⏱️ ${pack.estimatedTime}</span>
+                            <span class="progression-count">📝 ${pack.progressionCount || 0} progressions</span>
+                        </div>
+                    `;
+                    
+                    if (!isLocked) {
+                        card.onclick = () => showPackDetail(doc.id, pack);
+                    } else {
+                        card.onclick = () => alert('Upgrade to Student tier ($3.99/mo) to unlock this pack!');
+                    }
+                    
+                    packsGrid.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading packs:', error);
+                packsGrid.innerHTML = '<div class="loading">Error loading packs: ' + error.message + '</div>';
+            }
+        }
+        
+        function shouldLockPack(packTier) {
+            if (!currentUser) return packTier !== 'free';
+            
+            // For now, everyone gets free access (implement subscription tiers later)
+            return false;
+        }
+        
+        function getCollectionName(filter) {
+            const names = {
+                foundational: "Foundational Forms",
+                genre: "By Genre",
+                artist: "By Artist",
+                era: "By Era"
+            };
+            return names[filter] || "";
+        }
+        
+        async function showPackDetail(packId, packData) {
+            document.getElementById('packsGrid').style.display = 'none';
+            const detailView = document.getElementById('packDetail');
+            detailView.style.display = 'block';
+            
+            // Update pack header
+            document.getElementById('packTitle').textContent = packData.name;
+            document.getElementById('packDescription').textContent = packData.description;
+            document.getElementById('packDifficulty').textContent = packData.difficulty;
+            document.getElementById('packDifficulty').className = `difficulty-badge ${packData.difficulty}`;
+            document.getElementById('packTime').textContent = `⏱️ ${packData.estimatedTime}`;
+            
+            // Load progressions for this pack
+            const progressionsList = document.getElementById('progressionsList');
+            progressionsList.innerHTML = '<div class="loading">Loading progressions...</div>';
+            
+            try {
+                const progressions = await db.collection('library_progressions')
+                    .where('packId', '==', packId)
+                    .orderBy('order')
+                    .get();
+                
+                if (progressions.empty) {
+                    progressionsList.innerHTML = '<div class="loading">No progressions in this pack yet</div>';
+                    return;
+                }
+                
+                progressionsList.innerHTML = '';
+                progressions.forEach(doc => {
+                    const prog = doc.data();
+                    const item = document.createElement('div');
+                    item.className = 'progression-item';
+                    item.innerHTML = `
+                        <div class="progression-info">
+                            <h4>${prog.name}</h4>
+                            <div class="progression-meta">
+                                ${prog.key} ${prog.scale} • ${prog.measures.length} measures • ${prog.tempo} BPM
+                                ${prog.description ? `<br>${prog.description}` : ''}
+                            </div>
+                        </div>
+                        <button class="btn-load-progression" onclick="loadLibraryProgression('${doc.id}')">Load</button>
+                    `;
+                    progressionsList.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Error loading progressions:', error);
+                progressionsList.innerHTML = '<div class="loading">Error loading progressions: ' + error.message + '</div>';
+            }
+        }
+        
+        function showPacksGrid() {
+            document.getElementById('packDetail').style.display = 'none';
+            document.getElementById('packsGrid').style.display = 'grid';
+        }
+        
+        async function loadLibraryProgression(progressionId) {
+            try {
+                console.log('Loading library progression:', progressionId);
+                const doc = await db.collection('library_progressions').doc(progressionId).get();
+                
+                if (!doc.exists) {
+                    alert('Progression not found');
+                    return;
+                }
+                
+                const data = doc.data();
+                console.log('Library progression data:', data);
+                
+                // Set key and scale
+                selectedKey = data.key;
+                selectedScale = data.scale || 'major';
+                selectKey(selectedKey);
+                
+                // Set tempo
+                document.getElementById('tempo').value = data.tempo || 120;
+                
+                // Load measures
+                progressionMeasures = data.measures || [];
+                
+                // Activate progression mode
+                progressionActive = true;
+                selectedMeasureIndex = 0;
+                
+                // Show staff container
+                const staffContainer = document.getElementById('staffContainer');
+                staffContainer.classList.add('active');
+                
+                // Generate staff UI
+                const measureCount = progressionMeasures.length;
+                const timeSignature = data.timeSignature || '4/4';
+                console.log('Generating staff with', measureCount, 'measures');
+                generateStaffMeasures(measureCount, timeSignature);
+                
+                // Update UI
+                console.log('Updating progression chart');
+                updateProgressionChart();
+                
+                // Close modal
+                closeBrowseLibrary();
+                
+                console.log('Library progression loaded successfully');
+            } catch (error) {
+                console.error('Error loading library progression:', error);
+                alert('Error loading progression: ' + error.message);
+            }
+        }
+        
+        // Add tab switching event listeners
+        window.addEventListener('load', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    loadCollections(tab.dataset.collection);
+                });
+            });
+        });
+
+        // ===== ORIGINAL JAVASCRIPT CONTINUES BELOW =====
+        
         // Musical symbols using Unicode and font-specific characters
         const MUSIC_SYMBOLS = {
             TREBLE_CLEF: '\uD834\uDD1E', // 𝄞
@@ -1655,6 +3462,17 @@
         // Get current key data (handles both predefined keys and generated scales)
         function getCurrentKeyData() {
             console.log('getCurrentKeyData called with selectedKey:', selectedKey, 'selectedScale:', selectedScale);
+            
+            // Handle chromatic scale
+            if (selectedScale === 'chromatic' || !selectedKey) {
+                return {
+                    scale: ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'],
+                    signature: 'All 12 notes',
+                    triads: [],
+                    sevenths: []
+                };
+            }
+            
             // Check if we're using original key data or need to generate scale data
             if ((selectedScale === 'major' && !selectedKey.includes('m')) || 
                 (selectedScale === 'minor' && selectedKey.includes('m'))) {
@@ -2782,23 +4600,51 @@
         // Note mapping functions
         function noteToSemitone(note) {
             const noteMap = {
-                'C': 0, 'C♯': 1, 'D♭': 1, 'C♯/D♭': 1, 'D': 2, 'D♯': 3, 'E♭': 3, 'D♯/E♭': 3,
-                'E': 4, 'E♯': 5, 'F': 5, 'F♯': 6, 'G♭': 6, 'F♯/G♭': 6, 'G': 7, 'G♯': 8, 'A♭': 8, 'G♯/A♭': 8,
-                'A': 9, 'A♯': 10, 'B♭': 10, 'A♯/B♭': 10, 'B': 11, 'B♯': 0
+                'C': 0, 'C♯': 1, 'C#': 1, 'D♭': 1, 'Db': 1, 'C♯/D♭': 1, 'D': 2, 
+                'D♯': 3, 'D#': 3, 'E♭': 3, 'Eb': 3, 'D♯/E♭': 3,
+                'E': 4, 'E♯': 5, 'E#': 5, 'F': 5, 
+                'F♯': 6, 'F#': 6, 'G♭': 6, 'Gb': 6, 'F♯/G♭': 6, 'G': 7, 
+                'G♯': 8, 'G#': 8, 'A♭': 8, 'Ab': 8, 'G♯/A♭': 8,
+                'A': 9, 'A♯': 10, 'A#': 10, 'B♭': 10, 'Bb': 10, 'A♯/B♭': 10, 
+                'B': 11, 'B♯': 0, 'B#': 0
             };
             return noteMap[note] !== undefined ? noteMap[note] : 0;
         }
 
         function semitoneToNote(semitone, key) {
-            // Get proper enharmonic spelling based on key signature
-            const keyInfo = keySignatures[key.replace(/m$/, '').split('/')[0]] || keySignatures['C'];
+            // Get proper enharmonic spelling based on key signature and scale type
+            const keyRoot = key ? key.replace(/m$/, '').split('/')[0] : 'C';
             
-            if (keyInfo.flats.length > 0) {
-                // Use flat names for flat keys
+            // Determine if we should use flats based on scale type and key
+            let useFlats = false;
+            
+            // Check key signatures for traditional keys
+            const keyInfo = keySignatures[keyRoot];
+            if (keyInfo && keyInfo.flats.length > 0) {
+                useFlats = true;
+            }
+            
+            // Mode-specific flat/sharp preferences (same as generateScaleNotes)
+            const modePreferences = {
+                'dorian': ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭'],
+                'phrygian': ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'D♭', 'E♭', 'G♭', 'A♭', 'B♭'],
+                'lydian': ['F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭'],
+                'mixolydian': ['F', 'C', 'G', 'D', 'A', 'E', 'B', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭'],
+                'locrian': ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'D♭', 'E♭', 'G♭', 'A♭', 'B♭']
+            };
+            
+            // Check if current scale type has mode preference
+            if (modePreferences[selectedScale]) {
+                useFlats = modePreferences[selectedScale].includes(keyRoot);
+            } else if (['minor', 'harmonicMinor', 'melodicMinor', 'minorPentatonic', 'minorSixDiminished'].includes(selectedScale)) {
+                // Minor-based scales
+                useFlats = true;
+            }
+            
+            if (useFlats) {
                 const flatNotes = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
                 return flatNotes[semitone % 12];
             } else {
-                // Use sharp names for sharp keys
                 const sharpNotes = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
                 return sharpNotes[semitone % 12];
             }
@@ -2813,6 +4659,7 @@
         }
 
         function isRootNote(note, key) {
+            if (!key) return false; // No root in chromatic mode
             const rootNote = key.replace(/m$/, '').split('/')[0];
             return noteToSemitone(note) === noteToSemitone(rootNote);
         }
@@ -2997,8 +4844,8 @@
         }
 
         // State
-        let selectedKey = 'C';
-        let selectedScale = 'major'; // Current scale type
+        let selectedKey = null; // Start with no key selected (chromatic mode)
+        let selectedScale = 'chromatic'; // Start in chromatic mode
         let selectedInstrument = 'guitar';
         let currentTuning = {};
         let chordMode = 'triads'; // 'triads', 'sevenths', 'secondary', or 'diminished'
@@ -3009,6 +4856,7 @@
         let customChordRoot = null; // Root note of custom chord
         let isCustomChordMode = true; // Always in chord creation mode now
         let customChordClickCount = {}; // Track click counts for double-click detection
+        let customChordPositions = []; // Array of {note, string, fret} for single-note highlighting
         let selectedMeasureIndex = null; // Currently selected measure for chord building
 
         // Scale display names
@@ -3017,6 +4865,11 @@
             minor: 'Natural Minor',
             harmonicMinor: 'Harmonic Minor',
             melodicMinor: 'Melodic Minor',
+            dorian: 'Dorian',
+            phrygian: 'Phrygian',
+            lydian: 'Lydian',
+            mixolydian: 'Mixolydian',
+            locrian: 'Locrian',
             majorPentatonic: 'Major Pentatonic',
             minorPentatonic: 'Minor Pentatonic',
             wholeTone: 'Whole Tone',
@@ -3028,10 +4881,15 @@
 
         // Scale formulas (intervals in semitones from root)
         const scaleFormulas = {
-            major: [0, 2, 4, 5, 7, 9, 11],
-            minor: [0, 2, 3, 5, 7, 8, 10],
+            major: [0, 2, 4, 5, 7, 9, 11],           // W-W-H-W-W-W-H (Ionian)
+            minor: [0, 2, 3, 5, 7, 8, 10],            // W-H-W-W-H-W-W (Aeolian)
             harmonicMinor: [0, 2, 3, 5, 7, 8, 11],
             melodicMinor: [0, 2, 3, 5, 7, 9, 11],
+            dorian: [0, 2, 3, 5, 7, 9, 10],           // W-H-W-W-W-H-W (Mode II of major)
+            phrygian: [0, 1, 3, 5, 7, 8, 10],         // H-W-W-W-H-W-W (Mode III of major)
+            lydian: [0, 2, 4, 6, 7, 9, 11],           // W-W-W-H-W-W-H (Mode IV of major)
+            mixolydian: [0, 2, 4, 5, 7, 9, 10],       // W-W-H-W-W-H-W (Mode V of major)
+            locrian: [0, 1, 3, 5, 6, 8, 10],          // H-W-W-H-W-W-W (Mode VII of major)
             majorPentatonic: [0, 2, 4, 7, 9],
             minorPentatonic: [0, 3, 5, 7, 10],
             wholeTone: [0, 2, 4, 6, 8, 10],
@@ -3476,11 +5334,28 @@
             const rootSemitone = noteToSemitone(root);
             
             // Determine if we should prefer flats or sharps based on scale type and root
-            const isMinorBasedScale = ['minor', 'harmonicMinor', 'melodicMinor', 'minorPentatonic', 'minorSixDiminished'].includes(scaleType);
+            let preferFlats = false;
+            
+            // Check for explicitly flat root notes
             const rootPreferFlats = ['F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭', 'C♭'].includes(root);
             
-            // For minor-based scales or flat key centers, prefer flats
-            const preferFlats = isMinorBasedScale || rootPreferFlats;
+            // Mode-specific flat/sharp preferences based on parent scale relationships
+            const modePreferences = {
+                'dorian': ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭'],
+                'phrygian': ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'D♭', 'E♭', 'G♭', 'A♭', 'B♭'], // Most roots prefer flats
+                'lydian': ['F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭'], // Only flat keys use flats
+                'mixolydian': ['F', 'C', 'G', 'D', 'A', 'E', 'B', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭'],
+                'locrian': ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'D♭', 'E♭', 'G♭', 'A♭', 'B♭'] // Most roots prefer flats
+            };
+            
+            // Check if mode has specific preference
+            if (modePreferences[scaleType]) {
+                preferFlats = modePreferences[scaleType].includes(root);
+            } else {
+                // For non-modal scales
+                const isMinorBasedScale = ['minor', 'harmonicMinor', 'melodicMinor', 'minorPentatonic', 'minorSixDiminished'].includes(scaleType);
+                preferFlats = isMinorBasedScale || rootPreferFlats;
+            }
             
             return formula.map((interval, index) => {
                 const noteSemitone = (rootSemitone + interval) % 12;
@@ -3741,6 +5616,11 @@
                 'minor',
                 'harmonicMinor',
                 'melodicMinor',
+                'dorian',
+                'phrygian',
+                'lydian',
+                'mixolydian',
+                'locrian',
                 'majorPentatonic',
                 'minorPentatonic',
                 'wholeTone',
@@ -3754,6 +5634,16 @@
         }
 
         function getCurrentScaleData() {
+            // Handle null selectedKey (chromatic mode)
+            if (!selectedKey) {
+                return {
+                    scale: ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'],
+                    signature: 'All 12 notes',
+                    triads: [],
+                    sevenths: []
+                };
+            }
+            
             const root = selectedKey.replace(/m$/, '').split('/')[0];
             const scaleNotes = generateScaleNotes(root, selectedScale);
             
@@ -3775,6 +5665,11 @@
                 minor: 'Natural minor scale',
                 harmonicMinor: 'Harmonic minor scale (raised 7th)',
                 melodicMinor: 'Melodic minor scale (raised 6th & 7th)',
+                dorian: 'Dorian mode (minor with raised 6th)',
+                phrygian: 'Phrygian mode (minor with lowered 2nd)',
+                lydian: 'Lydian mode (major with raised 4th)',
+                mixolydian: 'Mixolydian mode (major with lowered 7th)',
+                locrian: 'Locrian mode (diminished)',
                 majorPentatonic: 'Major pentatonic scale (5 notes)',
                 minorPentatonic: 'Minor pentatonic scale (5 notes)',
                 wholeTone: 'Whole tone scale (6 notes)',
@@ -3794,12 +5689,12 @@
             initializeTuning();
             generatePositionButtons(); // Generate position buttons on startup
             
-            // Set default to C major
-            selectedScale = 'major';
-            selectedKey = 'C';
+            // Set default to chromatic scale (no key center)
+            selectedScale = 'chromatic';
+            selectedKey = null;
             
-            // Initialize the default key selection
-            selectKey('C'); // This will properly set up all the initial state
+            // Initialize chromatic mode
+            selectChromaticScale(); // This will properly set up all the initial state
             
             // Initialize custom chord controls
             updateCustomChordControls();
@@ -3915,9 +5810,93 @@
             });
         }
 
+        // Transpose chord from one key to another
+        function transposeChord(chordSymbol, fromKey, toKey) {
+            const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const flatScale = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+            const enharmonicMap = {
+                'D♭': 'C#', 'Db': 'C#', 'E♭': 'D#', 'Eb': 'D#', 
+                'G♭': 'F#', 'Gb': 'F#', 'A♭': 'G#', 'Ab': 'G#', 
+                'B♭': 'A#', 'Bb': 'A#', 'C♭': 'B', 'Cb': 'B',
+                'C#': 'D♭', 'D#': 'E♭', 'F#': 'G♭', 'G#': 'A♭', 'A#': 'B♭'
+            };
+            
+            // Determine if target key uses flats (check both ASCII and Unicode)
+            const flatKeys = ['F', 'B♭', 'Bb', 'E♭', 'Eb', 'A♭', 'Ab', 'D♭', 'Db', 'G♭', 'Gb', 'C♭', 'Cb'];
+            const cleanToKey = toKey.replace('m', '').split('/')[0]; // Handle F♯/G♭ format
+            const useFlatNotation = flatKeys.includes(cleanToKey);
+            
+            // Parse chord to get root note and quality
+            let rootNote = chordSymbol.charAt(0);
+            let accidental = '';
+            let quality = '';
+            
+            if (chordSymbol.length > 1 && (chordSymbol[1] === '#' || chordSymbol[1] === 'b' || chordSymbol[1] === '♯' || chordSymbol[1] === '♭')) {
+                accidental = chordSymbol[1];
+                rootNote += accidental;
+                quality = chordSymbol.slice(2);
+            } else {
+                quality = chordSymbol.slice(1);
+            }
+            
+            // Convert to sharp notation for calculation
+            if (enharmonicMap[rootNote]) {
+                rootNote = enharmonicMap[rootNote];
+            }
+            const cleanFromKey = fromKey.replace('m', '').split('/')[0];
+            const calcFromKey = enharmonicMap[cleanFromKey] || cleanFromKey;
+            const calcToKey = enharmonicMap[cleanToKey] || cleanToKey;
+            
+            // Calculate semitone difference
+            const fromIndex = chromaticScale.indexOf(calcFromKey.replace('m', ''));
+            const toIndex = chromaticScale.indexOf(calcToKey.replace('m', ''));
+            const rootIndex = chromaticScale.indexOf(rootNote);
+            
+            if (fromIndex === -1 || toIndex === -1 || rootIndex === -1) {
+                console.warn('Invalid key or chord:', { chordSymbol, fromKey, toKey });
+                return chordSymbol;
+            }
+            
+            const semitones = (toIndex - fromIndex + 12) % 12;
+            const newRootIndex = (rootIndex + semitones) % 12;
+            
+            // Use appropriate scale based on target key
+            const newRoot = useFlatNotation ? flatScale[newRootIndex] : chromaticScale[newRootIndex];
+            
+            return newRoot + quality;
+        }
+        
+        // Transpose notes array from one key to another
+        function transposeNotes(notes, fromKey, toKey) {
+            if (!notes || !Array.isArray(notes)) return notes;
+            return notes.map(note => {
+                if (!note) return note;
+                // Extract just the note name (without octave)
+                const noteName = note.replace(/[0-9]/g, '');
+                const transposed = transposeChord(noteName, fromKey, toKey);
+                // If original had octave, preserve it (simplified)
+                const octaveMatch = note.match(/[0-9]/);
+                return octaveMatch ? transposed + octaveMatch[0] : transposed;
+            });
+        }
+
         function selectKey(key) {
             console.log('Selecting key:', key);
+            
+            // Toggle key: if clicking already selected key, return to chromatic
+            if (selectedKey === key) {
+                console.log('Key already selected, toggling to chromatic');
+                selectChromaticScale();
+                return;
+            }
+            
+            const oldKey = selectedKey;
             selectedKey = key;
+            
+            // Clear chromatic mode when selecting a key
+            if (selectedScale === 'chromatic') {
+                selectedScale = 'major'; // Reset to major when leaving chromatic
+            }
             
             // Clear custom chord when key changes
             clearCustomChord();
@@ -3937,12 +5916,56 @@
                 progressionKeySelect.value = key;
             }
             
+            // AUTO-TRANSPOSE: If progression is active and key changed, transpose all measures
+            if (progressionActive && progressionMeasures.length > 0 && oldKey && oldKey !== key) {
+                console.log(`Transposing progression from ${oldKey} to ${key}`);
+                
+                // Update the progression key variable
+                progressionKey = key;
+                
+                progressionMeasures = progressionMeasures.map(measure => {
+                    if (!measure) return measure;
+                    return {
+                        ...measure,
+                        symbol: transposeChord(measure.symbol, oldKey, key),
+                        notes: transposeNotes(measure.notes, oldKey, key)
+                    };
+                });
+                
+                // Update the staff UI with transposed chords
+                updateProgressionChart();
+                console.log('Progression transposed successfully');
+            }
+            
             // Reset fretboard zoom when key changes
             resetZoom();
             
             updateKeyInfo();
             updateFretboard();
             updateSelectedButtons();
+        }
+
+        function selectChromaticScale() {
+            console.log('Selecting chromatic scale');
+            
+            // Set chromatic mode
+            selectedScale = 'chromatic';
+            
+            // Clear selected chord and custom chord
+            selectedChord = null;
+            clearCustomChord();
+            
+            // Reset fretboard zoom
+            resetZoom();
+            
+            // Update UI
+            updateKeyInfo();
+            updateFretboard();
+            
+            // Clear Circle of Fifths selection
+            document.querySelectorAll('.circle-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
         }
 
         function selectInstrument(instrument) {
@@ -3954,9 +5977,9 @@
         }
 
         function updateSelectedButtons() {
-            // Update circle buttons
+            // Update circle buttons - handle null selectedKey (chromatic mode)
             document.querySelectorAll('.circle-button').forEach(btn => {
-                btn.classList.toggle('selected', btn.innerHTML === selectedKey);
+                btn.classList.toggle('selected', selectedKey && btn.innerHTML === selectedKey);
             });
             
             // Update instrument buttons
@@ -4041,13 +6064,31 @@
             }
             
             console.log('Updating key info for:', selectedKey, 'scale:', selectedScale);
-            const root = selectedKey.replace(/m$/, '').split('/')[0];
             
             // Use the unified key data function
             const keyData = getCurrentKeyData();
             console.log('Key data:', keyData);
             
             if (keyData) {
+                // Handle chromatic mode
+                if (selectedScale === 'chromatic' || !selectedKey) {
+                    container.innerHTML = `
+                        <h4>Chromatic Scale</h4>
+                        <p><strong>Scale Type:</strong> All 12 notes</p>
+                        
+                        <p><strong>Scale Notes:</strong></p>
+                        <div class="scale-notes">
+                            ${keyData.scale.map(note => 
+                                `<span class="note-chip">${note}</span>`
+                            ).join('')}
+                        </div>
+                        
+                        <p style="margin-top: 15px;"><small>Chromatic scale shows all 12 notes with no key center. Click any key in the Circle of Fifths to see that key's scales and chords.</small></p>
+                    `;
+                    return;
+                }
+                
+                const root = selectedKey.replace(/m$/, '').split('/')[0];
                 let chords = [];
                 let chordModeTitle = '';
                 
@@ -4134,7 +6175,7 @@
         }
 
         // Custom chord creation functions
-        function selectCustomChordNote(note, event) {
+        function selectCustomChordNote(note, string, fret, event) {
             
             event.stopPropagation();
             
@@ -4153,11 +6194,15 @@
                 customChordRoot = note;
                 console.log('Root changed to:', note);
             } else {
-                // Single click: toggle note selection
-                const noteIndex = customChordNotes.indexOf(note);
-                if (noteIndex === -1) {
-                    // Add note
-                    if (customChordNotes.length < 6) {
+                // Single click: toggle note selection at this specific position
+                const positionIndex = customChordPositions.findIndex(pos => 
+                    pos.string === string && pos.fret === fret
+                );
+                
+                if (positionIndex === -1) {
+                    // Add note at this position
+                    if (customChordPositions.length < 6) {
+                        customChordPositions.push({ note, string, fret });
                         customChordNotes.push(note);
                         // First note becomes root by default
                         if (customChordNotes.length === 1) {
@@ -4165,16 +6210,17 @@
                         }
                     }
                 } else {
-                    // Note is already in the chord - check if it should become the new root
-                    if (customChordNotes.length > 1 && note !== customChordRoot) {
+                    // Position is already selected
+                    if (customChordPositions.length > 1 && note !== customChordRoot) {
                         // Clicking an existing chord tone (not current root) makes it the new root
                         customChordRoot = note;
                         console.log('New root selected:', note);
-            console.log('Current customChordNotes:', customChordNotes);
-            console.log('All notes in order selected:', customChordNotes);
+                        console.log('Current customChordNotes:', customChordNotes);
+                        console.log('All notes in order selected:', customChordNotes);
                     } else {
                         // Remove note (original behavior for current root or single note)
-                        customChordNotes.splice(noteIndex, 1);
+                        customChordPositions.splice(positionIndex, 1);
+                        customChordNotes.splice(positionIndex, 1);
                         // If we removed the root, make first remaining note the root
                         if (customChordRoot === note && customChordNotes.length > 0) {
                             customChordRoot = customChordNotes[0];
@@ -4434,6 +6480,9 @@
             console.log('progressionActive:', progressionActive);
             console.log('selectedMeasureIndex:', selectedMeasureIndex);
             
+            // Clear position-based highlighting and restore octave highlighting
+            customChordPositions = [];
+            
             if (progressionActive && selectedMeasureIndex !== null) {
                 console.log('ENTERING PROGRESSION MODE - storing chord');
                 // IN PROGRESSION MODE: Add chord to staff
@@ -4466,7 +6515,7 @@
                     console.log('Playing custom notes (user selected):', customChordNotes);
                     playChordFromNotes(customChordNotes);
                     
-                    // Update selectedChord so fretboard shows these notes
+                    // Update selectedChord so fretboard shows these notes with octave highlighting
                     selectedChord = {
                         symbol: chordName,
                         notes: [...customChordNotes],
@@ -4479,7 +6528,7 @@
                     console.log('Generated notes for', chordName, ':', actualChordNotes);
                     playChordFromNotes(actualChordNotes);
                     
-                    // Update selectedChord so fretboard shows these notes
+                    // Update selectedChord so fretboard shows these notes with octave highlighting
                     selectedChord = {
                         symbol: chordName,
                         notes: actualChordNotes,
@@ -4487,7 +6536,7 @@
                     };
                 }
                 
-                // Update the fretboard to show the new chord
+                // Update the fretboard to show the new chord with octave highlighting
                 updateFretboard();
             }
         }
@@ -4769,6 +6818,7 @@
             customChordNotes = [];
             customChordRoot = null;
             customChordClickCount = {};
+            customChordPositions = []; // Clear position-based highlighting
             selectedChord = null; // Clear selected chord to return fretboard to scale view
             updateCustomChordControls();
             updateChordAnalysis(); // Make sure analysis window updates
@@ -4962,14 +7012,19 @@
                 // Fret cells for this string
                 for (let fret = 0; fret <= maxFrets; fret++) {
                     const semitone = (noteToSemitone(openString) + fret) % 12;
-                    let note = semitoneToNote(semitone, selectedKey); // Default to key-aware note naming
+                    let note = semitoneToNote(semitone, selectedKey || 'C'); // Default to C for note naming in chromatic mode
                     
                     let noteClass = '';
                     let showNote = false;
                     
+                    // Check if this specific position is selected in custom chord mode (single-note lighting)
+                    const isCustomPosition = customChordPositions.some(pos => 
+                        pos.string === stringIndex && pos.fret === fret
+                    );
+                    
                     // Color priority hierarchy: Custom chord notes > Chord root > Chord tones > Key center > Scale notes
-                    if (customChordNotes.includes(note)) {
-                        // Custom chord note highlighting (highest priority)
+                    if (isCustomPosition) {
+                        // Custom chord note highlighting at specific position (highest priority)
                         if (note === customChordRoot) {
                             noteClass = 'custom-root';
                         } else {
@@ -4977,7 +7032,7 @@
                         }
                         showNote = true;
                     } else if (selectedChord && isChordRoot(note, selectedChord)) {
-                        // Chord root (orange) when a chord is selected
+                        // Chord root (orange) when a chord is selected - highlights all octaves
                         const correctChordNoteName = getCorrectChordNoteName(semitone, selectedChord);
                         if (correctChordNoteName) {
                             note = correctChordNoteName;
@@ -4985,15 +7040,15 @@
                         noteClass = 'chord-root';
                         showNote = true;
                     } else if (selectedChord && isChordTone(note, selectedChord)) {
-                        // Chord tones (blue) when a chord is selected
+                        // Chord tones (blue) when a chord is selected - highlights all octaves
                         const correctChordNoteName = getCorrectChordNoteName(semitone, selectedChord);
                         if (correctChordNoteName) {
                             note = correctChordNoteName;
                         }
                         noteClass = 'chord';
                         showNote = true;
-                    } else if (!selectedChord && customChordNotes.length === 0 && isRootNote(note, selectedKey)) {
-                        // Key center (red-orange) - only show when no chord is selected and no custom chord notes
+                    } else if (!selectedChord && customChordNotes.length === 0 && selectedScale !== 'chromatic' && isRootNote(note, selectedKey)) {
+                        // Key center (red-orange) - only show when no chord is selected, no custom chord notes, and not in chromatic mode
                         noteClass = 'root';
                         showNote = true;
                     } else if (isNoteInScale(note, keyData.scale)) {
@@ -5027,7 +7082,7 @@
                         if (showNote) {
                             // Make all visible notes clickable for chord building (scale, chord, root)
                             customClasses += ' clickable';
-                            clickHandler = ` onclick="selectCustomChordNote('${note}', event)"`;
+                            clickHandler = ` onclick="selectCustomChordNote('${note}', ${stringIndex}, ${fret}, event)"`;
                         }
                         
                         html += `<div class="note-dot ${noteClass}${customClasses}"${clickHandler}>${note}</div>`;
@@ -5307,7 +7362,46 @@
             const currentPositionRange = currentPosition ? POSITIONS[currentPosition].frets : null;
             console.log('Current position range:', currentPositionRange);
             
-            // Get all note dots that are currently visible
+            // If we have custom chord positions (single-note lighting), use only those specific positions
+            if (customChordPositions && customChordPositions.length > 0) {
+                console.log('Using custom chord positions for arpeggio lines:', customChordPositions);
+                
+                customChordPositions.forEach(pos => {
+                    // Find the cell at this position
+                    const cells = fretboardGrid.querySelectorAll('.fret-cell');
+                    cells.forEach(cell => {
+                        const style = cell.getAttribute('style');
+                        const gridAreaMatch = style.match(/grid-area:\s*(\d+)\s*\/\s*(\d+)/);
+                        
+                        if (gridAreaMatch) {
+                            const stringIndex = parseInt(gridAreaMatch[1]) - 1;
+                            const fretNumber = parseInt(gridAreaMatch[2]) - 2;
+                            
+                            if (stringIndex === pos.string && fretNumber === pos.fret) {
+                                const dot = cell.querySelector('.note-dot');
+                                if (dot) {
+                                    const pitch = calculateNotePitch(pos.note, stringIndex, fretNumber);
+                                    positions.push({
+                                        element: dot,
+                                        cell: cell,
+                                        stringIndex: stringIndex,
+                                        fretNumber: fretNumber,
+                                        noteName: pos.note,
+                                        pitch: pitch,
+                                        x: null,
+                                        y: null
+                                    });
+                                }
+                            }
+                        }
+                    });
+                });
+                
+                console.log('Final positions from custom chord positions:', positions);
+                return positions;
+            }
+            
+            // Otherwise, use all note dots that match chord notes (octave highlighting)
             const noteDots = fretboardGrid.querySelectorAll('.note-dot');
             console.log('Total note dots found:', noteDots.length);
             
@@ -5790,9 +7884,17 @@
         
         function calculateRomanNumeralFromRoot(chord, key) {
             // Fallback method for calculating roman numerals
-            const isMinor = key.includes('m');
+            const isKeyMinor = key.includes('m');
             const keyRoot = key.replace('m', '').split('/')[0];
-            const chordRoot = chord.symbol.replace(/[^A-G♯♭]/g, '');
+            // Extract root note including sharps (#) and flats (♭, b)
+            let chordRoot = chord.symbol.match(/^[A-G][#♯b♭]?/)?.[0] || chord.symbol.charAt(0);
+            
+            // Detect chord quality
+            const isDominantSeventh = /^[A-G][#♯b♭]?7$/.test(chord.symbol); // X7 pattern
+            const isMajorSeventh = chord.symbol.includes('maj7') || chord.symbol.includes('M7') || chord.symbol.includes('Δ7');
+            const isMinorChord = chord.symbol.includes('m') && !chord.symbol.includes('maj');
+            const isDiminished = chord.symbol.includes('°') || chord.symbol.includes('dim');
+            const isAugmented = chord.symbol.includes('+') || chord.symbol.includes('aug');
             
             // Scale degrees mapping
             const keyData = getCurrentKeyData();
@@ -5804,12 +7906,40 @@
             
             if (scalePosition === -1) return chordRoot;
             
-            if (isMinor) {
+            if (isKeyMinor) {
                 const minorRomanNumerals = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
-                return minorRomanNumerals[scalePosition] || 'i';
+                let baseNumeral = minorRomanNumerals[scalePosition] || 'i';
+                
+                // Override based on chord quality
+                if (isDominantSeventh || isMajorSeventh || isAugmented) {
+                    baseNumeral = baseNumeral.toUpperCase().replace('°', '');
+                } else if (isMinorChord) {
+                    baseNumeral = baseNumeral.toLowerCase().replace('°', '');
+                } else if (isDiminished) {
+                    baseNumeral = baseNumeral.toLowerCase();
+                    if (!baseNumeral.includes('°')) baseNumeral += '°';
+                }
+                
+                return baseNumeral;
             } else {
-                const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
-                return majorRomanNumerals[scalePosition] || 'I';
+                // For major keys
+                const romanNumerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+                let numeral = romanNumerals[scalePosition];
+                
+                // Adjust case and symbols based on chord quality
+                if (isDominantSeventh || isMajorSeventh || isAugmented) {
+                    numeral = numeral.toUpperCase(); // Major quality
+                } else if (isMinorChord) {
+                    numeral = numeral.toLowerCase(); // Minor quality
+                } else if (isDiminished) {
+                    numeral = numeral.toLowerCase() + '°'; // Diminished
+                } else {
+                    // Diatonic defaults for major key
+                    const majorDefaults = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                    numeral = majorDefaults[scalePosition] || 'I';
+                }
+                
+                return numeral;
             }
         }
 
@@ -5818,10 +7948,8 @@
             highlightSelectedMeasure();
             updateProgressionChart();
             
-            if (!progressionActive) {
-                // When progression is stopped, clicking a measure selects its chord for fretboard display
-                selectChordFromStaff(measureIndex);
-            }
+            // Always display the chord on the fretboard when selecting a measure
+            selectChordFromStaff(measureIndex);
         }
 
         function selectChordFromStaff(measureIndex) {
@@ -6109,33 +8237,52 @@
         }
 
         function getChordFrequencies(noteNames) {
-            // Complete note to frequency mapping with all enharmonic equivalents (middle octave)
+            // Complete note to frequency mapping with all enharmonic equivalents (middle octave C4)
             const noteFrequencies = {
                 // All enharmonic equivalents for complete coverage
-                'C': 261.63, 'B♯': 261.63,
-                'C♯': 277.18, 'D♭': 277.18, 
+                'C': 261.63, 'B♯': 261.63, 'B#': 261.63,
+                'C♯': 277.18, 'C#': 277.18, 'D♭': 277.18, 'Db': 277.18,
                 'D': 293.66, 
-                'D♯': 311.13, 'E♭': 311.13,
-                'E': 329.63, 'F♭': 329.63,
-                'F': 349.23, 'E♯': 349.23,
-                'F♯': 369.99, 'G♭': 369.99, 
+                'D♯': 311.13, 'D#': 311.13, 'E♭': 311.13, 'Eb': 311.13,
+                'E': 329.63, 'F♭': 329.63, 'Fb': 329.63,
+                'F': 349.23, 'E♯': 349.23, 'E#': 349.23,
+                'F♯': 369.99, 'F#': 369.99, 'G♭': 369.99, 'Gb': 369.99,
                 'G': 392.00, 
-                'G♯': 415.30, 'A♭': 415.30, 
+                'G♯': 415.30, 'G#': 415.30, 'A♭': 415.30, 'Ab': 415.30,
                 'A': 440.00, 
-                'A♯': 466.16, 'B♭': 466.16, 
-                'B': 493.88, 'C♭': 493.88
+                'A♯': 466.16, 'A#': 466.16, 'B♭': 466.16, 'Bb': 466.16,
+                'B': 493.88, 'C♭': 493.88, 'Cb': 493.88
             };
             
-            console.log('Playing chord notes:', noteNames); // Debug log
-            const frequencies = noteNames.map(note => {
+            console.log('Playing chord notes:', noteNames);
+            
+            // Map notes to frequencies
+            let frequencies = noteNames.slice(0, 4).map(note => {
                 const freq = noteFrequencies[note];
                 if (!freq) {
                     console.warn(`No frequency found for note: ${note}, using A440`);
+                    return 440;
                 }
-                return freq || 440;
-            }).slice(0, 4); // Limit to 4 voices
+                return freq;
+            });
             
-            console.log('Playing frequencies:', frequencies); // Debug log
+            // Sort ascending and adjust octaves to create proper voicing
+            // Start with frequencies in ascending order
+            frequencies.sort((a, b) => a - b);
+            
+            // If the root (first note) ended up higher than other notes after sorting,
+            // drop it an octave
+            const rootFreq = noteFrequencies[noteNames[0]];
+            const sortedRootIndex = frequencies.indexOf(rootFreq);
+            
+            // If root isn't the lowest note, drop it an octave
+            if (sortedRootIndex > 0) {
+                frequencies[sortedRootIndex] = rootFreq / 2;
+                // Re-sort after octave adjustment
+                frequencies.sort((a, b) => a - b);
+            }
+            
+            console.log('Playing frequencies:', frequencies);
             return frequencies;
         }
 

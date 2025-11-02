@@ -1,0 +1,46 @@
+rules_version='2'
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profiles
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.uid == userId;
+    }
+    
+    // Chord progressions
+    match /progressions/{progressionId} {
+      allow read: if request.auth != null && 
+        (resource.data.ownerId == request.auth.uid || 
+         request.auth.uid in resource.data.sharedWith ||
+         resource.data.isPublic == true);
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && 
+        resource.data.ownerId == request.auth.uid;
+    }
+    
+    // Categories
+    match /categories/{categoryId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Library Collections - readable by all authenticated users
+    match /collections/{collectionId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null; // Allow authenticated users to write
+    }
+    
+    // Library Packs - readable by all authenticated users
+    match /packs/{packId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null; // Allow authenticated users to write
+    }
+    
+    // Library Progressions - readable by all authenticated users
+    match /library_progressions/{progressionId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null; // Allow authenticated users to write
+    }
+  }
+}
