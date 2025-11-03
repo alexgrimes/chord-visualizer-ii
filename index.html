@@ -2680,11 +2680,24 @@
                     const data = doc.data();
                     console.log('Loaded progression data:', data);
                     
-                    // Set key and scale
+                    // Set both scale and key first (before calling update functions)
+                    selectedScale = data.scale || 'major';
                     selectedKey = data.key;
-                    selectedScale = data.scale;
-                    console.log('Set key:', selectedKey, 'scale:', selectedScale);
-                    updateKeyInfo();
+                    
+                    // Now update the UI with both values set
+                    console.log('Calling selectScale with:', selectedScale);
+                    selectScale(selectedScale); // This updates the scale UI
+                    console.log('Calling selectKey with:', selectedKey, 'force: true');
+                    selectKey(selectedKey, true); // This updates the key UI and fretboard
+                    console.log('Key and scale set, Circle of Fifths should be highlighted');
+                    
+                    // Also update progression key variable and dropdown explicitly
+                    progressionKey = data.key;
+                    const progressionKeySelect = document.getElementById('progressionKey');
+                    if (progressionKeySelect) {
+                        progressionKeySelect.value = data.key;
+                        console.log('Set progression dropdown to:', data.key);
+                    }
                     
                     // Set tempo
                     document.getElementById('tempo').value = data.tempo || 120;
