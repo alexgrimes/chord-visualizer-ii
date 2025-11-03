@@ -2727,9 +2727,6 @@
                     console.log('Closing dropdown...');
                     toggleProgressionsDropdown(); // Close dropdown
                     
-                    // Update the circle of fifths to highlight the selected key
-                    selectKey(selectedKey);
-                    
                     // Track load analytics
                     analytics.logEvent('load_progression', { progression_id: progressionId });
                 } else {
