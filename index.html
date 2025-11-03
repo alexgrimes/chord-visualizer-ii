@@ -623,6 +623,30 @@
             border: 2px solid #4CAF50;
         }
 
+        .measure-controls {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            gap: 4px;
+            padding: 2px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            z-index: 100;
+        }
+
+        .measure-key-select,
+        .measure-time-select {
+            flex: 1;
+            padding: 2px 4px;
+            font-size: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background: white;
+        }
+
         /* Custom Chord Creator Styles */
         .custom-chord-section {
             margin-bottom: 20px;
@@ -2567,9 +2591,11 @@
                     scale: selectedScale,
                     timeSignature: '4/4', // Can be made dynamic later
                     tempo: parseInt(document.getElementById('tempo').value) || 120,
-                    measures: progressionMeasures.map(chord => ({
-                        symbol: chord ? chord.symbol : null,
-                        notes: chord ? chord.notes : null
+                    measures: progressionMeasures.map(measure => ({
+                        symbol: measure.chord ? measure.chord.symbol : null,
+                        notes: measure.chord ? measure.chord.notes : null,
+                        localKey: measure.localKey,
+                        timeSignature: measure.timeSignature
                     })),
                     ownerId: currentUser.uid,
                     sharedWith: [],
@@ -2703,10 +2729,22 @@
                     document.getElementById('tempo').value = data.tempo || 120;
                     console.log('Set tempo:', data.tempo);
                     
-                    // Load measures
-                    progressionMeasures = data.measures.map(m => 
-                        m.symbol ? { symbol: m.symbol, notes: m.notes } : null
-                    );
+                    // Load measures (handle both old format and new format with localKey)
+                    progressionMeasures = data.measures.map(m => {
+                        if (m.symbol) {
+                            return {
+                                chord: { symbol: m.symbol, notes: m.notes },
+                                localKey: m.localKey || data.key, // Fallback to progression key for old format
+                                timeSignature: m.timeSignature || data.timeSignature || '4/4'
+                            };
+                        } else {
+                            return {
+                                chord: null,
+                                localKey: m.localKey || data.key,
+                                timeSignature: m.timeSignature || data.timeSignature || '4/4'
+                            };
+                        }
+                    });
                     console.log('Loaded progressionMeasures:', progressionMeasures);
                     
                     // Activate progression mode
@@ -2887,10 +2925,22 @@
                     // Set tempo
                     document.getElementById('tempo').value = data.tempo || 120;
                     
-                    // Load measures
-                    progressionMeasures = data.measures.map(m => 
-                        m.symbol ? { symbol: m.symbol, notes: m.notes } : null
-                    );
+                    // Load measures (handle both old format and new format with localKey)
+                    progressionMeasures = data.measures.map(m => {
+                        if (m.symbol || (m.chord && m.chord.symbol)) {
+                            return {
+                                chord: m.chord || { symbol: m.symbol, notes: m.notes },
+                                localKey: m.localKey || data.key,
+                                timeSignature: m.timeSignature || data.timeSignature || '4/4'
+                            };
+                        } else {
+                            return {
+                                chord: null,
+                                localKey: m.localKey || data.key,
+                                timeSignature: m.timeSignature || data.timeSignature || '4/4'
+                            };
+                        }
+                    });
                     
                     // Activate progression mode
                     progressionActive = true;
@@ -3409,8 +3459,22 @@
                 // Set tempo
                 document.getElementById('tempo').value = data.tempo || 120;
                 
-                // Load measures
-                progressionMeasures = data.measures || [];
+                // Load measures (handle both old format and new format with localKey)
+                progressionMeasures = (data.measures || []).map(m => {
+                    if (m.symbol || (m.chord && m.chord.symbol)) {
+                        return {
+                            chord: m.chord || { symbol: m.symbol, notes: m.notes },
+                            localKey: m.localKey || data.key,
+                            timeSignature: m.timeSignature || data.timeSignature || '4/4'
+                        };
+                    } else {
+                        return {
+                            chord: null,
+                            localKey: m.localKey || data.key,
+                            timeSignature: m.timeSignature || data.timeSignature || '4/4'
+                        };
+                    }
+                });
                 
                 // Activate progression mode
                 progressionActive = true;
@@ -4849,12 +4913,15 @@
 
         function applyCadence(targetChord) {
             // Find the next empty measure and add the target chord
-            const nextEmptyIndex = progressionMeasures.findIndex(chord => chord === null);
+            const nextEmptyIndex = progressionMeasures.findIndex(measure => measure.chord === null);
             
             if (nextEmptyIndex !== -1) {
                 // Add the cadence chord to the next measure
                 const chordData = getChordData(targetChord, selectedKey);
-                progressionMeasures[nextEmptyIndex] = chordData;
+                progressionMeasures[nextEmptyIndex] = {
+                    ...progressionMeasures[nextEmptyIndex],
+                    chord: chordData
+                };
                 updateProgressionChart();
                 
                 // Play the cadence chord
@@ -6007,12 +6074,26 @@
                 // Update the progression key variable
                 progressionKey = key;
                 
+                // Only transpose measures that match the old progression key
+                // Preserve measures with different localKey values (modulated sections)
                 progressionMeasures = progressionMeasures.map(measure => {
-                    if (!measure) return measure;
+                    if (!measure || !measure.chord) return measure;
+                    
+                    // If measure has a different localKey, preserve it
+                    if (measure.localKey && measure.localKey !== oldKey) {
+                        console.log(`Preserving measure with localKey ${measure.localKey}, not transposing`);
+                        return measure;
+                    }
+                    
+                    // Otherwise, transpose the chord and update localKey
                     return {
                         ...measure,
-                        symbol: transposeChord(measure.symbol, oldKey, key),
-                        notes: transposeNotes(measure.notes, oldKey, key)
+                        chord: {
+                            ...measure.chord,
+                            symbol: transposeChord(measure.chord.symbol, oldKey, key),
+                            notes: transposeNotes(measure.chord.notes, oldKey, key)
+                        },
+                        localKey: key // Update localKey to match new progression key
                     };
                 });
                 
@@ -6643,7 +6724,11 @@
                 console.log('Is custom:', customChord.isCustom);
                 console.log('Custom chord notes source:', customChordNotes);
                 
-                progressionMeasures[selectedMeasureIndex] = customChord;
+                // Update measure object with custom chord, preserving localKey and timeSignature
+                progressionMeasures[selectedMeasureIndex] = {
+                    ...progressionMeasures[selectedMeasureIndex],
+                    chord: customChord
+                };
                 updateProgressionChart();
                 
                 // Clear the custom chord after adding
@@ -7041,7 +7126,11 @@
                         sourceMode: chordMode,
                         sourceIndex: chordIndex
                     };
-                    progressionMeasures[measureIndex] = chordCopy;
+                    // Update measure object with new chord, preserving localKey and timeSignature
+                    progressionMeasures[measureIndex] = {
+                        ...progressionMeasures[measureIndex],
+                        chord: chordCopy
+                    };
                     
                     // Ensure selectedMeasureIndex is set for consistency
                     selectedMeasureIndex = measureIndex;
@@ -7736,9 +7825,39 @@
                 progressionKey = keySelect.value;
                 const measureCount = parseInt(measureSelect.value);
                 const timeSignature = timeSelect.value;
+                
+                // Remove any existing event listeners to prevent duplicates
+                const newKeySelect = keySelect.cloneNode(true);
+                const newTimeSelect = timeSelect.cloneNode(true);
+                keySelect.parentNode.replaceChild(newKeySelect, keySelect);
+                timeSelect.parentNode.replaceChild(newTimeSelect, timeSelect);
+                
+                // Add event listeners to update selected measure when dropdowns change
+                newKeySelect.addEventListener('change', function(e) {
+                    if (progressionActive && selectedMeasureIndex !== null) {
+                        const newKey = e.target.value;
+                        progressionMeasures[selectedMeasureIndex].localKey = newKey;
+                        console.log(`Changed measure ${selectedMeasureIndex} key to ${newKey}`);
+                        selectKey(newKey, true); // Update Circle of Fifths
+                        updateProgressionChart();
+                    }
+                });
+                
+                newTimeSelect.addEventListener('change', function(e) {
+                    if (progressionActive && selectedMeasureIndex !== null) {
+                        const newTime = e.target.value;
+                        progressionMeasures[selectedMeasureIndex].timeSignature = newTime;
+                        console.log(`Changed measure ${selectedMeasureIndex} time signature to ${newTime}`);
+                        updateProgressionChart();
+                    }
+                });
             
-            // Initialize empty measures
-            progressionMeasures = new Array(measureCount).fill(null);
+            // Initialize empty measures with metadata structure
+            progressionMeasures = new Array(measureCount).fill(null).map(() => ({
+                chord: null,
+                localKey: progressionKey,
+                timeSignature: timeSignature
+            }));
             // Remove currentMeasure to avoid dual cursor system
             // currentMeasure = 0;
             progressionActive = true;
@@ -7819,12 +7938,79 @@
                     measure.innerHTML = `
                         <div class="roman-numeral" id="roman-${measureIndex}"></div>
                         <div class="chord-symbol" id="chord-${measureIndex}">—</div>
+                        <div class="measure-controls" id="controls-${measureIndex}" style="display: none;">
+                            <select class="measure-key-select" onchange="changeMeasureKey(${measureIndex}, this.value)" onclick="event.stopPropagation()">
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                            <select class="measure-time-select" onchange="changeMeasureTime(${measureIndex}, this.value)" onclick="event.stopPropagation()">
+                                <option value="4/4">4/4</option>
+                                <option value="3/4">3/4</option>
+                                <option value="2/4">2/4</option>
+                                <option value="6/8">6/8</option>
+                                <option value="5/4">5/4</option>
+                                <option value="7/8">7/8</option>
+                            </select>
+                        </div>
                     `;
                     
                     measure.onclick = () => selectMeasure(measureIndex);
                     measuresRow.appendChild(measure);
+                    
+                    // Populate key dropdown
+                    populateMeasureKeyDropdown(measureIndex);
                 }
             }
+        }
+        
+        function populateMeasureKeyDropdown(measureIndex) {
+            const keySelect = document.querySelector(`#staff-measure-${measureIndex} .measure-key-select`);
+            const timeSelect = document.querySelector(`#staff-measure-${measureIndex} .measure-time-select`);
+            if (!keySelect) return;
+            
+            const keys = ['C', 'G', 'D', 'A', 'E', 'B', 'F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭', 'Am', 'Em', 'Bm', 'F#m', 'C#m', 'G#m', 'Dm', 'Gm', 'Cm', 'Fm', 'B♭m', 'E♭m'];
+            
+            keys.forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key;
+                keySelect.appendChild(option);
+            });
+            
+            // Set initial values from measure data
+            const measure = progressionMeasures[measureIndex];
+            if (measure) {
+                if (measure.localKey) {
+                    keySelect.value = measure.localKey;
+                }
+                if (measure.timeSignature && timeSelect) {
+                    timeSelect.value = measure.timeSignature;
+                }
+            }
+        }
+        
+        function changeMeasureKey(measureIndex, newKey) {
+            if (!progressionMeasures[measureIndex]) return;
+            
+            progressionMeasures[measureIndex].localKey = newKey;
+            console.log(`Changed measure ${measureIndex} key to ${newKey}`);
+            
+            // Update progression chart to reflect new key context
+            updateProgressionChart();
+            
+            // Sync Circle of Fifths if this is the selected measure
+            if (selectedMeasureIndex === measureIndex) {
+                selectKey(newKey, true);
+            }
+        }
+        
+        function changeMeasureTime(measureIndex, newTime) {
+            if (!progressionMeasures[measureIndex]) return;
+            
+            progressionMeasures[measureIndex].timeSignature = newTime;
+            console.log(`Changed measure ${measureIndex} time signature to ${newTime}`);
+            
+            // Update visual indicator if time signature changed
+            updateProgressionChart();
         }
         
         function displayKeySignature(key) {
@@ -7836,7 +8022,8 @@
         }
 
         function updateProgressionChart() {
-            progressionMeasures.forEach((chord, index) => {
+            progressionMeasures.forEach((measure, index) => {
+                const chord = measure ? measure.chord : null;
                 const chordEl = document.getElementById(`chord-${index}`);
                 const romanEl = document.getElementById(`roman-${index}`);
                 const measureEl = document.getElementById(`staff-measure-${index}`);
@@ -7857,9 +8044,10 @@
                             chordEl.innerHTML = chordDisplay.trim();
                             romanEl.textContent = ''; // No roman numeral for custom chords
                         } else {
-                            // Regular chord: display normally
+                            // Regular chord: display normally - use measure's localKey for roman numeral
                             chordEl.textContent = chord.symbol;
-                            romanEl.textContent = generateRomanNumeralForChord(chord, progressionKey, index);
+                            const localKey = measure.localKey || progressionKey;
+                            romanEl.textContent = generateRomanNumeralForChord(chord, localKey, index);
                         }
                         chordEl.style.color = '#333';
                     } else {
@@ -7870,6 +8058,24 @@
                     
                     // Update active measure indicator
                     measureEl.style.background = index === selectedMeasureIndex ? 'rgba(76, 175, 80, 0.1)' : '';
+                    
+                    // Add visual indicator for key/time changes
+                    if (index > 0 && measure && progressionMeasures[index - 1]) {
+                        const prevMeasure = progressionMeasures[index - 1];
+                        let changeIndicator = '';
+                        
+                        if (measure.localKey !== prevMeasure.localKey) {
+                            changeIndicator += `<span style="position: absolute; top: 2px; left: 2px; font-size: 9px; color: #2196F3; font-weight: bold;">${measure.localKey}</span>`;
+                        }
+                        
+                        if (measure.timeSignature !== prevMeasure.timeSignature) {
+                            changeIndicator += `<span style="position: absolute; bottom: 2px; left: 2px; font-size: 9px; color: #FF5722;">${measure.timeSignature}</span>`;
+                        }
+                        
+                        if (changeIndicator) {
+                            measureEl.innerHTML += changeIndicator;
+                        }
+                    }
                 } else {
                     console.warn(`Missing elements for measure ${index}:`, {
                         chordEl: !!chordEl,
@@ -7880,7 +8086,7 @@
             });
             
             // Enable play button if all measures have chords
-            const allFilled = progressionMeasures.every(chord => chord !== null);
+            const allFilled = progressionMeasures.every(measure => measure && measure.chord !== null);
             const playBtn = document.querySelector('.play-progression-btn');
             if (playBtn) {
                 playBtn.disabled = !allFilled;
@@ -8021,6 +8227,28 @@
 
         function selectMeasure(measureIndex) {
             selectedMeasureIndex = measureIndex; // Track selected measure for custom chord building
+            
+            // Sync Circle of Fifths with measure's localKey
+            const measure = progressionMeasures[measureIndex];
+            if (measure && measure.localKey && measure.localKey !== selectedKey) {
+                console.log('Syncing Circle of Fifths to measure localKey:', measure.localKey);
+                selectKey(measure.localKey, true); // Force the key change without toggling
+            }
+            
+            // Sync progression window dropdowns with selected measure
+            if (measure) {
+                const keySelect = document.getElementById('progressionKey');
+                const timeSelect = document.getElementById('timeSignature');
+                if (keySelect && measure.localKey) {
+                    keySelect.value = measure.localKey;
+                    console.log('Synced progressionKey dropdown to:', measure.localKey);
+                }
+                if (timeSelect && measure.timeSignature) {
+                    timeSelect.value = measure.timeSignature;
+                    console.log('Synced timeSignature dropdown to:', measure.timeSignature);
+                }
+            }
+            
             highlightSelectedMeasure();
             updateProgressionChart();
             
@@ -8030,7 +8258,8 @@
 
         function selectChordFromStaff(measureIndex) {
             // Get the chord from the progression measures
-            const chord = progressionMeasures[measureIndex];
+            const measure = progressionMeasures[measureIndex];
+            const chord = measure ? measure.chord : null;
             if (chord) {
                 // Set this as the selected chord for fretboard highlighting
                 selectedChord = chord;
@@ -8048,15 +8277,19 @@
         }
 
         function highlightSelectedMeasure(measureIndex) {
-            // Remove highlight from all measures
-            document.querySelectorAll('.measure-staff').forEach(measure => {
+            // Remove highlight from all measures and hide all controls
+            document.querySelectorAll('.measure-staff').forEach((measure, idx) => {
                 measure.classList.remove('selected-measure');
+                const controls = document.getElementById(`controls-${idx}`);
+                if (controls) controls.style.display = 'none';
             });
             
-            // Highlight the selected measure
+            // Highlight the selected measure and show its controls
             const selectedMeasure = document.getElementById(`staff-measure-${measureIndex}`);
             if (selectedMeasure) {
                 selectedMeasure.classList.add('selected-measure');
+                const controls = document.getElementById(`controls-${measureIndex}`);
+                if (controls) controls.style.display = 'flex';
             }
         }
 
