@@ -529,7 +529,7 @@
             background: transparent;
             border: 1px solid #ddd;
             border-radius: 4px;
-            padding: 20px;
+            padding: 20px 20px 40px 20px;
             margin: 15px 0;
             display: none;
             font-family: 'Times New Roman', serif;
@@ -621,30 +621,6 @@
         .measure-staff.selected-measure {
             background-color: rgba(76, 175, 80, 0.2);
             border: 2px solid #4CAF50;
-        }
-
-        .measure-controls {
-            position: absolute;
-            top: -30px;
-            left: 0;
-            right: 0;
-            display: flex;
-            gap: 4px;
-            padding: 2px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid #4CAF50;
-            border-radius: 4px;
-            z-index: 100;
-        }
-
-        .measure-key-select,
-        .measure-time-select {
-            flex: 1;
-            padding: 2px 4px;
-            font-size: 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            background: white;
         }
 
         /* Custom Chord Creator Styles */
@@ -915,24 +891,406 @@
             box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
         }
 
-        .staff-container .roman-numeral {
-            position: absolute;
-            top: 0.5rem;
-            font-size: clamp(0.7rem, 2vw, 0.9rem);
-            font-weight: bold;
-            color: #333;
-            white-space: nowrap;
-            font-family: serif;
-        }
-
         .staff-container .chord-symbol {
             position: absolute;
-            top: 1.8rem;
-            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            top: 0.5rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
             font-weight: bold;
             color: #000;
             white-space: nowrap;
-            font-family: serif;
+            font-family: 'Times New Roman', serif;
+            text-align: center;
+        }
+
+        .staff-container .roman-numeral {
+            position: absolute;
+            bottom: -1.5rem;
+            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+            font-weight: 500;
+            color: #333;
+            white-space: nowrap;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        /* Section Tabs */
+        .section-tabs-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            margin-bottom: 16px;
+            padding: 8px 8px 0 8px;
+            background: #f5f5f5;
+            border-bottom: 2px solid #ddd;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            display: none; /* Hidden until progression is active */
+            scrollbar-width: thin;
+            scrollbar-color: #4CAF50 #e0e0e0;
+        }
+
+        .section-tabs-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .section-tabs-container::-webkit-scrollbar-thumb {
+            background: #4CAF50;
+            border-radius: 3px;
+        }
+
+        .section-tabs-container::-webkit-scrollbar-track {
+            background: #e0e0e0;
+        }
+
+        .section-tabs-container.active {
+            display: flex;
+        }
+
+        .section-tabs {
+            display: flex;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .section-tab {
+            position: relative;
+            /* KEY: Dynamic sizing with flex */
+            flex: 1 1 0;
+            min-width: 60px;
+            max-width: 200px;
+            
+            padding: 10px 32px 10px 16px;
+            background: #e0e0e0;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-family: 'Times New Roman', serif;
+            
+            /* Responsive font sizing */
+            font-size: clamp(11px, 1.2vw, 13px);
+            font-weight: 500;
+            
+            /* Handle text overflow */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            
+            transition: all 0.2s ease;
+            text-align: left;
+            user-select: none;
+        }
+
+        .section-tab:hover {
+            background: #d0d0d0;
+            transform: translateY(-1px);
+        }
+
+        .section-tab.active {
+            background: #4CAF50;
+            color: white;
+            border-color: #45a049;
+            font-weight: 600;
+            box-shadow: 0 -2px 8px rgba(76, 175, 80, 0.3);
+            transform: translateY(0);
+        }
+
+        .section-tab.active:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+        }
+
+        .section-tab-name {
+            font-weight: 500;
+            font-size: inherit;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: text;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        .section-tab-name:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .section-tab.active .section-tab-name:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .section-tab-name-input {
+            font-family: 'Times New Roman', serif;
+            font-size: inherit;
+            font-weight: inherit;
+            color: inherit;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #4CAF50;
+            border-radius: 3px;
+            padding: 2px 4px;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .section-tab.active .section-tab-name-input {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+        }
+
+        .section-tab.active .section-tab-name {
+            font-weight: 600;
+        }
+
+        .section-tab-info {
+            font-size: clamp(9px, 0.9vw, 10px);
+            opacity: 0.7;
+            margin-left: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .section-tab.active .section-tab-info {
+            opacity: 0.9;
+        }
+
+        /* Dynamic sizing modes added by JavaScript */
+        .section-tab.mode-compact {
+            min-width: 50px;
+            max-width: 80px;
+            padding: 8px 28px 8px 10px;
+        }
+
+        .section-tab.mode-compact .section-tab-info {
+            display: none;
+        }
+
+        .section-tab.mode-comfortable {
+            min-width: 80px;
+            max-width: 150px;
+        }
+
+        .section-tab.mode-spacious {
+            min-width: 120px;
+            max-width: 200px;
+            font-size: 14px;
+        }
+
+        .section-tab-close {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+            transition: all 0.2s;
+            color: #666;
+        }
+
+        .section-tab:hover .section-tab-close {
+            opacity: 1;
+        }
+
+        .section-tab.active .section-tab-close {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .section-tab-close:hover {
+            background: rgba(255,0,0,0.7) !important;
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .section-tab-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 150px;
+            display: none;
+        }
+
+        .section-tab-menu.active {
+            display: block;
+        }
+
+        .section-tab-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .section-tab-menu button:hover {
+            background: #f5f5f5;
+        }
+
+        .add-section-btn {
+            /* Fixed size - don't grow or shrink */
+            flex: 0 0 auto;
+            width: 50px;
+            
+            padding: 10px;
+            background: transparent;
+            color: #4CAF50;
+            border: 2px dashed #4CAF50;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .add-section-btn:hover {
+            background: #E8F5E9;
+            border-color: #45a049;
+        }
+
+        .section-edit-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 2000;
+            min-width: 300px;
+            display: none;
+        }
+
+        .section-edit-modal.active {
+            display: block;
+        }
+
+        .section-edit-modal h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .section-edit-modal label {
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .section-edit-modal input,
+        .section-edit-modal select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .section-edit-modal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            justify-content: flex-end;
+        }
+
+        .section-edit-modal-buttons button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .section-edit-modal-buttons .save-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .section-edit-modal-buttons .cancel-btn {
+            background: #ddd;
+        }
+
+        .section-tab-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            min-width: 160px;
+            overflow: hidden;
+        }
+
+        .section-tab-menu .menu-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .section-tab-menu .menu-item:hover {
+            background: #f5f5f5;
+        }
+
+        .section-tab-menu .menu-item-danger {
+            color: #f44336;
+        }
+
+        .section-tab-menu .menu-item-danger:hover {
+            background: #ffebee;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .section-tab {
+                min-width: 50px;
+                max-width: 100px;
+                padding: 8px 24px 8px 8px;
+                font-size: 11px;
+            }
+            
+            .section-tab-info {
+                display: none;
+            }
+            
+            .add-section-btn {
+                width: 40px;
+                font-size: 16px;
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .modal-overlay.active {
+            display: block;
         }
 
         @keyframes beatPulse {
@@ -2078,6 +2436,65 @@
         </div>
     </div>
 
+    <!-- Section Edit Modal -->
+    <div class="modal-overlay" id="sectionEditModal">
+        <div class="modal">
+            <h2>Edit Section</h2>
+            <div class="form-group">
+                <label for="sectionName">Section Name</label>
+                <input type="text" id="sectionName" placeholder="e.g., Verse, Chorus, Bridge">
+            </div>
+            <div class="form-group">
+                <label for="sectionBars">Number of Bars</label>
+                <input type="number" id="sectionBars" min="1" max="64" value="4">
+            </div>
+            <div class="form-group">
+                <label for="sectionKey">Key</label>
+                <select id="sectionKey">
+                    <option value="C">C Major</option>
+                    <option value="G">G Major</option>
+                    <option value="D">D Major</option>
+                    <option value="A">A Major</option>
+                    <option value="E">E Major</option>
+                    <option value="B">B Major</option>
+                    <option value="F♯/G♭">F♯/G♭ Major</option>
+                    <option value="F">F Major</option>
+                    <option value="B♭">B♭ Major</option>
+                    <option value="E♭">E♭ Major</option>
+                    <option value="A♭">A♭ Major</option>
+                    <option value="D♭">D♭ Major</option>
+                    <option value="Am">A Minor</option>
+                    <option value="Em">E Minor</option>
+                    <option value="Bm">B Minor</option>
+                    <option value="F♯m">F♯ Minor</option>
+                    <option value="C♯m">C♯ Minor</option>
+                    <option value="G♯m">G♯ Minor</option>
+                    <option value="D♯m/E♭m">D♯/E♭ Minor</option>
+                    <option value="Dm">D Minor</option>
+                    <option value="Gm">G Minor</option>
+                    <option value="Cm">C Minor</option>
+                    <option value="Fm">F Minor</option>
+                    <option value="B♭m">B♭ Minor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sectionTimeSignature">Time Signature</label>
+                <select id="sectionTimeSignature">
+                    <option value="4/4">4/4</option>
+                    <option value="3/4">3/4</option>
+                    <option value="2/4">2/4</option>
+                    <option value="6/8">6/8</option>
+                    <option value="9/8">9/8</option>
+                    <option value="12/8">12/8</option>
+                    <option value="5/4">5/4</option>
+                    <option value="7/8">7/8</option>
+                </select>
+            </div>
+            <button class="btn-primary" onclick="saveSectionEdit()">Save</button>
+            <button class="btn-secondary" onclick="closeSectionEditModal()">Cancel</button>
+        </div>
+    </div>
+
     <!-- Browse Library Modal -->
     <div class="modal-overlay" id="browseLibraryModal">
         <div class="modal browse-modal">
@@ -2154,7 +2571,28 @@
                 
                 <!-- Musical Staff -->
                 <div class="staff-container" id="staffContainer">
-                    <h4>Chord Progression Staff</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h4 style="margin: 0;">Chord Progression Staff</h4>
+                        <div class="playback-mode-controls" style="display: flex; gap: 15px; font-size: 13px;">
+                            <label style="cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                <input type="radio" name="playbackMode" id="playCurrentSection" checked>
+                                Section
+                            </label>
+                            <label style="cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                <input type="radio" name="playbackMode" id="playAllSections">
+                                Song
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Section Tabs -->
+                    <div class="section-tabs-container" id="sectionTabsContainer">
+                        <div class="section-tabs" id="sectionTabs">
+                            <!-- Tabs will be generated here -->
+                        </div>
+                        <button class="add-section-btn" id="addSectionBtn" onclick="addNewSection()" title="Add new section">+</button>
+                    </div>
+                    
                     <div class="staff-wrapper" id="staffWrapper">
                         <!-- Systems will be generated here -->
                     </div>
@@ -2240,10 +2678,6 @@
                         <button class="create-progression-btn" onclick="createProgression()">Create Progression</button>
                         <button class="play-progression-btn" onclick="playProgression()" disabled>Play</button>
                         <button class="create-progression-btn" onclick="clearProgression()">Clear</button>
-                        <label>
-                            <input type="checkbox" id="loopProgression" checked>
-                            Loop
-                        </label>
                     </div>
 
                     <!-- Save/Share Controls (shown when logged in) -->
@@ -2585,18 +3019,43 @@
             const categories = categoriesInput ? categoriesInput.split(',').map(c => c.trim()) : [];
             
             try {
+                // Save current section state before saving
+                currentSong.sections[currentSong.currentSectionIndex].measures = progressionMeasures;
+                
                 const progressionData = {
                     name: name,
                     key: selectedKey,
                     scale: selectedScale,
                     timeSignature: '4/4', // Can be made dynamic later
                     tempo: parseInt(document.getElementById('tempo').value) || 120,
+                    
+                    // NEW: Save entire song structure
+                    song: {
+                        title: currentSong.title,
+                        sections: currentSong.sections.map(section => ({
+                            id: section.id,
+                            name: section.name,
+                            bars: section.bars,
+                            key: section.key,
+                            timeSignature: section.timeSignature,
+                            repeat: section.repeat || false,
+                            measures: section.measures.map(measure => ({
+                                symbol: measure.chord ? measure.chord.symbol : null,
+                                notes: measure.chord ? measure.chord.notes : null,
+                                localKey: measure.localKey,
+                                timeSignature: measure.timeSignature
+                            }))
+                        }))
+                    },
+                    
+                    // Keep legacy format for backwards compatibility
                     measures: progressionMeasures.map(measure => ({
                         symbol: measure.chord ? measure.chord.symbol : null,
                         notes: measure.chord ? measure.chord.notes : null,
                         localKey: measure.localKey,
                         timeSignature: measure.timeSignature
                     })),
+                    
                     ownerId: currentUser.uid,
                     sharedWith: [],
                     isPublic: false,
@@ -2729,23 +3188,72 @@
                     document.getElementById('tempo').value = data.tempo || 120;
                     console.log('Set tempo:', data.tempo);
                     
-                    // Load measures (handle both old format and new format with localKey)
-                    progressionMeasures = data.measures.map(m => {
-                        if (m.symbol) {
-                            return {
-                                chord: { symbol: m.symbol, notes: m.notes },
-                                localKey: m.localKey || data.key, // Fallback to progression key for old format
-                                timeSignature: m.timeSignature || data.timeSignature || '4/4'
-                            };
-                        } else {
-                            return {
-                                chord: null,
-                                localKey: m.localKey || data.key,
-                                timeSignature: m.timeSignature || data.timeSignature || '4/4'
-                            };
-                        }
-                    });
-                    console.log('Loaded progressionMeasures:', progressionMeasures);
+                    // Load song structure (NEW format) or fallback to legacy measures
+                    if (data.song && data.song.sections) {
+                        // NEW: Load multi-section song
+                        currentSong = {
+                            title: data.song.title || data.name,
+                            sections: data.song.sections.map(section => ({
+                                id: section.id,
+                                name: section.name,
+                                bars: section.bars,
+                                key: section.key,
+                                timeSignature: section.timeSignature,
+                                repeat: section.repeat || false,
+                                measures: section.measures.map(m => {
+                                    if (m.symbol) {
+                                        return {
+                                            chord: { symbol: m.symbol, notes: m.notes },
+                                            localKey: m.localKey || section.key,
+                                            timeSignature: m.timeSignature || section.timeSignature
+                                        };
+                                    } else {
+                                        return {
+                                            chord: null,
+                                            localKey: m.localKey || section.key,
+                                            timeSignature: m.timeSignature || section.timeSignature
+                                        };
+                                    }
+                                })
+                            })),
+                            currentSectionIndex: 0
+                        };
+                        console.log('Loaded multi-section song:', currentSong);
+                    } else {
+                        // Legacy: Single section from old measures format
+                        currentSong = {
+                            title: data.name,
+                            sections: [{
+                                id: 'section-1',
+                                name: 'Main',
+                                bars: data.measures.length,
+                                key: data.key,
+                                timeSignature: data.timeSignature || '4/4',
+                                repeat: false,
+                                measures: data.measures.map(m => {
+                                    if (m.symbol) {
+                                        return {
+                                            chord: { symbol: m.symbol, notes: m.notes },
+                                            localKey: m.localKey || data.key,
+                                            timeSignature: m.timeSignature || data.timeSignature || '4/4'
+                                        };
+                                    } else {
+                                        return {
+                                            chord: null,
+                                            localKey: m.localKey || data.key,
+                                            timeSignature: m.timeSignature || data.timeSignature || '4/4'
+                                        };
+                                    }
+                                })
+                            }],
+                            currentSectionIndex: 0
+                        };
+                        console.log('Loaded legacy single-section:', currentSong);
+                    }
+                    
+                    // Sync compatibility layer
+                    syncProgressionMeasures();
+                    console.log('Synced progressionMeasures:', progressionMeasures);
                     
                     // Activate progression mode
                     progressionActive = true;
@@ -2754,6 +3262,9 @@
                     // Show staff container
                     const staffContainer = document.getElementById('staffContainer');
                     staffContainer.classList.add('active');
+                    
+                    // Show and render section tabs
+                    renderSectionTabs();
                     
                     // Generate the staff UI if it doesn't exist
                     console.log('Generating staff measures...');
@@ -4595,19 +5106,19 @@
                 const scaleDegreeRomans = ['I7', 'II7', 'III7', 'IV7', 'V7', 'VI7', 'VII7'];
                 const scaleDegreeRoman = scaleDegreeRomans[index];
                 
-                // Get target roman numeral (what this chord resolves to - a fifth below from the chord root)
-                // C7 (I7) resolves to F (IV), D7 (II7) resolves to G (V), etc.
-                const targetIndex = (index + 3) % 7; // Perfect fourth up = fifth down
+                // Get target roman numeral
+                // G7→V7/IV, A7→V7/V, B7→V7/vi, C7→V7/♭VII, D7→V7/I, E7→V7/ii, F#7→V7/iii
                 const targetRomanNumerals = isMinorScale ? 
-                    ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'] :
-                    ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                    ['iv', 'v', '♭VI', '♭VII', 'i', 'ii°', '♭III'] :
+                    ['IV', 'V', 'vi', '♭VII', 'I', 'ii', 'iii'];
+                const target = targetRomanNumerals[index];
                     
                 secondaryDominants.push({
                     symbol: `${root}7`,
                     notes: [root, third, fifth, seventh],
                     degrees: ['1', '3', '5', '♭7'],
                     scaleDegree: scaleDegreeRoman,
-                    target: targetRomanNumerals[targetIndex]
+                    target: target
                 });
             });
             
@@ -4645,8 +5156,26 @@
                 const fifth = semitoneToNoteFlat((passingToneSemitone + 6) % 12); // Diminished fifth
                 const seventh = semitoneToNoteFlat((passingToneSemitone + 9) % 12); // Diminished seventh
                 
-                // Calculate which scale degrees this chord passes between
-                const romanNumeral = `${root}°7`;
+                // Calculate the chromatic scale degree relative to tonic
+                const chromaticDegree = (passingToneSemitone - tonicSemitone + 12) % 12;
+                
+                // Map chromatic degrees to Roman numeral notation for diminished chords
+                const romanNumeralMap = {
+                    0: 'I°<sup>7</sup>',      // I (enharmonic)
+                    1: '♭II°<sup>7</sup>',    // ♭II
+                    2: 'II°<sup>7</sup>',     // II
+                    3: '♭III°<sup>7</sup>',   // ♭III
+                    4: 'III°<sup>7</sup>',    // III
+                    5: 'IV°<sup>7</sup>',     // IV
+                    6: '♭V°<sup>7</sup>',     // ♭V (tritone)
+                    7: 'V°<sup>7</sup>',      // V
+                    8: '♭VI°<sup>7</sup>',    // ♭VI
+                    9: 'VI°<sup>7</sup>',     // VI
+                    10: '♭VII°<sup>7</sup>',  // ♭VII
+                    11: 'VII°<sup>7</sup>'    // VII
+                };
+                
+                const romanNumeral = romanNumeralMap[chromaticDegree] || `${root}°<sup>7</sup>`;
                 
                 diminishedPassing.push({
                     symbol: `${root}°7`,
@@ -4831,7 +5360,9 @@
             };
             
             // Get Roman numeral for current chord
-            const currentRoman = generateRomanNumeralForChord(chordSymbol, key);
+            // Need to create a chord object with the symbol for generateRomanNumeralForChord
+            const chordObj = { symbol: chordSymbol };
+            const currentRoman = calculateRomanNumeralFromRoot(chordObj, key);
             
             // Find matching cadences
             if (cadencePatterns[currentRoman]) {
@@ -5395,10 +5926,30 @@
             'XVII': { frets: [17, 18, 19, 20, 21, 22], label: 'XVII' }
         };
 
-        // Progression state
+        // Progression state - NEW SONG STRUCTURE
         let progressionActive = false;
         let progressionKey = 'C';
-        let progressionMeasures = [];
+        
+        // Song structure with sections
+        let currentSong = {
+            title: "Untitled Song",
+            sections: [
+                {
+                    id: 'section-1',
+                    name: 'Intro',
+                    bars: 4,
+                    key: 'C',
+                    timeSignature: '4/4',
+                    repeat: false,
+                    measures: []
+                }
+            ],
+            currentSectionIndex: 0
+        };
+        
+        // Compatibility layer - progressionMeasures points to current section's measures
+        let progressionMeasures = currentSong.sections[0].measures;
+        
         let audioContext = null;
         let isPlaying = false;
         let isMobileAudioUnlocked = false;
@@ -6061,10 +6612,14 @@
             
             console.log('Selected key:', selectedKey, 'Selected scale:', selectedScale);
             
-            // Also update the progression key dropdown to match
+            // Update the progression key dropdown to match ONLY if progression is NOT active
+            // When progression is active, the dropdown controls per-measure keys
             const progressionKeySelect = document.getElementById('progressionKey');
-            if (progressionKeySelect) {
+            if (progressionKeySelect && !progressionActive) {
                 progressionKeySelect.value = key;
+                console.log('Updated progression dropdown to:', key);
+            } else if (progressionActive) {
+                console.log('Progression active - NOT updating dropdown, it controls measure keys');
             }
             
             // AUTO-TRANSPOSE: If progression is active and key changed, transpose all measures
@@ -6155,13 +6710,12 @@
             });
         }
 
-        // Generate Roman numeral for a chord
+        // Generate Roman numeral for a chord with proper HTML formatting
         function generateRomanNumeral(chordIndex, chordMode, key) {
             const isMinor = key.includes('m');
             
             switch(chordMode) {
                 case 'triads':
-                case 'sevenths':
                     if (!isMinor) {
                         const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
                         return majorRomanNumerals[chordIndex];
@@ -6169,20 +6723,28 @@
                         const minorRomanNumerals = ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'];
                         return minorRomanNumerals[chordIndex];
                     }
+                case 'sevenths':
+                    if (!isMinor) {
+                        const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+                        return majorRomanNumerals[chordIndex] + '<sup>7</sup>';
+                    } else {
+                        const minorRomanNumerals = ['i', 'ii°', '♭III', 'iv', 'v', '♭VI', '♭VII'];
+                        return minorRomanNumerals[chordIndex] + '<sup>7</sup>';
+                    }
                 case 'secondary':
                     // Get the actual secondary dominant data
                     const secondaryChords = generateSecondaryDominants(key);
                     if (secondaryChords[chordIndex]) {
-                        return `V7/${secondaryChords[chordIndex].target}`;
+                        return `V<sup>7</sup>/${secondaryChords[chordIndex].target}`;
                     }
-                    return 'V7';
+                    return 'V<sup>7</sup>';
                 case 'diminished':
                     // Get the actual diminished passing chord data
                     const diminishedChords = generateDiminishedPassing(key);
                     if (diminishedChords[chordIndex] && diminishedChords[chordIndex].roman) {
                         return diminishedChords[chordIndex].roman;
                     }
-                    return '°7';
+                    return '°<sup>7</sup>';
             }
         }
         
@@ -6255,6 +6817,14 @@
                 }
                 
                 const root = selectedKey.replace(/m$/, '').split('/')[0];
+                
+                // Check if we're viewing a local key (during measure selection)
+                const isLocalKeyView = progressionActive && 
+                                      selectedMeasureIndex !== null && 
+                                      progressionMeasures[selectedMeasureIndex] && 
+                                      progressionMeasures[selectedMeasureIndex].localKey !== window.originalProgressionKey;
+                const localKeyBadge = isLocalKeyView ? '<span style="background: #4a90e2; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px;">LOCAL KEY</span>' : '';
+                
                 let chords = [];
                 let chordModeTitle = '';
                 
@@ -6286,7 +6856,7 @@
                 ).join('');
                 
                 container.innerHTML = `
-                    <h4>${root} ${scaleNames[selectedScale]}</h4>
+                    <h4>${root} ${scaleNames[selectedScale]}${localKeyBadge}</h4>
                     <p><strong>Scale Type:</strong> ${keyData.signature}</p>
                     
                     <div class="scale-selector">
@@ -6622,14 +7192,12 @@
                     if (nextMeasureIndex < progressionMeasures.length) {
                         selectedMeasureIndex = nextMeasureIndex;
                         console.log('Advanced to next measure:', selectedMeasureIndex);
-                        highlightSelectedMeasure();
-                        updateProgressionChart();
+                        selectMeasure(selectedMeasureIndex); // Update key display for new measure
                     } else {
                         // End of progression reached - wrap to beginning
                         selectedMeasureIndex = 0;
                         console.log('Wrapped to beginning of progression');
-                        highlightSelectedMeasure();
-                        updateProgressionChart();
+                        selectMeasure(selectedMeasureIndex); // Update key display for new measure
                     }
                 } else {
                     console.log('No valid measure to advance from');
@@ -6667,7 +7235,10 @@
                 console.log('Chord root:', customChord.root);
                 console.log('Is custom:', customChord.isCustom);
                 
-                progressionMeasures[selectedMeasureIndex] = customChord;
+                progressionMeasures[selectedMeasureIndex] = {
+                    ...progressionMeasures[selectedMeasureIndex],
+                    chord: customChord
+                };
                 updateProgressionChart();
                 
                 // Auto-advance to next measure
@@ -7035,7 +7606,10 @@
             
             // Add to progression
             if (targetMeasure < progressionMeasures.length) {
-                progressionMeasures[targetMeasure] = customChord;
+                progressionMeasures[targetMeasure] = {
+                    ...progressionMeasures[targetMeasure],
+                    chord: customChord
+                };
                 updateProgressionChart();
                 
                 // If we used the current measure, advance it (only during active progression)
@@ -7468,11 +8042,8 @@
 
         // Arpeggio line functions
         function drawArpeggioLines() {
-            console.log('drawArpeggioLines called, isPositionZoomed:', isPositionZoomed);
-            
             // Only draw arpeggio lines in position mode and if enabled
             if (!isPositionZoomed || !arpeggioLinesEnabled) {
-                console.log('Not drawing arpeggio lines - position mode:', isPositionZoomed, 'enabled:', arpeggioLinesEnabled);
                 return;
             }
             
@@ -7485,12 +8056,10 @@
             // Check if we have a selected preset chord
             if (selectedChord && selectedChord.notes) {
                 chordNotes = selectedChord.notes;
-                console.log('Using preset chord notes:', chordNotes);
             }
             // Check if we have custom chord notes
             else if (customChordNotes && customChordNotes.length > 0) {
                 chordNotes = customChordNotes;
-                console.log('Using custom chord notes:', chordNotes);
             }
             
             if (chordNotes.length < 2) {
@@ -7815,73 +8384,664 @@
             updateFretboard();
         }
 
+        // Helper function to sync compatibility layer
+        function syncProgressionMeasures() {
+            const currentSection = currentSong.sections[currentSong.currentSectionIndex];
+            progressionMeasures = currentSection.measures;
+            progressionKey = currentSection.key;
+        }
+
+        // Section Management Functions
+        function renderSectionTabs() {
+            const tabsContainer = document.getElementById('sectionTabsContainer');
+            const tabsElement = document.getElementById('sectionTabs');
+            
+            if (!progressionActive) {
+                tabsContainer.classList.remove('active');
+                return;
+            }
+            
+            tabsContainer.classList.add('active');
+            tabsElement.innerHTML = '';
+            
+            // Render each section tab
+            currentSong.sections.forEach((section, index) => {
+                const tab = document.createElement('div');
+                tab.className = 'section-tab' + (index === currentSong.currentSectionIndex ? ' active' : '');
+                
+                // Tab content
+                const tabContent = document.createElement('span');
+                tabContent.className = 'section-tab-content';
+                
+                // Section name (editable)
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'section-tab-name';
+                nameSpan.textContent = section.name;
+                nameSpan.onclick = (e) => {
+                    e.stopPropagation();
+                    startEditingSectionName(index, nameSpan);
+                };
+                
+                // Section info
+                const infoSpan = document.createElement('span');
+                infoSpan.className = 'section-tab-info';
+                infoSpan.textContent = `${section.bars} bars, ${section.key}`;
+                
+                tabContent.appendChild(nameSpan);
+                tabContent.appendChild(infoSpan);
+                
+                tab.appendChild(tabContent);
+                
+                // Close button
+                const closeBtn = document.createElement('span');
+                closeBtn.className = 'section-tab-close';
+                closeBtn.innerHTML = '×';
+                closeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    deleteSection(index);
+                };
+                
+                tab.appendChild(closeBtn);
+                
+                // Click to switch sections
+                tab.onclick = () => switchToSection(index);
+                
+                // Right-click for context menu
+                tab.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    showSectionContextMenu(e, index);
+                };
+                
+                tabsElement.appendChild(tab);
+            });
+            
+            // Update dynamic sizing after rendering
+            setTimeout(updateTabSizing, 0);
+        }
+
+        let contextMenuTarget = -1;
+
+        function showSectionContextMenu(event, sectionIndex) {
+            // Remove any existing context menu
+            const existingMenu = document.querySelector('.section-tab-menu');
+            if (existingMenu) {
+                existingMenu.remove();
+            }
+            
+            contextMenuTarget = sectionIndex;
+            
+            // Create context menu
+            const menu = document.createElement('div');
+            menu.className = 'section-tab-menu';
+            menu.innerHTML = `
+                <div class="menu-item" onclick="editSection(${sectionIndex}); hideContextMenu();">Edit Section</div>
+                <div class="menu-item" onclick="duplicateSection(${sectionIndex}); hideContextMenu();">Duplicate Section</div>
+                <div class="menu-item menu-item-danger" onclick="deleteSection(${sectionIndex}); hideContextMenu();">Delete Section</div>
+            `;
+            
+            // Position menu at click location
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            document.body.appendChild(menu);
+            
+            // Close menu on outside click
+            setTimeout(() => {
+                document.addEventListener('click', hideContextMenu);
+            }, 0);
+        }
+
+        function hideContextMenu() {
+            const menu = document.querySelector('.section-tab-menu');
+            if (menu) {
+                menu.remove();
+            }
+            document.removeEventListener('click', hideContextMenu);
+            contextMenuTarget = -1;
+        }
+
+        /**
+         * Dynamic tab sizing system
+         */
+        function updateTabSizing() {
+            const container = document.getElementById('sectionTabsContainer');
+            if (!container || !container.classList.contains('active')) return;
+            
+            const tabs = container.querySelectorAll('.section-tab');
+            const addBtn = container.querySelector('.add-section-btn');
+            
+            if (tabs.length === 0) return;
+            
+            const containerWidth = container.offsetWidth;
+            const addBtnWidth = addBtn ? 50 : 0;
+            const gap = 4;
+            const totalGaps = tabs.length * gap;
+            const padding = 20;
+            
+            // Calculate available space per tab
+            const availableWidth = containerWidth - addBtnWidth - totalGaps - padding;
+            const avgTabWidth = availableWidth / tabs.length;
+            
+            // Determine and apply display mode
+            let mode = 'comfortable';
+            if (avgTabWidth > 150) {
+                mode = 'spacious';
+            } else if (avgTabWidth > 90) {
+                mode = 'comfortable';
+            } else {
+                mode = 'compact';
+            }
+            
+            setTabDisplayMode(mode);
+        }
+
+        /**
+         * Set display mode for all tabs
+         */
+        function setTabDisplayMode(mode) {
+            const tabs = document.querySelectorAll('.section-tab');
+            
+            tabs.forEach((tab, index) => {
+                // Remove all mode classes
+                tab.classList.remove('mode-compact', 'mode-comfortable', 'mode-spacious');
+                
+                // Add appropriate mode class
+                tab.classList.add(`mode-${mode}`);
+                
+                // Get section data
+                const section = currentSong.sections[index];
+                if (!section) return;
+                
+                const nameEl = tab.querySelector('.section-tab-name');
+                if (!nameEl) return;
+                
+                // Abbreviate names if in compact mode
+                if (mode === 'compact') {
+                    nameEl.textContent = abbreviateSectionName(section.name, 8);
+                } else {
+                    nameEl.textContent = section.name;
+                }
+            });
+        }
+
+        /**
+         * Abbreviate section names for compact display
+         */
+        function abbreviateSectionName(name, maxLength) {
+            const abbreviations = {
+                'Intro': 'Intro',
+                'Introduction': 'Intro',
+                'Verse': 'V',
+                'Chorus': 'C',
+                'Bridge': 'B',
+                'Outro': 'Out',
+                'Interlude': 'Int',
+                'Solo': 'Solo',
+                'Pre-Chorus': 'PreC',
+                'Verse 2': 'V2',
+                'Chorus 2': 'C2'
+            };
+            
+            // Use abbreviation if available and needed
+            if (name.length > maxLength && abbreviations[name]) {
+                return abbreviations[name];
+            }
+            
+            // Otherwise truncate with ellipsis
+            if (name.length > maxLength) {
+                return name.substring(0, maxLength - 1) + '…';
+            }
+            
+            return name;
+        }
+
+        /**
+         * Start inline editing of section name
+         */
+        function startEditingSectionName(sectionIndex, nameElement) {
+            const section = currentSong.sections[sectionIndex];
+            const originalName = section.name;
+            
+            // Create input element
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'section-tab-name-input';
+            input.value = originalName;
+            
+            // Replace name span with input
+            nameElement.style.display = 'none';
+            nameElement.parentNode.insertBefore(input, nameElement);
+            
+            // Focus and select text
+            input.focus();
+            input.select();
+            
+            // Save on blur or Enter
+            const saveEdit = () => {
+                const newName = input.value.trim();
+                
+                if (newName && newName !== originalName) {
+                    section.name = newName;
+                    nameElement.textContent = newName;
+                }
+                
+                // Restore name span
+                input.remove();
+                nameElement.style.display = '';
+                
+                // Update display with new mode if needed
+                updateTabSizing();
+            };
+            
+            // Save on Enter
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveEdit();
+                } else if (e.key === 'Escape') {
+                    // Cancel - restore original
+                    input.value = originalName;
+                    saveEdit();
+                }
+            });
+            
+            // Save on blur (click outside)
+            input.addEventListener('blur', saveEdit);
+            
+            // Prevent tab switching when clicking input
+            input.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+
+        /**
+         * Initialize dynamic tab sizing
+         */
+        function initializeDynamicTabs() {
+            updateTabSizing();
+            
+            // Re-calculate on window resize with debouncing
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(updateTabSizing, 150);
+            });
+        }
+
+        // Initialize on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeDynamicTabs);
+        } else {
+            initializeDynamicTabs();
+        }
+
+        function switchToSection(sectionIndex) {
+            if (sectionIndex < 0 || sectionIndex >= currentSong.sections.length) return;
+            
+            // Save current section state
+            currentSong.sections[currentSong.currentSectionIndex].measures = progressionMeasures;
+            
+            // Switch to new section
+            currentSong.currentSectionIndex = sectionIndex;
+            syncProgressionMeasures();
+            
+            // Update UI
+            renderSectionTabs();
+            regenerateStaffForCurrentSection();
+            selectMeasure(0); // Select first measure of new section
+        }
+
+        function addNewSection() {
+            const newSectionId = 'section-' + (currentSong.sections.length + 1);
+            const currentSection = currentSong.sections[currentSong.currentSectionIndex];
+            
+            // Better default section names
+            const sectionNameSuggestions = [
+                'Intro',
+                'Verse',
+                'Chorus',
+                'Bridge',
+                'Verse 2',
+                'Chorus 2',
+                'Solo',
+                'Pre-Chorus',
+                'Outro',
+                'Interlude'
+            ];
+            
+            const sectionCount = currentSong.sections.length;
+            const defaultName = sectionNameSuggestions[sectionCount] || `Section ${sectionCount + 1}`;
+            
+            const newSection = {
+                id: newSectionId,
+                name: defaultName,
+                bars: currentSection.bars,
+                key: currentSection.key, // Inherit key from current section
+                timeSignature: currentSection.timeSignature,
+                repeat: false,
+                measures: new Array(currentSection.bars).fill(null).map(() => ({
+                    chord: null,
+                    localKey: currentSection.key,
+                    timeSignature: currentSection.timeSignature
+                }))
+            };
+            
+            currentSong.sections.push(newSection);
+            renderSectionTabs();
+            // updateTabSizing is called by renderSectionTabs
+        }
+
+        function regenerateStaffForCurrentSection() {
+            const currentSection = currentSong.sections[currentSong.currentSectionIndex];
+            generateStaffMeasures(currentSection.bars, currentSection.timeSignature);
+            updateProgressionChart();
+        }
+
+        let editingSectionIndex = -1;
+
+        function editSection(sectionIndex) {
+            editingSectionIndex = sectionIndex;
+            const section = currentSong.sections[sectionIndex];
+            
+            // Populate modal with section data
+            document.getElementById('sectionName').value = section.name;
+            document.getElementById('sectionBars').value = section.bars;
+            document.getElementById('sectionKey').value = section.key;
+            document.getElementById('sectionTimeSignature').value = section.timeSignature;
+            
+            // Show modal
+            document.getElementById('sectionEditModal').style.display = 'flex';
+        }
+
+        function closeSectionEditModal() {
+            document.getElementById('sectionEditModal').style.display = 'none';
+            editingSectionIndex = -1;
+        }
+
+        // Add ESC key support for modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('sectionEditModal');
+                if (modal && modal.style.display === 'flex') {
+                    closeSectionEditModal();
+                }
+                hideContextMenu();
+            }
+        });
+
+        function saveSectionEdit() {
+            if (editingSectionIndex < 0) return;
+            
+            const section = currentSong.sections[editingSectionIndex];
+            const newName = document.getElementById('sectionName').value.trim();
+            const newBars = parseInt(document.getElementById('sectionBars').value);
+            const newKey = document.getElementById('sectionKey').value;
+            const newTimeSignature = document.getElementById('sectionTimeSignature').value;
+            
+            // Validation
+            if (!newName) {
+                alert('Please enter a section name.');
+                return;
+            }
+            if (newBars < 1 || newBars > 64) {
+                alert('Number of bars must be between 1 and 64.');
+                return;
+            }
+            
+            // Update section properties
+            section.name = newName;
+            section.key = newKey;
+            section.timeSignature = newTimeSignature;
+            
+            // Handle bar count change
+            if (newBars !== section.bars) {
+                const oldMeasures = section.measures;
+                section.measures = new Array(newBars).fill(null).map((_, index) => {
+                    // Keep existing measures if available
+                    if (oldMeasures[index]) {
+                        return {
+                            chord: oldMeasures[index].chord,
+                            localKey: newKey,
+                            timeSignature: newTimeSignature
+                        };
+                    } else {
+                        // Create new empty measure
+                        return {
+                            chord: null,
+                            localKey: newKey,
+                            timeSignature: newTimeSignature
+                        };
+                    }
+                });
+                section.bars = newBars;
+                
+                // If editing current section, regenerate staff
+                if (editingSectionIndex === currentSong.currentSectionIndex) {
+                    syncProgressionMeasures();
+                    regenerateStaffForCurrentSection();
+                }
+            } else {
+                // Just update key/time signature for all measures
+                section.measures.forEach(measure => {
+                    measure.localKey = newKey;
+                    measure.timeSignature = newTimeSignature;
+                });
+                
+                if (editingSectionIndex === currentSong.currentSectionIndex) {
+                    syncProgressionMeasures();
+                    updateProgressionChart();
+                }
+            }
+            
+            renderSectionTabs();
+            closeSectionEditModal();
+            // updateTabSizing is called by renderSectionTabs
+        }
+
+        function deleteSection(sectionIndex) {
+            // Prevent deleting last section
+            if (currentSong.sections.length <= 1) {
+                alert('Cannot delete the last section.');
+                return;
+            }
+            
+            const section = currentSong.sections[sectionIndex];
+            if (!confirm(`Delete section "${section.name}"? This cannot be undone.`)) {
+                return;
+            }
+            
+            // Remove section
+            currentSong.sections.splice(sectionIndex, 1);
+            
+            // If we deleted the current section, switch to nearest section
+            if (sectionIndex === currentSong.currentSectionIndex) {
+                currentSong.currentSectionIndex = Math.max(0, sectionIndex - 1);
+                syncProgressionMeasures();
+                regenerateStaffForCurrentSection();
+            } else if (sectionIndex < currentSong.currentSectionIndex) {
+                // Adjust current index if we deleted a section before it
+                currentSong.currentSectionIndex--;
+            }
+            
+            renderSectionTabs();
+            // updateTabSizing is called by renderSectionTabs
+        }
+
+        function duplicateSection(sectionIndex) {
+            const sourceSection = currentSong.sections[sectionIndex];
+            
+            // Deep copy the section
+            const newSection = {
+                id: 'section-' + Date.now(),
+                name: sourceSection.name + ' (copy)',
+                bars: sourceSection.bars,
+                key: sourceSection.key,
+                timeSignature: sourceSection.timeSignature,
+                repeat: sourceSection.repeat || false,
+                measures: sourceSection.measures.map(measure => ({
+                    chord: measure.chord ? { ...measure.chord } : null,
+                    localKey: measure.localKey,
+                    timeSignature: measure.timeSignature
+                }))
+            };
+            
+            // Insert after source section
+            currentSong.sections.splice(sectionIndex + 1, 0, newSection);
+            
+            // Switch to new section
+            currentSong.currentSectionIndex = sectionIndex + 1;
+            syncProgressionMeasures();
+            
+            renderSectionTabs();
+            regenerateStaffForCurrentSection();
+        }
+
         // Chord Progression Functions
         function createProgression() {
+            console.log('=== CREATE PROGRESSION CALLED ===');
             try {
                 const keySelect = document.getElementById('progressionKey');
                 const measureSelect = document.getElementById('measureCount');
                 const timeSelect = document.getElementById('timeSignature');
                 
-                progressionKey = keySelect.value;
+                console.log('selectedKey at start:', selectedKey);
+                console.log('progressionKey dropdown value:', document.getElementById('progressionKey').value);
+                
+                // If a key is selected on Circle of Fifths, use that; otherwise use dropdown value
+                if (selectedKey) {
+                    progressionKey = selectedKey;
+                    keySelect.value = selectedKey; // Sync dropdown with Circle of Fifths
+                    console.log(`Using Circle of Fifths key: ${selectedKey}, synced dropdown`);
+                } else {
+                    progressionKey = keySelect.value;
+                    console.log(`No Circle key selected, using dropdown value: ${progressionKey}`);
+                }
+                
                 const measureCount = parseInt(measureSelect.value);
                 const timeSignature = timeSelect.value;
-                
-                // Remove any existing event listeners to prevent duplicates
-                const newKeySelect = keySelect.cloneNode(true);
-                const newTimeSelect = timeSelect.cloneNode(true);
-                keySelect.parentNode.replaceChild(newKeySelect, keySelect);
-                timeSelect.parentNode.replaceChild(newTimeSelect, timeSelect);
-                
-                // Add event listeners to update selected measure when dropdowns change
-                newKeySelect.addEventListener('change', function(e) {
-                    if (progressionActive && selectedMeasureIndex !== null) {
-                        const newKey = e.target.value;
-                        progressionMeasures[selectedMeasureIndex].localKey = newKey;
-                        console.log(`Changed measure ${selectedMeasureIndex} key to ${newKey}`);
-                        selectKey(newKey, true); // Update Circle of Fifths
-                        updateProgressionChart();
-                    }
-                });
-                
-                newTimeSelect.addEventListener('change', function(e) {
-                    if (progressionActive && selectedMeasureIndex !== null) {
-                        const newTime = e.target.value;
-                        progressionMeasures[selectedMeasureIndex].timeSignature = newTime;
-                        console.log(`Changed measure ${selectedMeasureIndex} time signature to ${newTime}`);
-                        updateProgressionChart();
-                    }
-                });
             
-            // Initialize empty measures with metadata structure
-            progressionMeasures = new Array(measureCount).fill(null).map(() => ({
-                chord: null,
-                localKey: progressionKey,
-                timeSignature: timeSignature
-            }));
-            // Remove currentMeasure to avoid dual cursor system
-            // currentMeasure = 0;
+            // Initialize current section with empty measures
+            const currentSection = currentSong.sections[currentSong.currentSectionIndex];
+            const oldMeasures = currentSection.measures;
+            
+            currentSection.measures = new Array(measureCount).fill(null).map((_, index) => {
+                // If this measure index existed before, keep its key
+                if (oldMeasures[index]) {
+                    return {
+                        chord: null,
+                        localKey: oldMeasures[index].localKey,
+                        timeSignature: timeSignature
+                    };
+                }
+                // For new measures, inherit key from previous measure
+                const prevMeasure = oldMeasures[index - 1];
+                const inheritedKey = prevMeasure ? prevMeasure.localKey : progressionKey;
+                
+                return {
+                    chord: null,
+                    localKey: inheritedKey,
+                    timeSignature: timeSignature
+                };
+            });
+            
+            // Update section metadata
+            currentSection.bars = measureCount;
+            currentSection.key = progressionKey;
+            currentSection.timeSignature = timeSignature;
+            
+            // Update compatibility layer
+            progressionMeasures = currentSection.measures;
+            
+            // Set progressionActive to true FIRST
             progressionActive = true;
             
             // Auto-select measure 1 (index 0) so user can immediately start inputting chords
             selectedMeasureIndex = 0;
+            
+            // NOW set up event listeners for the dropdowns (only once per session)
+            if (!keySelect.dataset.listenersAdded) {
+                keySelect.dataset.listenersAdded = 'true';
+                timeSelect.dataset.listenersAdded = 'true';
+                
+                keySelect.addEventListener('change', function(e) {
+                    // Check progressionActive at time of change
+                    if (progressionActive && selectedMeasureIndex !== null) {
+                        const newKey = e.target.value;
+                        progressionMeasures[selectedMeasureIndex].localKey = newKey;
+                        console.log(`Changed measure ${selectedMeasureIndex} localKey to ${newKey}`);
+                        
+                        // Propagate key change to all subsequent measures that haven't been explicitly changed
+                        for (let i = selectedMeasureIndex + 1; i < progressionMeasures.length; i++) {
+                            if (progressionMeasures[i]) {
+                                progressionMeasures[i].localKey = newKey;
+                                console.log(`Propagated key ${newKey} to measure ${i}`);
+                            }
+                        }
+                        
+                        // Update the key display to show the new local key
+                        selectedKey = newKey;
+                        selectedScale = newKey.endsWith('m') ? 'minor' : 'major';
+                        console.log('Updated selectedKey to:', selectedKey, 'selectedScale to:', selectedScale);
+                        
+                        // Mark that user has explicitly selected a key
+                        window.userSelectedKey = true;
+                        
+                        // Update UI to reflect the new key
+                        updateKeyInfo();
+                        updateFretboard();
+                        updateSelectedButtons();
+                        updateProgressionChart();
+                    }
+                    // If progression not active, this just sets the initial key for next progression
+                });
+                
+                timeSelect.addEventListener('change', function(e) {
+                    // Check progressionActive at time of change
+                    if (progressionActive && selectedMeasureIndex !== null) {
+                        const newTime = e.target.value;
+                        progressionMeasures[selectedMeasureIndex].timeSignature = newTime;
+                        console.log(`Changed measure ${selectedMeasureIndex} timeSignature to ${newTime}`);
+                        updateProgressionChart();
+                    }
+                    // If progression not active, this just sets the initial time for next progression
+                });
+            }
             
             // Update UI
             const staffContainer = document.getElementById('staffContainer');
             staffContainer.classList.add('active');
             document.querySelector('.play-progression-btn').disabled = true;
             
+            // Show and render section tabs
+            renderSectionTabs();
+            
             // Generate staff measures
             generateStaffMeasures(measureCount, timeSignature);
             
-            // Highlight the first measure as selected
+            // Auto-select the first measure and update key display
             setTimeout(() => {
-                highlightSelectedMeasure(0);
+                window.userSelectedKey = false; // Reset flag for new progression
+                selectMeasure(0); // This will update the key display to the measure's localKey
             }, 100); // Small delay to ensure DOM is ready
             
-            // Update chord buttons to show progression key's chords
+            console.log(`After progression creation: progressionKey=${progressionKey}, selectedKey=${selectedKey}`);
+            console.log(`Dropdown value is now: ${document.getElementById('progressionKey').value}`);
+            
+            // Update chord buttons to show progression key's chords if needed
+            // Only call selectKey if the global selectedKey is different from progressionKey
             if (progressionKey !== selectedKey) {
-                selectKey(progressionKey);
+                console.log(`Syncing selectedKey from ${selectedKey} to progressionKey ${progressionKey}`);
+                selectKey(progressionKey, true); // Force to avoid toggle behavior
+                console.log(`After selectKey, dropdown value: ${document.getElementById('progressionKey').value}`);
             }
+            
+            // IMPORTANT: Ensure dropdown stays at progressionKey after all operations
+            setTimeout(() => {
+                const keySelect = document.getElementById('progressionKey');
+                keySelect.value = progressionKey;
+                console.log(`Final dropdown sync to progressionKey: ${progressionKey}`);
+            }, 150); // Run after other UI updates
+            
             } catch (error) {
                 console.error('Error in createProgression:', error);
                 alert('Error creating progression: ' + error.message);
@@ -7938,79 +9098,12 @@
                     measure.innerHTML = `
                         <div class="roman-numeral" id="roman-${measureIndex}"></div>
                         <div class="chord-symbol" id="chord-${measureIndex}">—</div>
-                        <div class="measure-controls" id="controls-${measureIndex}" style="display: none;">
-                            <select class="measure-key-select" onchange="changeMeasureKey(${measureIndex}, this.value)" onclick="event.stopPropagation()">
-                                <!-- Options will be populated dynamically -->
-                            </select>
-                            <select class="measure-time-select" onchange="changeMeasureTime(${measureIndex}, this.value)" onclick="event.stopPropagation()">
-                                <option value="4/4">4/4</option>
-                                <option value="3/4">3/4</option>
-                                <option value="2/4">2/4</option>
-                                <option value="6/8">6/8</option>
-                                <option value="5/4">5/4</option>
-                                <option value="7/8">7/8</option>
-                            </select>
-                        </div>
                     `;
                     
                     measure.onclick = () => selectMeasure(measureIndex);
                     measuresRow.appendChild(measure);
-                    
-                    // Populate key dropdown
-                    populateMeasureKeyDropdown(measureIndex);
                 }
             }
-        }
-        
-        function populateMeasureKeyDropdown(measureIndex) {
-            const keySelect = document.querySelector(`#staff-measure-${measureIndex} .measure-key-select`);
-            const timeSelect = document.querySelector(`#staff-measure-${measureIndex} .measure-time-select`);
-            if (!keySelect) return;
-            
-            const keys = ['C', 'G', 'D', 'A', 'E', 'B', 'F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭', 'Am', 'Em', 'Bm', 'F#m', 'C#m', 'G#m', 'Dm', 'Gm', 'Cm', 'Fm', 'B♭m', 'E♭m'];
-            
-            keys.forEach(key => {
-                const option = document.createElement('option');
-                option.value = key;
-                option.textContent = key;
-                keySelect.appendChild(option);
-            });
-            
-            // Set initial values from measure data
-            const measure = progressionMeasures[measureIndex];
-            if (measure) {
-                if (measure.localKey) {
-                    keySelect.value = measure.localKey;
-                }
-                if (measure.timeSignature && timeSelect) {
-                    timeSelect.value = measure.timeSignature;
-                }
-            }
-        }
-        
-        function changeMeasureKey(measureIndex, newKey) {
-            if (!progressionMeasures[measureIndex]) return;
-            
-            progressionMeasures[measureIndex].localKey = newKey;
-            console.log(`Changed measure ${measureIndex} key to ${newKey}`);
-            
-            // Update progression chart to reflect new key context
-            updateProgressionChart();
-            
-            // Sync Circle of Fifths if this is the selected measure
-            if (selectedMeasureIndex === measureIndex) {
-                selectKey(newKey, true);
-            }
-        }
-        
-        function changeMeasureTime(measureIndex, newTime) {
-            if (!progressionMeasures[measureIndex]) return;
-            
-            progressionMeasures[measureIndex].timeSignature = newTime;
-            console.log(`Changed measure ${measureIndex} time signature to ${newTime}`);
-            
-            // Update visual indicator if time signature changed
-            updateProgressionChart();
         }
         
         function displayKeySignature(key) {
@@ -8019,6 +9112,89 @@
             if (keySignatureEl) {
                 keySignatureEl.textContent = keySignature.display;
             }
+        }
+
+        /**
+         * Add pivot chord notation to a specific measure
+         */
+        function addPivotChordNotation(measureIndex, oldKey, newKey, oldAnalysis, newAnalysis) {
+            const measureEl = document.getElementById(`staff-measure-${measureIndex}`);
+            if (!measureEl) return;
+            
+            // Add class to give extra space
+            measureEl.classList.add('has-pivot');
+            
+            // Create connector line from Roman numeral to box
+            const connector = document.createElement('div');
+            connector.className = 'pivot-connector';
+            measureEl.appendChild(connector);
+            
+            // Create the pivot box
+            const pivotBox = document.createElement('div');
+            pivotBox.className = 'pivot-chord-box';
+            
+            // Build the content with dual analysis
+            pivotBox.innerHTML = `
+                <div class="pivot-analyses">
+                    <div class="pivot-key-label">(${oldKey}:)</div>
+                    <div class="pivot-original">${oldAnalysis}</div>
+                    <div class="pivot-separator"></div>
+                    <div class="pivot-key-label">(${newKey}:)</div>
+                    <div class="pivot-new">${newAnalysis}</div>
+                </div>
+            `;
+            
+            measureEl.appendChild(pivotBox);
+        }
+
+        /**
+         * Remove pivot chord notation from a measure
+         */
+        function removePivotNotation(measureIndex) {
+            const measureEl = document.getElementById(`staff-measure-${measureIndex}`);
+            if (!measureEl) return;
+            
+            measureEl.classList.remove('has-pivot');
+            measureEl.querySelectorAll('.pivot-chord-box, .pivot-connector').forEach(el => el.remove());
+            
+            if (progressionMeasures[measureIndex]) {
+                progressionMeasures[measureIndex].isPivot = false;
+                delete progressionMeasures[measureIndex].pivotData;
+            }
+        }
+
+        /**
+         * Detect and mark pivot chords automatically when keys change
+         */
+        function detectAndMarkPivotChords() {
+            progressionMeasures.forEach((measure, index) => {
+                const prevMeasure = progressionMeasures[index - 1];
+                
+                // Check if key changed
+                if (prevMeasure && measure && measure.localKey && measure.localKey !== prevMeasure.localKey) {
+                    const chord = measure.chord;
+                    if (!chord) return;
+                    
+                    // Analyze chord in BOTH keys
+                    const oldKey = prevMeasure.localKey || progressionKey;
+                    const newKey = measure.localKey;
+                    
+                    const oldAnalysis = generateRomanNumeralForChord(chord, oldKey, index);
+                    const newAnalysis = generateRomanNumeralForChord(chord, newKey, index);
+                    
+                    // If chord functions in both keys, it's a pivot
+                    if (oldAnalysis && newAnalysis) {
+                        // Mark as pivot
+                        measure.isPivot = true;
+                        measure.pivotData = {
+                            oldKey: oldKey,
+                            newKey: newKey,
+                            oldAnalysis: oldAnalysis,
+                            newAnalysis: newAnalysis
+                        };
+                    }
+                }
+            });
         }
 
         function updateProgressionChart() {
@@ -8047,33 +9223,66 @@
                             // Regular chord: display normally - use measure's localKey for roman numeral
                             chordEl.textContent = chord.symbol;
                             const localKey = measure.localKey || progressionKey;
-                            romanEl.textContent = generateRomanNumeralForChord(chord, localKey, index);
+                            
+                            // Generate roman numeral in the local key
+                            let romanNumeral = generateRomanNumeralForChord(chord, localKey, index);
+                            
+                            // If this measure is in a different key than the main progression key, add slash notation
+                            if (localKey !== progressionKey) {
+                                // Calculate what the local key is as a roman numeral of the main key
+                                const tonicizedKeyRoman = getKeyAsRomanNumeral(localKey, progressionKey);
+                                romanNumeral += `/${tonicizedKeyRoman}`;
+                            }
+                            
+                            romanEl.innerHTML = romanNumeral;
                         }
                         chordEl.style.color = '#333';
                     } else {
                         chordEl.textContent = '—';
-                        romanEl.textContent = '';
+                        romanEl.innerHTML = ''; // Use innerHTML consistently
                         chordEl.style.color = '#999';
                     }
                     
                     // Update active measure indicator
                     measureEl.style.background = index === selectedMeasureIndex ? 'rgba(76, 175, 80, 0.1)' : '';
                     
-                    // Add visual indicator for key/time changes
-                    if (index > 0 && measure && progressionMeasures[index - 1]) {
+                    // Clear previous key/time labels to prevent duplicates
+                    measureEl.querySelectorAll('div[style*="position: absolute"]').forEach(el => el.remove());
+                    
+                    // Add key/time changes only when there's an ACTUAL change from previous measure
+                    if (measure && index > 0 && progressionMeasures[index - 1]) {
                         const prevMeasure = progressionMeasures[index - 1];
-                        let changeIndicator = '';
                         
-                        if (measure.localKey !== prevMeasure.localKey) {
-                            changeIndicator += `<span style="position: absolute; top: 2px; left: 2px; font-size: 9px; color: #2196F3; font-weight: bold;">${measure.localKey}</span>`;
-                        }
-                        
+                        // Time signature change - styled like opening time signature
                         if (measure.timeSignature !== prevMeasure.timeSignature) {
-                            changeIndicator += `<span style="position: absolute; bottom: 2px; left: 2px; font-size: 9px; color: #FF5722;">${measure.timeSignature}</span>`;
-                        }
-                        
-                        if (changeIndicator) {
-                            measureEl.innerHTML += changeIndicator;
+                            const [numerator, denominator] = measure.timeSignature.split('/');
+                            
+                            const timeSig = document.createElement('div');
+                            timeSig.className = 'time-signature-change';
+                            timeSig.style.cssText = `
+                                position: absolute;
+                                left: 5px;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                line-height: 0.85;
+                                font-family: 'Times New Roman', serif;
+                                font-weight: bold;
+                                font-size: 22px;
+                                color: #000;
+                                z-index: 10;
+                                background: white;
+                                padding: 2px 4px;
+                            `;
+                            
+                            timeSig.innerHTML = `
+                                <div>${numerator}</div>
+                                <div>${denominator}</div>
+                            `;
+                            
+                            measureEl.appendChild(timeSig);
                         }
                     }
                 } else {
@@ -8092,11 +9301,84 @@
                 playBtn.disabled = !allFilled;
             }
         }
+        
+        /**
+         * Get display name for key (strip trailing 'm' and format nicely)
+         */
+        function getKeyDisplayName(key) {
+            if (!key) return '';
+            // Return key as-is but make it cleaner
+            return key.replace(/m$/, ' minor').replace(/([A-G][#♯b♭]?)$/, '$1 major');
+        }
+
+        /**
+         * Calculate what a tonicized key is as a roman numeral relative to the main key
+         * E.g., D major in the key of C major = II
+         * E.g., Eb major in the key of C major = ♭III
+         */
+        function getKeyAsRomanNumeral(tonicizedKey, mainKey) {
+            // Remove 'm' from keys to get root notes
+            const tonicRoot = tonicizedKey.replace(/m$/, '');
+            const mainRoot = mainKey.replace(/m$/, '');
+            const isTonicMinor = tonicizedKey.endsWith('m');
+            
+            // Define chromatic scale for interval calculation
+            const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const enharmonics = {
+                'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
+                'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
+                'D♭': 'C#', 'E♭': 'D#', 'G♭': 'F#', 'A♭': 'G#', 'B♭': 'A#'
+            };
+            
+            // Normalize keys
+            const normalizedTonic = enharmonics[tonicRoot] || tonicRoot;
+            const normalizedMain = enharmonics[mainRoot] || mainRoot;
+            
+            // Find semitone distance
+            const tonicIndex = chromaticScale.indexOf(normalizedTonic);
+            const mainIndex = chromaticScale.indexOf(normalizedMain);
+            const semitones = (tonicIndex - mainIndex + 12) % 12;
+            
+            // Map semitones to scale degrees and accidentals
+            const degreeMap = {
+                0: { degree: 'I', isFlat: false, isSharp: false },
+                1: { degree: 'II', isFlat: true, isSharp: false },  // ♭II
+                2: { degree: 'II', isFlat: false, isSharp: false },
+                3: { degree: 'III', isFlat: true, isSharp: false }, // ♭III
+                4: { degree: 'III', isFlat: false, isSharp: false },
+                5: { degree: 'IV', isFlat: false, isSharp: false },
+                6: { degree: 'V', isFlat: true, isSharp: false },   // ♭V or #IV
+                7: { degree: 'V', isFlat: false, isSharp: false },
+                8: { degree: 'VI', isFlat: true, isSharp: false },  // ♭VI
+                9: { degree: 'VI', isFlat: false, isSharp: false },
+                10: { degree: 'VII', isFlat: true, isSharp: false }, // ♭VII
+                11: { degree: 'VII', isFlat: false, isSharp: false }
+            };
+            
+            const info = degreeMap[semitones];
+            let roman = info.degree;
+            
+            // Use lowercase for minor keys
+            if (isTonicMinor) {
+                roman = roman.toLowerCase();
+            }
+            
+            // Add flat/sharp accidentals
+            if (info.isFlat) {
+                roman = '♭' + roman;
+            } else if (info.isSharp) {
+                roman = '♯' + roman;
+            }
+            
+            return roman;
+        }
 
         function generateRomanNumeralForChord(chord, key, index) {
             // If chord has preserved mode information, use it
             if (chord.sourceMode && chord.sourceIndex !== undefined) {
-                return generateRomanNumeral(chord.sourceIndex, chord.sourceMode, key);
+                const baseNumeral = generateRomanNumeral(chord.sourceIndex, chord.sourceMode, key);
+                const figuredBass = detectFiguredBass(chord);
+                return baseNumeral + figuredBass;
             }
             
             // Get the current key's chord data 
@@ -8127,42 +9409,128 @@
             
             if (chordPosition === -1) {
                 // Fallback: try to calculate based on chord root vs key
-                return calculateRomanNumeralFromRoot(chord, key);
+                const baseNumeral = calculateRomanNumeralFromRoot(chord, key);
+                const figuredBass = detectFiguredBass(chord);
+                return baseNumeral + figuredBass;
             }
+            
+            // Detect figured bass for inversions
+            const figuredBass = detectFiguredBass(chord);
             
             // Use diatonic position for roman numerals
             if (chordMode === 'secondary') {
-                // For secondary dominants, use the stored scale degree roman numeral
-                if (chord.scaleDegree) {
-                    return chord.scaleDegree;
-                }
-                // Fallback to V7/target format if no scale degree available
+                // For secondary dominants, always use V7/target format with proper HTML superscripts
                 if (chord.target) {
-                    return `V7/${chord.target}`;
+                    return `V<sup>7</sup>/${chord.target}` + figuredBass;
                 }
-                return 'V7';
+                // Fallback - shouldn't normally reach here
+                return 'V<sup>7</sup>' + figuredBass;
             } else if (chordMode === 'diminished') {
                 // For diminished passing chords, use the stored roman numeral
                 if (chord.roman) {
-                    return chord.roman;
+                    return chord.roman + figuredBass;
                 }
-                return '°7';
+                return '°<sup>7</sup>' + figuredBass;
             } else {
-                // Standard diatonic roman numerals
+                // Standard diatonic roman numerals with proper superscripts
                 if (isMinor) {
                     const minorRomanNumerals = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
                     const numeral = minorRomanNumerals[chordPosition] || 'i';
-                    return chordMode === 'sevenths' ? numeral + '7' : numeral;
+                    if (chordMode === 'sevenths') {
+                        // Check if this is a major seventh chord (maj7 in symbol)
+                        const isMajor7 = chord.symbol && chord.symbol.includes('maj7');
+                        const seventh = isMajor7 ? '<sup>△7</sup>' : '<sup>7</sup>';
+                        return numeral + seventh + figuredBass;
+                    }
+                    return numeral + figuredBass;
                 } else {
                     const majorRomanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
                     const numeral = majorRomanNumerals[chordPosition] || 'I';
-                    return chordMode === 'sevenths' ? numeral + '7' : numeral;
+                    if (chordMode === 'sevenths') {
+                        // Check if this is a major seventh chord (maj7 in symbol)
+                        const isMajor7 = chord.symbol && chord.symbol.includes('maj7');
+                        const seventh = isMajor7 ? '<sup>△7</sup>' : '<sup>7</sup>';
+                        return numeral + seventh + figuredBass;
+                    }
+                    return numeral + figuredBass;
                 }
             }
         }
         
+        /**
+         * Detect figured bass notation based on chord inversion
+         * Returns HTML with proper superscript/subscript symbols for academic notation
+         */
+        function detectFiguredBass(chord) {
+            if (!chord || !chord.symbol || !chord.notes || chord.notes.length === 0) {
+                return '';
+            }
+            
+            // Get the root note from the chord symbol
+            const rootMatch = chord.symbol.match(/^([A-G][#♯b♭]?)/);
+            if (!rootMatch) return '';
+            
+            const root = rootMatch[1];
+            
+            // Find the root in the notes array (ignore octave numbers)
+            const bassNote = chord.notes[0].replace(/\d+/g, ''); // First note is bass
+            const rootNote = root;
+            
+            // Check if chord is inverted (bass note != root)
+            const isBassRoot = noteToSemitone(bassNote) % 12 === noteToSemitone(rootNote) % 12;
+            
+            if (isBassRoot) {
+                // Root position - no figured bass needed
+                return '';
+            }
+            
+            // Determine chord type
+            const isSeventh = chord.symbol.includes('7') || chord.symbol.includes('maj7') || 
+                             chord.symbol.includes('M7') || chord.symbol.includes('Δ');
+            const isNinth = chord.symbol.includes('9');
+            
+            // For inversions, find which chord tone is in bass
+            const chordTones = chord.notes.map(n => noteToSemitone(n.replace(/\d+/g, '')) % 12);
+            const rootSemitone = noteToSemitone(rootNote) % 12;
+            const bassSemitone = noteToSemitone(bassNote) % 12;
+            
+            // Calculate interval from root to bass
+            let interval = (bassSemitone - rootSemitone + 12) % 12;
+            
+            // Seventh chords - use proper HTML superscripts/subscripts
+            if (isSeventh) {
+                if (interval === 4 || interval === 3) {
+                    // Third in bass = first inversion
+                    return '<sup>6</sup><sub>5</sub>';
+                } else if (interval === 7 || interval === 8) {
+                    // Fifth in bass = second inversion
+                    return '<sup>4</sup><sub>3</sub>';
+                } else if (interval === 10 || interval === 11) {
+                    // Seventh in bass = third inversion
+                    return '<sup>4</sup><sub>2</sub>';
+                }
+            }
+            
+            // Triads (or other chords)
+            if (interval === 4 || interval === 3) {
+                // Third in bass = first inversion
+                return '<sup>6</sup>';
+            } else if (interval === 7 || interval === 8) {
+                // Fifth in bass = second inversion
+                return '<sup>6</sup><sub>4</sub>';
+            }
+            
+            return '';
+        }
+        
         function calculateRomanNumeralFromRoot(chord, key) {
             // Fallback method for calculating roman numerals
+            // Safety check: ensure chord has a symbol
+            if (!chord || !chord.symbol) {
+                console.warn('calculateRomanNumeralFromRoot called with invalid chord:', chord);
+                return 'I';
+            }
+            
             const isKeyMinor = key.includes('m');
             const keyRoot = key.replace('m', '').split('/')[0];
             // Extract root note including sharps (#) and flats (♭, b)
@@ -8228,18 +9596,29 @@
         function selectMeasure(measureIndex) {
             selectedMeasureIndex = measureIndex; // Track selected measure for custom chord building
             
-            // Sync Circle of Fifths with measure's localKey
             const measure = progressionMeasures[measureIndex];
-            if (measure && measure.localKey && measure.localKey !== selectedKey) {
-                console.log('Syncing Circle of Fifths to measure localKey:', measure.localKey);
-                selectKey(measure.localKey, true); // Force the key change without toggling
-            }
             
-            // Sync progression window dropdowns with selected measure
-            if (measure) {
+            // Always update the key display to match the selected measure's local key
+            if (measure && measure.localKey) {
+                console.log('=== SELECT MEASURE: Syncing to measure localKey:', measure.localKey);
+                
+                // Update the selectedKey to the measure's localKey
+                // This will update Circle of Fifths, key info, Roman numerals, etc.
+                selectedKey = measure.localKey;
+                // Use 'major' for major keys, 'minor' for minor keys (not 'ionian'/'natural_minor')
+                selectedScale = measure.localKey.endsWith('m') ? 'minor' : 'major';
+                console.log('Set selectedKey to:', selectedKey, 'selectedScale to:', selectedScale);
+                
+                // Update all UI to reflect the local key
+                console.log('Calling updateKeyInfo...');
+                updateKeyInfo();
+                console.log('Calling updateSelectedButtons...');
+                updateSelectedButtons();
+                
+                // Sync progression window dropdowns with selected measure
                 const keySelect = document.getElementById('progressionKey');
                 const timeSelect = document.getElementById('timeSignature');
-                if (keySelect && measure.localKey) {
+                if (keySelect) {
                     keySelect.value = measure.localKey;
                     console.log('Synced progressionKey dropdown to:', measure.localKey);
                 }
@@ -8252,8 +9631,17 @@
             highlightSelectedMeasure();
             updateProgressionChart();
             
-            // Always display the chord on the fretboard when selecting a measure
-            selectChordFromStaff(measureIndex);
+            // Display the chord on the fretboard if measure has a chord
+            const measure2 = progressionMeasures[measureIndex];
+            const chord = measure2 ? measure2.chord : null;
+            if (chord) {
+                selectedChord = chord;
+                console.log('Calling updateFretboard with chord notes...');
+                updateFretboard(chord.notes);
+            } else {
+                console.log('Calling updateFretboard without specific chord...');
+                updateFretboard();
+            }
         }
 
         function selectChordFromStaff(measureIndex) {
@@ -8277,20 +9665,39 @@
         }
 
         function highlightSelectedMeasure(measureIndex) {
-            // Remove highlight from all measures and hide all controls
+            // Remove highlight from all measures
             document.querySelectorAll('.measure-staff').forEach((measure, idx) => {
                 measure.classList.remove('selected-measure');
-                const controls = document.getElementById(`controls-${idx}`);
-                if (controls) controls.style.display = 'none';
             });
             
-            // Highlight the selected measure and show its controls
+            // Highlight the selected measure
             const selectedMeasure = document.getElementById(`staff-measure-${measureIndex}`);
             if (selectedMeasure) {
                 selectedMeasure.classList.add('selected-measure');
-                const controls = document.getElementById(`controls-${measureIndex}`);
-                if (controls) controls.style.display = 'flex';
             }
+        }
+
+        function deselectMeasure() {
+            // Restore the original progression key
+            if (window.originalProgressionKey) {
+                selectedKey = window.originalProgressionKey;
+                selectedScale = window.originalProgressionScale || (window.originalProgressionKey.endsWith('m') ? 'minor' : 'major');
+                delete window.originalProgressionKey;
+                delete window.originalProgressionScale;
+                
+                // Update UI to reflect the restoration
+                updateKeyInfo();
+                updateFretboard();
+                updateSelectedButtons();
+            }
+            
+            // Clear selected measure
+            selectedMeasureIndex = null;
+            
+            // Remove all measure highlights
+            document.querySelectorAll('.measure-staff').forEach(measure => {
+                measure.classList.remove('selected-measure');
+            });
         }
 
         function updateActiveChordButton(chord) {
@@ -8314,6 +9721,18 @@
             progressionMeasures = [];
             selectedMeasureIndex = null;
             isPlaying = false;
+            
+            // Clear the user selected key flag
+            delete window.userSelectedKey;
+            
+            // Restore the original progression key if we were viewing a local key
+            if (window.originalProgressionKey) {
+                selectedKey = window.originalProgressionKey;
+                selectedScale = window.originalProgressionScale || (window.originalProgressionKey.endsWith('m') ? 'minor' : 'major');
+                delete window.originalProgressionKey;
+                delete window.originalProgressionScale;
+                updateSelectedButtons();
+            }
             
             document.getElementById('staffContainer').classList.remove('active');
             document.querySelector('.play-progression-btn').disabled = true;
@@ -8340,7 +9759,8 @@
                 return;
             }
             
-            isLooping = document.getElementById('loopProgression').checked;
+            // Check if playing all sections (Song mode) or current section only
+            const playAllSections = document.getElementById('playAllSections').checked;
             isPlaying = true;
             document.querySelector('.play-progression-btn').textContent = 'Stop';
             
@@ -8362,16 +9782,52 @@
                 // Count-in
                 await performCountIn();
                 
-                // Play progression (with looping)
-                do {
-                    await playProgressionOnce();
-                } while (isPlaying && isLooping);
+                if (playAllSections) {
+                    // Play all sections sequentially with auto-switching
+                    await playAllSectionsSequentially();
+                } else {
+                    // Play current section only, looping
+                    do {
+                        await playProgressionOnce();
+                    } while (isPlaying);
+                }
                 
             } catch (error) {
                 console.error('Audio playback error:', error);
             } finally {
                 stopProgression();
             }
+        }
+
+        async function playAllSectionsSequentially() {
+            const startingSectionIndex = currentSong.currentSectionIndex;
+            
+            // Play from current section to end
+            for (let i = startingSectionIndex; i < currentSong.sections.length && isPlaying; i++) {
+                await playSectionByIndexWithSwitch(i);
+            }
+            
+            // Play remaining sections from start if we didn't start at 0
+            if (startingSectionIndex > 0 && isPlaying) {
+                for (let i = 0; i < startingSectionIndex && isPlaying; i++) {
+                    await playSectionByIndexWithSwitch(i);
+                }
+            }
+        }
+
+        async function playSectionByIndexWithSwitch(sectionIndex) {
+            const section = currentSong.sections[sectionIndex];
+            if (!section) return;
+            
+            // Switch to this section visually
+            if (sectionIndex !== currentSong.currentSectionIndex) {
+                switchToSection(sectionIndex);
+                // Small delay to let UI update
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            // Play the section once
+            await playProgressionOnce();
         }
 
         async function performCountIn() {
@@ -8438,7 +9894,8 @@
             const measureDuration = beatDuration * beatsPerMeasure;
             
             for (let i = 0; i < progressionMeasures.length && isPlaying; i++) {
-                const chord = progressionMeasures[i];
+                const measure = progressionMeasures[i];
+                const chord = measure ? measure.chord : null;
                 const measureEl = document.getElementById(`staff-measure-${i}`);
                 
                 // Highlight current measure
@@ -8450,12 +9907,20 @@
                 selectedChord = chord;
                 updateFretboard();
                 
+                // Use measure's timeSignature if available, fallback to global
+                const localBeatsPerMeasure = measure && measure.timeSignature 
+                    ? parseInt(measure.timeSignature.split('/')[0]) 
+                    : beatsPerMeasure;
+                const localMeasureDuration = beatDuration * localBeatsPerMeasure;
+                
                 // Play all beats of the measure with proper timing
-                for (let beat = 1; beat <= beatsPerMeasure && isPlaying; beat++) {
+                for (let beat = 1; beat <= localBeatsPerMeasure && isPlaying; beat++) {
                     if (beat === 1) {
                         // Beat 1: Play chord and accented click
                         playMetronomeClick(true); // Accent on beat 1
-                        playChordSound(chord, measureDuration / 1000);
+                        if (chord) {
+                            playChordSound(chord, localMeasureDuration / 1000);
+                        }
                     } else {
                         // Other beats: Just metronome click
                         playMetronomeClick(false);
@@ -8514,6 +9979,11 @@
             console.log('Chord symbol:', chord.symbol);
             console.log('Chord notes:', chord.notes);
             console.log('Is custom chord:', chord.isCustom);
+            
+            if (!chord.notes || chord.notes.length === 0) {
+                console.warn('No notes to play for chord:', chord);
+                return;
+            }
             
             try {
                 // Simple synthesized chord using Web Audio API
