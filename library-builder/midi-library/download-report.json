@@ -1,0 +1,816 @@
+{
+  "results": {
+    "successful": [
+      {
+        "song": {
+          "id": 3,
+          "title": "Yesterday",
+          "artist": "The Beatles",
+          "url": "https://bitmidi.com/uploads/111854.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\3_The_Beatles-Yesterday.mid",
+        "status": "downloaded",
+        "size": 6530
+      },
+      {
+        "song": {
+          "id": 1,
+          "title": "Hey Jude",
+          "artist": "The Beatles",
+          "url": "https://bitmidi.com/uploads/75646.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\1_The_Beatles-Hey_Jude.mid",
+        "status": "downloaded",
+        "size": 29406
+      },
+      {
+        "song": {
+          "id": 2,
+          "title": "Let It Be",
+          "artist": "The Beatles",
+          "url": "https://bitmidi.com/uploads/50239.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\2_The_Beatles-Let_It_Be.mid",
+        "status": "downloaded",
+        "size": 19568
+      },
+      {
+        "song": {
+          "id": 11,
+          "title": "Friend of the Devil",
+          "artist": "Grateful Dead",
+          "url": "https://bitmidi.com/uploads/34959.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\11_Grateful_Dead-Friend_of_the_Devil.mid",
+        "status": "downloaded",
+        "size": 1675
+      },
+      {
+        "song": {
+          "id": 4,
+          "title": "Come Together",
+          "artist": "The Beatles",
+          "url": "https://bitmidi.com/uploads/21652.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\4_The_Beatles-Come_Together.mid",
+        "status": "downloaded",
+        "size": 44128
+      },
+      {
+        "song": {
+          "id": 5,
+          "title": "Here Comes the Sun",
+          "artist": "The Beatles",
+          "url": "https://bitmidi.com/uploads/39690.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\5_The_Beatles-Here_Comes_the_Sun.mid",
+        "status": "downloaded",
+        "size": 25657
+      },
+      {
+        "song": {
+          "id": 12,
+          "title": "Ripple",
+          "artist": "Grateful Dead",
+          "url": "https://bitmidi.com/uploads/71652.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\12_Grateful_Dead-Ripple.mid",
+        "status": "downloaded",
+        "size": 18698
+      },
+      {
+        "song": {
+          "id": 13,
+          "title": "Touch of Grey",
+          "artist": "Grateful Dead",
+          "url": "https://bitmidi.com/uploads/81691.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\13_Grateful_Dead-Touch_of_Grey.mid",
+        "status": "downloaded",
+        "size": 20243
+      },
+      {
+        "song": {
+          "id": 16,
+          "title": "Stairway to Heaven",
+          "artist": "Led Zeppelin",
+          "url": "https://bitmidi.com/uploads/77313.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\16_Led_Zeppelin-Stairway_to_Heaven.mid",
+        "status": "downloaded",
+        "size": 31189
+      },
+      {
+        "song": {
+          "id": 20,
+          "title": "Comfortably Numb",
+          "artist": "Pink Floyd",
+          "url": "https://bitmidi.com/uploads/21668.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\20_Pink_Floyd-Comfortably_Numb.mid",
+        "status": "downloaded",
+        "size": 51949
+      },
+      {
+        "song": {
+          "id": 17,
+          "title": "Whole Lotta Love",
+          "artist": "Led Zeppelin",
+          "url": "https://bitmidi.com/uploads/113084.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\17_Led_Zeppelin-Whole_Lotta_Love.mid",
+        "status": "downloaded",
+        "size": 1695
+      },
+      {
+        "song": {
+          "id": 26,
+          "title": "Take It Easy",
+          "artist": "Eagles",
+          "url": "https://bitmidi.com/uploads/78973.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\26_Eagles-Take_It_Easy.mid",
+        "status": "downloaded",
+        "size": 22899
+      },
+      {
+        "song": {
+          "id": 25,
+          "title": "Hotel California",
+          "artist": "Eagles",
+          "url": "https://bitmidi.com/uploads/40785.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\25_Eagles-Hotel_California.mid",
+        "status": "downloaded",
+        "size": 11757
+      },
+      {
+        "song": {
+          "id": 29,
+          "title": "Sweet Home Alabama",
+          "artist": "Lynyrd Skynyrd",
+          "url": "https://bitmidi.com/uploads/78363.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\29_Lynyrd_Skynyrd-Sweet_Home_Alabama.mid",
+        "status": "downloaded",
+        "size": 106346
+      },
+      {
+        "song": {
+          "id": 30,
+          "title": "Free Bird",
+          "artist": "Lynyrd Skynyrd",
+          "url": "https://bitmidi.com/uploads/34740.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\30_Lynyrd_Skynyrd-Free_Bird.mid",
+        "status": "downloaded",
+        "size": 9252
+      },
+      {
+        "song": {
+          "id": 31,
+          "title": "Autumn Leaves",
+          "artist": "Joseph Kosma",
+          "url": "https://bitmidi.com/uploads/7551.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\31_Joseph_Kosma-Autumn_Leaves.mid",
+        "status": "downloaded",
+        "size": 18985
+      },
+      {
+        "song": {
+          "id": 32,
+          "title": "All the Things You Are",
+          "artist": "Jerome Kern",
+          "url": "https://bitmidi.com/uploads/2821.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\32_Jerome_Kern-All_the_Things_You_Are.mid",
+        "status": "downloaded",
+        "size": 40713
+      },
+      {
+        "song": {
+          "id": 34,
+          "title": "So What",
+          "artist": "Miles Davis",
+          "url": "https://bitmidi.com/uploads/76098.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\34_Miles_Davis-So_What.mid",
+        "status": "downloaded",
+        "size": 17023
+      },
+      {
+        "song": {
+          "id": 35,
+          "title": "Blue Bossa",
+          "artist": "Kenny Dorham",
+          "url": "https://bitmidi.com/uploads/10855.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\35_Kenny_Dorham-Blue_Bossa.mid",
+        "status": "downloaded",
+        "size": 14541
+      },
+      {
+        "song": {
+          "id": 33,
+          "title": "Take Five",
+          "artist": "Dave Brubeck",
+          "url": "https://bitmidi.com/uploads/79206.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\33_Dave_Brubeck-Take_Five.mid",
+        "status": "downloaded",
+        "size": 26830
+      },
+      {
+        "song": {
+          "id": 36,
+          "title": "Fly Me to the Moon",
+          "artist": "Frank Sinatra",
+          "url": "https://bitmidi.com/uploads/33931.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\36_Frank_Sinatra-Fly_Me_to_the_Moon.mid",
+        "status": "downloaded",
+        "size": 3483
+      },
+      {
+        "song": {
+          "id": 38,
+          "title": "Summertime",
+          "artist": "George Gershwin",
+          "url": "https://bitmidi.com/uploads/78224.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\38_George_Gershwin-Summertime.mid",
+        "status": "downloaded",
+        "size": 29153
+      },
+      {
+        "song": {
+          "id": 37,
+          "title": "Georgia on My Mind",
+          "artist": "Ray Charles",
+          "url": "https://bitmidi.com/uploads/36453.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\37_Ray_Charles-Georgia_on_My_Mind.mid",
+        "status": "downloaded",
+        "size": 5570
+      },
+      {
+        "song": {
+          "id": 50,
+          "title": "Fur Elise",
+          "artist": "Beethoven",
+          "url": "https://bitmidi.com/uploads/28362.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\50_Beethoven-Fur_Elise.mid",
+        "status": "downloaded",
+        "size": 20648
+      },
+      {
+        "song": {
+          "id": 39,
+          "title": "The Girl from Ipanema",
+          "artist": "Antonio Carlos Jobim",
+          "url": "https://bitmidi.com/uploads/79771.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\39_Antonio_Carlos_Jobim-The_Girl_from_Ipanema.mid",
+        "status": "downloaded",
+        "size": 4050
+      },
+      {
+        "song": {
+          "id": 40,
+          "title": "My Funny Valentine",
+          "artist": "Chet Baker",
+          "url": "https://bitmidi.com/uploads/59181.mid",
+          "genre": "Jazz",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\40_Chet_Baker-My_Funny_Valentine.mid",
+        "status": "downloaded",
+        "size": 40287
+      },
+      {
+        "song": {
+          "id": 52,
+          "title": "Canon in D",
+          "artist": "Pachelbel",
+          "url": "https://bitmidi.com/uploads/14176.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\52_Pachelbel-Canon_in_D.mid",
+        "status": "downloaded",
+        "size": 6804
+      },
+      {
+        "song": {
+          "id": 53,
+          "title": "Clair de Lune",
+          "artist": "Debussy",
+          "url": "https://bitmidi.com/uploads/19598.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\53_Debussy-Clair_de_Lune.mid",
+        "status": "downloaded",
+        "size": 29695
+      },
+      {
+        "song": {
+          "id": 51,
+          "title": "Moonlight Sonata",
+          "artist": "Beethoven",
+          "url": "https://bitmidi.com/uploads/58919.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\51_Beethoven-Moonlight_Sonata.mid",
+        "status": "downloaded",
+        "size": 2116
+      },
+      {
+        "song": {
+          "id": 54,
+          "title": "The Four Seasons - Spring",
+          "artist": "Vivaldi",
+          "url": "https://bitmidi.com/uploads/34092.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\54_Vivaldi-The_Four_Seasons___Spring.mid",
+        "status": "downloaded",
+        "size": 17223
+      },
+      {
+        "song": {
+          "id": 55,
+          "title": "Eine Kleine Nachtmusik",
+          "artist": "Mozart",
+          "url": "https://bitmidi.com/uploads/26531.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\55_Mozart-Eine_Kleine_Nachtmusik.mid",
+        "status": "downloaded",
+        "size": 3329
+      },
+      {
+        "song": {
+          "id": 56,
+          "title": "Symphony No. 5",
+          "artist": "Beethoven",
+          "url": "https://bitmidi.com/uploads/78564.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\56_Beethoven-Symphony_No__5.mid",
+        "status": "downloaded",
+        "size": 75740
+      },
+      {
+        "song": {
+          "id": 59,
+          "title": "1812 Overture",
+          "artist": "Tchaikovsky",
+          "url": "https://bitmidi.com/uploads/20.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\59_Tchaikovsky-1812_Overture.mid",
+        "status": "downloaded",
+        "size": 9199
+      },
+      {
+        "song": {
+          "id": 57,
+          "title": "Ride of the Valkyries",
+          "artist": "Wagner",
+          "url": "https://bitmidi.com/uploads/71625.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\57_Wagner-Ride_of_the_Valkyries.mid",
+        "status": "downloaded",
+        "size": 1269
+      },
+      {
+        "song": {
+          "id": 58,
+          "title": "Ave Maria",
+          "artist": "Schubert",
+          "url": "https://bitmidi.com/uploads/7548.mid",
+          "genre": "Classical",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\58_Schubert-Ave_Maria.mid",
+        "status": "downloaded",
+        "size": 13534
+      },
+      {
+        "song": {
+          "id": 62,
+          "title": "Someone Like You",
+          "artist": "Adele",
+          "url": "https://bitmidi.com/uploads/75864.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\62_Adele-Someone_Like_You.mid",
+        "status": "downloaded",
+        "size": 6757
+      },
+      {
+        "song": {
+          "id": 61,
+          "title": "All of Me",
+          "artist": "John Legend",
+          "url": "https://bitmidi.com/uploads/2861.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\61_John_Legend-All_of_Me.mid",
+        "status": "downloaded",
+        "size": 29649
+      },
+      {
+        "song": {
+          "id": 65,
+          "title": "Hallelujah",
+          "artist": "Leonard Cohen",
+          "url": "https://bitmidi.com/uploads/37874.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\65_Leonard_Cohen-Hallelujah.mid",
+        "status": "downloaded",
+        "size": 1597
+      },
+      {
+        "song": {
+          "id": 64,
+          "title": "Perfect",
+          "artist": "Ed Sheeran",
+          "url": "https://bitmidi.com/uploads/66143.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\64_Ed_Sheeran-Perfect.mid",
+        "status": "downloaded",
+        "size": 6111
+      },
+      {
+        "song": {
+          "id": 66,
+          "title": "Piano Man",
+          "artist": "Billy Joel",
+          "url": "https://bitmidi.com/uploads/66789.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\66_Billy_Joel-Piano_Man.mid",
+        "status": "downloaded",
+        "size": 54493
+      },
+      {
+        "song": {
+          "id": 68,
+          "title": "Imagine",
+          "artist": "John Lennon",
+          "url": "https://bitmidi.com/uploads/43034.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\68_John_Lennon-Imagine.mid",
+        "status": "downloaded",
+        "size": 6172
+      },
+      {
+        "song": {
+          "id": 69,
+          "title": "Don't Stop Believin'",
+          "artist": "Journey",
+          "url": "https://bitmidi.com/uploads/24970.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\69_Journey-Don_t_Stop_Believin_.mid",
+        "status": "downloaded",
+        "size": 44251
+      },
+      {
+        "song": {
+          "id": 70,
+          "title": "Bohemian Rhapsody",
+          "artist": "Queen",
+          "url": "https://bitmidi.com/uploads/10998.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\70_Queen-Bohemian_Rhapsody.mid",
+        "status": "downloaded",
+        "size": 10967
+      },
+      {
+        "song": {
+          "id": 81,
+          "title": "The Thrill Is Gone",
+          "artist": "B.B. King",
+          "url": "https://bitmidi.com/uploads/80068.mid",
+          "genre": "Blues",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\81_B_B__King-The_Thrill_Is_Gone.mid",
+        "status": "downloaded",
+        "size": 454
+      },
+      {
+        "song": {
+          "id": 82,
+          "title": "Pride and Joy",
+          "artist": "Stevie Ray Vaughan",
+          "url": "https://bitmidi.com/uploads/68091.mid",
+          "genre": "Blues",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\82_Stevie_Ray_Vaughan-Pride_and_Joy.mid",
+        "status": "downloaded",
+        "size": 37299
+      },
+      {
+        "song": {
+          "id": 83,
+          "title": "Sweet Home Chicago",
+          "artist": "Robert Johnson",
+          "url": "https://bitmidi.com/uploads/78364.mid",
+          "genre": "Blues",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\83_Robert_Johnson-Sweet_Home_Chicago.mid",
+        "status": "downloaded",
+        "size": 19811
+      },
+      {
+        "song": {
+          "id": 84,
+          "title": "Crossroads",
+          "artist": "Cream",
+          "url": "https://bitmidi.com/uploads/22714.mid",
+          "genre": "Blues",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\84_Cream-Crossroads.mid",
+        "status": "downloaded",
+        "size": 9443
+      },
+      {
+        "song": {
+          "id": 85,
+          "title": "Red House",
+          "artist": "Jimi Hendrix",
+          "url": "https://bitmidi.com/uploads/70441.mid",
+          "genre": "Blues",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\85_Jimi_Hendrix-Red_House.mid",
+        "status": "downloaded",
+        "size": 64033
+      },
+      {
+        "song": {
+          "id": 90,
+          "title": "Super Mario Bros Theme",
+          "artist": "Nintendo",
+          "url": "https://bitmidi.com/uploads/77945.mid",
+          "genre": "Video Game",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\90_Nintendo-Super_Mario_Bros_Theme.mid",
+        "status": "downloaded",
+        "size": 28621
+      },
+      {
+        "song": {
+          "id": 92,
+          "title": "Tetris Theme",
+          "artist": "Nintendo",
+          "url": "https://bitmidi.com/uploads/80041.mid",
+          "genre": "Video Game",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\92_Nintendo-Tetris_Theme.mid",
+        "status": "downloaded",
+        "size": 49209
+      },
+      {
+        "song": {
+          "id": 94,
+          "title": "Megalovania",
+          "artist": "Toby Fox",
+          "url": "https://bitmidi.com/uploads/55768.mid",
+          "genre": "Video Game",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\94_Toby_Fox-Megalovania.mid",
+        "status": "downloaded",
+        "size": 26064
+      },
+      {
+        "song": {
+          "id": 93,
+          "title": "Final Fantasy VII - Aerith Theme",
+          "artist": "Square",
+          "url": "https://bitmidi.com/uploads/1838.mid",
+          "genre": "Video Game",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\93_Square-Final_Fantasy_VII___Aerith_Theme.mid",
+        "status": "downloaded",
+        "size": 47922
+      },
+      {
+        "song": {
+          "id": 95,
+          "title": "Fire and Rain",
+          "artist": "James Taylor",
+          "url": "https://bitmidi.com/uploads/32887.mid",
+          "genre": "Folk",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\95_James_Taylor-Fire_and_Rain.mid",
+        "status": "downloaded",
+        "size": 18658
+      },
+      {
+        "song": {
+          "id": 97,
+          "title": "The Sound of Silence",
+          "artist": "Simon & Garfunkel",
+          "url": "https://bitmidi.com/uploads/76112.mid",
+          "genre": "Folk",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\97_Simon___Garfunkel-The_Sound_of_Silence.mid",
+        "status": "downloaded",
+        "size": 15009
+      },
+      {
+        "song": {
+          "id": 96,
+          "title": "Blowin' in the Wind",
+          "artist": "Bob Dylan",
+          "url": "https://bitmidi.com/uploads/10851.mid",
+          "genre": "Folk",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\96_Bob_Dylan-Blowin__in_the_Wind.mid",
+        "status": "downloaded",
+        "size": 14861
+      },
+      {
+        "song": {
+          "id": 98,
+          "title": "Bridge Over Troubled Water",
+          "artist": "Simon & Garfunkel",
+          "url": "https://bitmidi.com/uploads/12221.mid",
+          "genre": "Folk",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\98_Simon___Garfunkel-Bridge_Over_Troubled_Water.mid",
+        "status": "downloaded",
+        "size": 38059
+      },
+      {
+        "song": {
+          "id": 99,
+          "title": "Heart of Gold",
+          "artist": "Neil Young",
+          "url": "https://bitmidi.com/uploads/39106.mid",
+          "genre": "Folk",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\99_Neil_Young-Heart_of_Gold.mid",
+        "status": "downloaded",
+        "size": 17827
+      },
+      {
+        "song": {
+          "id": 100,
+          "title": "Take Me Home, Country Roads",
+          "artist": "John Denver",
+          "url": "https://bitmidi.com/uploads/79133.mid",
+          "genre": "Folk",
+          "source": "BitMIDI"
+        },
+        "filePath": "midi-library\\100_John_Denver-Take_Me_Home__Country_Roads.mid",
+        "status": "downloaded",
+        "size": 65847
+      }
+    ],
+    "failed": [
+      {
+        "song": {
+          "id": 19,
+          "title": "Wish You Were Here",
+          "artist": "Pink Floyd",
+          "url": "https://bitmidi.com/uploads/113350.mid",
+          "genre": "Classic Rock",
+          "source": "BitMIDI"
+        },
+        "error": "HTTP 404"
+      },
+      {
+        "song": {
+          "id": 63,
+          "title": "Wonderwall",
+          "artist": "Oasis",
+          "url": "https://bitmidi.com/uploads/113406.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "error": "HTTP 404"
+      },
+      {
+        "song": {
+          "id": 67,
+          "title": "Your Song",
+          "artist": "Elton John",
+          "url": "https://bitmidi.com/uploads/114606.mid",
+          "genre": "Pop",
+          "source": "BitMIDI"
+        },
+        "error": "HTTP 404"
+      },
+      {
+        "song": {
+          "id": 91,
+          "title": "Zelda Main Theme",
+          "artist": "Nintendo",
+          "url": "https://bitmidi.com/uploads/115043.mid",
+          "genre": "Video Game",
+          "source": "BitMIDI"
+        },
+        "error": "HTTP 404"
+      }
+    ],
+    "exists": [],
+    "totalSize": 1394298
+  },
+  "timestamp": "2025-11-06T06:11:15.906Z",
+  "summary": {
+    "successful": 58,
+    "exists": 0,
+    "failed": 4,
+    "total": 62,
+    "totalSizeMB": "1.33"
+  }
+}

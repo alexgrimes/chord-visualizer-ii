@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Force Update - Chord Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        h1 { color: #333; }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background: white;
+        }
+        .progress {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover { background: #45a049; }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .file-input {
+            margin: 20px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+        .log {
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .log-item {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        .log-success { color: #4CAF50; }
+        .log-error { color: #f44336; }
+        .log-info { color: #2196F3; }
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Force Update Songs to Firebase</h1>
+        <p>This will <strong>UPDATE</strong> existing songs with new data (keys, time signatures, sections).</p>
+        
+        <div class="warning">
+            <strong>⚠️ Warning:</strong> This will overwrite all existing song data in Firebase!
+        </div>
+
+        <div class="file-input">
+            <label><strong>Select songs.json file:</strong></label><br>
+            <input type="file" id="fileInput" accept=".json">
+        </div>
+
+        <button id="uploadBtn" onclick="forceUpdateSongs()">Force Update All Songs</button>
+
+        <div class="status" id="status">
+            <strong>Status:</strong> Ready to upload
+        </div>
+
+        <div class="progress" id="progressContainer" style="display: none;">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+
+        <div class="log" id="log"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCeSRoepr9w5isE_UatuR7SAzMUBnbWyCY",
+            authDomain: "chord-visualizer-ii.firebaseapp.com",
+            projectId: "chord-visualizer-ii",
+            storageBucket: "chord-visualizer-ii.firebasestorage.app",
+            messagingSenderId: "1047784612307",
+            appId: "1:1047784612307:web:d4c0a98bc9a04b962a5e78",
+            measurementId: "G-WDNMPL8KFR"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        let songs = [];
+
+        // Handle file selection
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        songs = JSON.parse(event.target.result);
+                        log(`✓ Loaded ${songs.length} songs from file`, 'success');
+                        document.getElementById('uploadBtn').disabled = false;
+                    } catch (error) {
+                        log(`✗ Error parsing JSON: ${error.message}`, 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        async function forceUpdateSongs() {
+            if (songs.length === 0) {
+                alert('Please select a JSON file first!');
+                return;
+            }
+
+            if (!confirm(`This will UPDATE ${songs.length} songs in Firebase. Continue?`)) {
+                return;
+            }
+
+            const uploadBtn = document.getElementById('uploadBtn');
+            uploadBtn.disabled = true;
+            document.getElementById('progressContainer').style.display = 'block';
+
+            try {
+                // Sign in anonymously
+                await auth.signInAnonymously();
+                log('✓ Authenticated with Firebase', 'success');
+
+                let updated = 0;
+                let failed = 0;
+
+                for (let i = 0; i < songs.length; i++) {
+                    const song = songs[i];
+                    const progress = Math.round(((i + 1) / songs.length) * 100);
+                    updateProgress(progress, `${i + 1}/${songs.length}`);
+
+                    try {
+                        // Find existing document by title and artist
+                        const existingQuery = await db.collection('library_songs')
+                            .where('title', '==', song.title)
+                            .where('artist', '==', song.artist)
+                            .get();
+
+                        if (!existingQuery.empty) {
+                            // Update existing document
+                            const docId = existingQuery.docs[0].id;
+                            await db.collection('library_songs').doc(docId).update(song);
+                            log(`✓ Updated: ${song.title} by ${song.artist}`, 'success');
+                            updated++;
+                        } else {
+                            // Document doesn't exist, create new
+                            await db.collection('library_songs').add(song);
+                            log(`✓ Created: ${song.title} by ${song.artist}`, 'success');
+                            updated++;
+                        }
+
+                    } catch (error) {
+                        log(`✗ Failed: ${song.title} - ${error.message}`, 'error');
+                        failed++;
+                    }
+                }
+
+                document.getElementById('status').innerHTML = `
+                    <strong>Upload complete!</strong><br>
+                    ✓ Updated: ${updated}<br>
+                    ✗ Failed: ${failed}
+                `;
+
+                log(`\n=== COMPLETE ===\n✓ Updated: ${updated}\n✗ Failed: ${failed}`, 'info');
+
+            } catch (error) {
+                log(`✗ Fatal error: ${error.message}`, 'error');
+                document.getElementById('status').innerHTML = `<strong>Error:</strong> ${error.message}`;
+            } finally {
+                uploadBtn.disabled = false;
+            }
+        }
+
+        function updateProgress(percent, text) {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percent + '%';
+            progressBar.textContent = text || (percent + '%');
+        }
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const item = document.createElement('div');
+            item.className = `log-item log-${type}`;
+            item.textContent = message;
+            logDiv.appendChild(item);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>

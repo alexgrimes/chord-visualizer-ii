@@ -603,6 +603,7 @@
             cursor: pointer;
             transition: background-color 0.2s;
             min-height: 44px; /* Minimum touch target */
+            margin-top: 30px; /* Space for section markers */
         }
 
         .measure-staff:first-child {
@@ -621,6 +622,22 @@
         .measure-staff.selected-measure {
             background-color: rgba(76, 175, 80, 0.2);
             border: 2px solid #4CAF50;
+        }
+        
+        /* Section marker styles */
+        .section-marker {
+            position: absolute;
+            left: 0;
+            top: -25px;
+            font-weight: bold;
+            font-size: 12px;
+            color: #2196F3;
+            background: rgba(33, 150, 243, 0.1);
+            padding: 2px 8px;
+            border-radius: 3px;
+            white-space: nowrap;
+            z-index: 5;
+            border: 1px solid rgba(33, 150, 243, 0.3);
         }
 
         /* Custom Chord Creator Styles */
@@ -2062,6 +2079,110 @@
             gap: 20px;
         }
 
+        /* Song Library Styles */
+        .songs-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .songs-filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .songs-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .song-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .song-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+
+        .song-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin: 0 0 5px 0;
+        }
+
+        .song-artist {
+            font-size: 14px;
+            color: #666;
+            margin: 0 0 12px 0;
+        }
+
+        .song-details {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .song-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .song-badge.genre { background: #f3e5f5; color: #6a1b9a; }
+        .song-badge.key { background: #e8f5e9; color: #2e7d32; }
+        .song-badge.tempo { background: #fff3e0; color: #e65100; }
+        .song-badge.difficulty.beginner { background: #c8e6c9; color: #2e7d32; }
+        .song-badge.difficulty.intermediate { background: #fff9c4; color: #f57f17; }
+        .song-badge.difficulty.advanced { background: #ffcdd2; color: #c62828; }
+
         .pack-card {
             background: white;
             border: 2px solid #ddd;
@@ -2506,13 +2627,35 @@
             <div class="browse-content">
                 <!-- Collection Tabs -->
                 <div class="collection-tabs" id="collectionTabs">
-                    <button class="tab-btn active" data-collection="all">All Collections</button>
-                    <button class="tab-btn" data-collection="foundational">Foundational Forms</button>
+                    <button class="tab-btn active" data-collection="packs">Lesson Packs</button>
+                    <button class="tab-btn" data-collection="songs">Song Library</button>
                 </div>
                 
                 <!-- Packs Grid -->
                 <div class="packs-grid" id="packsGrid">
-                    <div class="loading">Loading packs...</div>
+                    <div class="loading">Loading...</div>
+                </div>
+                
+                <!-- Songs Grid -->
+                <div class="songs-grid" id="songsGrid" style="display: none;">
+                    <div class="songs-filter-bar">
+                        <input type="text" id="songSearchInput" placeholder="🔍 Search songs..." class="search-input">
+                        <select id="genreFilter" class="filter-select">
+                            <option value="all">All Genres</option>
+                        </select>
+                        <select id="difficultyFilter" class="filter-select">
+                            <option value="all">All Difficulties</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                        <select id="keyFilter" class="filter-select">
+                            <option value="all">All Keys</option>
+                        </select>
+                    </div>
+                    <div class="songs-list" id="songsList">
+                        <div class="loading">Loading songs...</div>
+                    </div>
                 </div>
                 
                 <!-- Pack Detail View -->
@@ -2648,12 +2791,42 @@
                         
                         <label>
                             Time Signature: 
-                            <select id="timeSignature">
-                                <option value="4/4" selected>4/4</option>
-                                <option value="3/4">3/4</option>
-                                <option value="2/4">2/4</option>
-                                <option value="6/8">6/8</option>
+                            <select id="timeSignatureNumerator" onchange="updateTimeSignature()">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4" selected>4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
                             </select>
+                            /
+                            <select id="timeSignatureDenominator" onchange="updateTimeSignature()">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="4" selected>4</option>
+                                <option value="8">8</option>
+                                <option value="12">12</option>
+                                <option value="16">16</option>
+                            </select>
+                            <input type="hidden" id="timeSignature" value="4/4">
                         </label>
                         
                         <label>
@@ -3794,6 +3967,28 @@
         // Browse Library Functions
         function showBrowseLibrary() {
             document.getElementById('browseLibraryModal').classList.add('show');
+            
+            // Setup tab switching
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    const collection = tab.dataset.collection;
+                    if (collection === 'packs') {
+                        document.getElementById('packsGrid').style.display = 'grid';
+                        document.getElementById('songsGrid').style.display = 'none';
+                        loadCollections('all');
+                    } else if (collection === 'songs') {
+                        document.getElementById('packsGrid').style.display = 'none';
+                        document.getElementById('songsGrid').style.display = 'flex';
+                        loadSongs();
+                    }
+                });
+            });
+            
+            // Load packs by default
             loadCollections('all');
         }
         
@@ -3933,6 +4128,340 @@
         function showPacksGrid() {
             document.getElementById('packDetail').style.display = 'none';
             document.getElementById('packsGrid').style.display = 'grid';
+        }
+        
+        // Song Library Functions
+        let allSongs = [];
+        
+        async function loadSongs() {
+            const songsList = document.getElementById('songsList');
+            songsList.innerHTML = '<div class="loading">Loading songs...</div>';
+            
+            try {
+                const songsQuery = await db.collection('library_songs').get();
+                
+                allSongs = songsQuery.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                })).sort((a, b) => {
+                    // Sort by artist, then title in JavaScript instead of Firestore
+                    const artistCompare = (a.artist || '').localeCompare(b.artist || '');
+                    if (artistCompare !== 0) return artistCompare;
+                    return (a.title || '').localeCompare(b.title || '');
+                });
+                
+                console.log('Loaded', allSongs.length, 'songs from Firebase');
+                
+                // Populate filter dropdowns
+                populateFilters();
+                
+                // Setup filter listeners
+                setupFilterListeners();
+                
+                // Display all songs
+                filterSongs();
+                
+            } catch (error) {
+                console.error('Error loading songs:', error);
+                songsList.innerHTML = '<div class="loading">Error loading songs: ' + error.message + '</div>';
+            }
+        }
+        
+        function populateFilters() {
+            // Populate genre filter
+            const genres = [...new Set(allSongs.map(s => s.genre).filter(g => g && g !== 'Unknown'))].sort();
+            const genreFilter = document.getElementById('genreFilter');
+            genres.forEach(genre => {
+                const option = document.createElement('option');
+                option.value = genre;
+                option.textContent = genre;
+                genreFilter.appendChild(option);
+            });
+            
+            // Populate key filter
+            const keys = [...new Set(allSongs.map(s => s.key).filter(k => k))].sort();
+            const keyFilter = document.getElementById('keyFilter');
+            keys.forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key;
+                keyFilter.appendChild(option);
+            });
+        }
+        
+        function setupFilterListeners() {
+            document.getElementById('songSearchInput').addEventListener('input', filterSongs);
+            document.getElementById('genreFilter').addEventListener('change', filterSongs);
+            document.getElementById('difficultyFilter').addEventListener('change', filterSongs);
+            document.getElementById('keyFilter').addEventListener('change', filterSongs);
+        }
+        
+        function filterSongs() {
+            const searchTerm = document.getElementById('songSearchInput').value.toLowerCase();
+            const selectedGenre = document.getElementById('genreFilter').value;
+            const selectedDifficulty = document.getElementById('difficultyFilter').value;
+            const selectedKey = document.getElementById('keyFilter').value;
+            
+            const filtered = allSongs.filter(song => {
+                const matchesSearch = !searchTerm || 
+                    song.title?.toLowerCase().includes(searchTerm) ||
+                    song.artist?.toLowerCase().includes(searchTerm);
+                    
+                const matchesGenre = selectedGenre === 'all' || song.genre === selectedGenre;
+                const matchesDifficulty = selectedDifficulty === 'all' || song.difficulty === selectedDifficulty;
+                const matchesKey = selectedKey === 'all' || song.key === selectedKey;
+                
+                return matchesSearch && matchesGenre && matchesDifficulty && matchesKey;
+            });
+            
+            renderSongs(filtered);
+        }
+        
+        function renderSongs(songs) {
+            const songsList = document.getElementById('songsList');
+            
+            if (songs.length === 0) {
+                songsList.innerHTML = '<div class="loading">No songs match your filters</div>';
+                return;
+            }
+            
+            songsList.innerHTML = '';
+            songs.forEach(song => {
+                const card = document.createElement('div');
+                card.className = 'song-card';
+                card.innerHTML = `
+                    <h3 class="song-title">${song.title}</h3>
+                    <p class="song-artist">${song.artist}</p>
+                    <div class="song-details">
+                        ${song.genre && song.genre !== 'Unknown' ? `<span class="song-badge genre">${song.genre}</span>` : ''}
+                        ${song.key ? `<span class="song-badge key">Key: ${song.key}</span>` : ''}
+                        ${song.tempo ? `<span class="song-badge tempo">${song.tempo} BPM</span>` : ''}
+                        ${song.difficulty ? `<span class="song-badge difficulty ${song.difficulty.toLowerCase()}">${song.difficulty}</span>` : ''}
+                    </div>
+                `;
+                
+                card.onclick = () => loadSongIntoVisualizer(song);
+                songsList.appendChild(card);
+            });
+        }
+        
+        // Normalize key notation from ASCII to Unicode
+        function normalizeKey(key) {
+            if (!key) return 'C';
+            
+            console.log('🔑 normalizeKey - Input:', key, 'Type:', typeof key);
+            
+            // Handle already normalized keys
+            if (key.includes('♯') || key.includes('♭')) {
+                console.log('🔑 normalizeKey - Already normalized:', key);
+                return key;
+            }
+            
+            // Mapping table for ASCII to Unicode conversion
+            const keyMap = {
+                // Major keys with sharps
+                'F#': 'F♯/G♭',
+                'C#': 'C♯',
+                'G#': 'G♯',
+                'D#': 'D♯',
+                'A#': 'A♯',
+                'E#': 'E♯',
+                'B#': 'B♯',
+                
+                // Major keys with flats
+                'Bb': 'B♭',
+                'Eb': 'E♭',
+                'Ab': 'A♭',
+                'Db': 'D♭',
+                'Gb': 'G♭',
+                'Cb': 'C♭',
+                'Fb': 'F♭',
+                
+                // Minor keys with sharps
+                'F#m': 'F♯m',
+                'C#m': 'C♯m',
+                'G#m': 'G♯m',
+                'D#m': 'D♯m/E♭m',
+                'A#m': 'A♯m',
+                'E#m': 'E♯m',
+                'B#m': 'B♯m',
+                
+                // Minor keys with flats
+                'Bbm': 'B♭m',
+                'Ebm': 'E♭m',
+                'Abm': 'A♭m',
+                'Dbm': 'D♭m',
+                'Gbm': 'G♭m',
+                'Cbm': 'C♭m',
+                'Fbm': 'F♭m',
+                
+                // Natural keys (no accidentals)
+                'C': 'C',
+                'D': 'D',
+                'E': 'E',
+                'F': 'F',
+                'G': 'G',
+                'A': 'A',
+                'B': 'B',
+                'Am': 'Am',
+                'Bm': 'Bm',
+                'Cm': 'Cm',
+                'Dm': 'Dm',
+                'Em': 'Em',
+                'Fm': 'Fm',
+                'Gm': 'Gm'
+            };
+            
+            const normalized = keyMap[key] || key;
+            console.log('🔑 normalizeKey - Mapped:', key, '→', normalized);
+            
+            // Verify the normalized key exists in musicalKeys
+            if (!musicalKeys[normalized]) {
+                console.warn('⚠️ normalizeKey - Normalized key not found in musicalKeys:', normalized);
+                console.log('🔑 Available keys:', Object.keys(musicalKeys));
+                // Default to C if key not found
+                return 'C';
+            }
+            
+            return normalized;
+        }
+        
+        // Update time signature from dropdowns
+        function updateTimeSignature() {
+            const numerator = document.getElementById('timeSignatureNumerator').value;
+            const denominator = document.getElementById('timeSignatureDenominator').value;
+            const timeSignature = `${numerator}/${denominator}`;
+            document.getElementById('timeSignature').value = timeSignature;
+            console.log('⏱️  Time signature updated to:', timeSignature);
+        }
+        
+        // Generate section tabs from song sections
+        function generateSectionTabs(sections) {
+            const sectionTabsContainer = document.getElementById('sectionTabsContainer');
+            const sectionTabs = document.getElementById('sectionTabs');
+            sectionTabs.innerHTML = '';
+            
+            if (!sections || sections.length === 0) {
+                sectionTabsContainer.classList.remove('active');
+                return;
+            }
+            
+            let measureOffset = 0;
+            sections.forEach((section, index) => {
+                const tab = document.createElement('button');
+                tab.className = 'section-tab' + (index === 0 ? ' active' : '');
+                tab.textContent = `${section.name} (${section.bars || section.measures?.length || 0})`;
+                tab.onclick = () => jumpToSection(index, measureOffset);
+                sectionTabs.appendChild(tab);
+                
+                measureOffset += section.measures?.length || 0;
+            });
+            
+            sectionTabsContainer.classList.add('active');
+            console.log('📑 Generated', sections.length, 'section tabs');
+        }
+        
+        // Jump to a specific section
+        function jumpToSection(sectionIndex, measureIndex) {
+            // Update active tab
+            document.querySelectorAll('.section-tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i === sectionIndex);
+            });
+            
+            // Scroll to measure
+            selectedMeasureIndex = measureIndex;
+            const measureEl = document.getElementById(`staff-measure-${measureIndex}`);
+            if (measureEl) {
+                measureEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                updateProgressionChart();
+            }
+            
+            console.log('🎯 Jumped to section', sectionIndex, 'at measure', measureIndex);
+        }
+        
+        function loadSongIntoVisualizer(song) {
+            console.log('📖 Loading song into visualizer:', song.title, 'by', song.artist);
+            console.log('📖 Song key from JSON:', song.key);
+            
+            // Close the browse modal
+            closeBrowseLibrary();
+            
+            // Set key and scale with normalization
+            const rawKey = song.key || 'C';
+            selectedKey = normalizeKey(rawKey);
+            console.log('📖 Normalized key:', rawKey, '→', selectedKey);
+            
+            selectedScale = 'major'; // Most songs are in major, could enhance this later
+            selectScale(selectedScale);
+            selectKey(selectedKey, true);
+            
+            progressionKey = selectedKey;
+            const progressionKeySelect = document.getElementById('progressionKey');
+            if (progressionKeySelect) {
+                progressionKeySelect.value = selectedKey;
+            }
+            
+            // Set tempo
+            document.getElementById('tempo').value = song.tempo || 120;
+            
+            // Set time signature dropdowns
+            const [numerator, denominator] = (song.timeSignature || '4/4').split('/');
+            const numSelect = document.getElementById('timeSignatureNumerator');
+            const denomSelect = document.getElementById('timeSignatureDenominator');
+            if (numSelect && denomSelect) {
+                numSelect.value = numerator;
+                denomSelect.value = denominator;
+                document.getElementById('timeSignature').value = song.timeSignature || '4/4';
+                console.log('⏱️  Set time signature to:', song.timeSignature);
+            }
+            
+            // Generate section tabs
+            generateSectionTabs(song.sections);
+            
+            // Convert song sections to measures with section markers
+            const measures = [];
+            if (song.sections && song.sections.length > 0) {
+                song.sections.forEach((section, sectionIndex) => {
+                    if (section.measures && section.measures.length > 0) {
+                        section.measures.forEach((measure, measureIndex) => {
+                            measures.push({
+                                chord: measure.chord,
+                                localKey: section.key || song.key,
+                                timeSignature: measure.timeSignature || song.timeSignature || '4/4',
+                                sectionName: measureIndex === 0 ? section.name : null // Mark first measure of each section
+                            });
+                        });
+                    }
+                });
+            }
+            
+            if (measures.length === 0) {
+                alert('This song has no chord data to display.');
+                return;
+            }
+            
+            // Load measures into progression
+            progressionMeasures = measures;
+            progressionActive = true;
+            selectedMeasureIndex = 0;
+            console.log('📊 Loaded', measures.length, 'measures into progressionMeasures');
+            console.log('📊 First 3 measures:', measures.slice(0, 3).map(m => m.chord?.symbol || 'N.C.'));
+            
+            // Show staff container
+            const staffContainer = document.getElementById('staffContainer');
+            staffContainer.classList.add('active');
+            
+            // Generate staff UI
+            const timeSignature = song.timeSignature || '4/4';
+            console.log('🎼 Generating staff with', measures.length, 'measures, time signature:', timeSignature);
+            generateStaffMeasures(measures.length, timeSignature);
+            
+            // Update UI
+            console.log('🎨 Calling updateProgressionChart...');
+            updateProgressionChart();
+            
+            console.log('✅ Song loaded successfully!');
+            console.log('🎯 Current state - Key:', selectedKey, 'Scale:', selectedScale, 'Measure:', selectedMeasureIndex + '/' + measures.length);
         }
         
         async function loadLibraryProgression(progressionId) {
@@ -4085,21 +4614,30 @@
             }
             
             // Check if we're using original key data or need to generate scale data
+            console.log('🎵 getCurrentKeyData - selectedKey:', selectedKey, 'selectedScale:', selectedScale);
+            console.log('🎵 getCurrentKeyData - Key includes m?', selectedKey.includes('m'));
+            console.log('🎵 getCurrentKeyData - Scale:', selectedScale);
+            
             if ((selectedScale === 'major' && !selectedKey.includes('m')) || 
                 (selectedScale === 'minor' && selectedKey.includes('m'))) {
                 // Use original key data for standard major/minor
+                console.log('🎵 getCurrentKeyData - Using predefined key data for:', selectedKey);
                 const keyData = musicalKeys[selectedKey];
-                console.log('Looking for key data for:', selectedKey, 'found:', keyData ? 'yes' : 'no');
+                console.log('🎵 getCurrentKeyData - Key lookup result:', selectedKey, '→', keyData ? '✓ FOUND' : '✗ NOT FOUND');
+                
                 if (!keyData) {
-                    console.error('Key data not found for:', selectedKey);
-                    console.log('Available keys:', Object.keys(musicalKeys));
+                    console.error('❌ Key data not found for:', selectedKey);
+                    console.log('📋 Available keys:', Object.keys(musicalKeys));
+                    console.log('💡 Falling back to generated scale data');
                     // If no predefined key data, generate it
                     return getCurrentScaleData();
                 }
+                
+                console.log('✅ Using key data:', keyData.scale, 'Signature:', keyData.signature);
                 return keyData;
             } else {
                 // Generate scale data for other scales
-                console.log('Generating scale data for non-standard scale');
+                console.log('🎵 getCurrentKeyData - Generating scale data for non-standard scale');
                 return getCurrentScaleData();
             }
         }
@@ -9198,6 +9736,9 @@
         }
 
         function updateProgressionChart() {
+            console.log('🔄 updateProgressionChart - Starting with', progressionMeasures.length, 'measures');
+            console.log('🔄 progressionKey:', progressionKey, 'selectedKey:', selectedKey);
+            
             progressionMeasures.forEach((measure, index) => {
                 const chord = measure ? measure.chord : null;
                 const chordEl = document.getElementById(`chord-${index}`);
@@ -9248,6 +9789,27 @@
                     
                     // Clear previous key/time labels to prevent duplicates
                     measureEl.querySelectorAll('div[style*="position: absolute"]').forEach(el => el.remove());
+                    
+                    // Add section marker if this is the first measure of a section
+                    if (measure && measure.sectionName) {
+                        const sectionLabel = document.createElement('div');
+                        sectionLabel.className = 'section-marker';
+                        sectionLabel.style.cssText = `
+                            position: absolute;
+                            left: 0;
+                            top: -25px;
+                            font-weight: bold;
+                            font-size: 12px;
+                            color: #2196F3;
+                            background: rgba(33, 150, 243, 0.1);
+                            padding: 2px 8px;
+                            border-radius: 3px;
+                            white-space: nowrap;
+                            z-index: 5;
+                        `;
+                        sectionLabel.textContent = measure.sectionName;
+                        measureEl.appendChild(sectionLabel);
+                    }
                     
                     // Add key/time changes only when there's an ACTUAL change from previous measure
                     if (measure && index > 0 && progressionMeasures[index - 1]) {
@@ -9374,6 +9936,8 @@
         }
 
         function generateRomanNumeralForChord(chord, key, index) {
+            console.log('🎵 generateRomanNumeralForChord START - chord:', chord?.symbol, 'key:', key, 'index:', index);
+            
             // If chord has preserved mode information, use it
             if (chord.sourceMode && chord.sourceIndex !== undefined) {
                 const baseNumeral = generateRomanNumeral(chord.sourceIndex, chord.sourceMode, key);
@@ -9386,6 +9950,7 @@
             if (!keyData) return 'I';
             
             const isMinor = key.includes('m');
+            console.log('🎶 generateRomanNumeralForChord - chord:', chord.symbol, 'key:', key, 'index:', index);
             
             // Get the appropriate chord array based on current mode
             let chords = [];
@@ -9409,6 +9974,8 @@
             
             if (chordPosition === -1) {
                 // Fallback: try to calculate based on chord root vs key
+                console.log('⚠️ generateRomanNumeralForChord - Chord not in diatonic progression, falling back');
+                console.log('⚠️ Chord:', chord.symbol, 'Key:', key, 'Available chords:', chords.map(c => c?.symbol));
                 const baseNumeral = calculateRomanNumeralFromRoot(chord, key);
                 const figuredBass = detectFiguredBass(chord);
                 return baseNumeral + figuredBass;
@@ -9524,10 +10091,12 @@
         }
         
         function calculateRomanNumeralFromRoot(chord, key) {
+            console.log('🎼 calculateRomanNumeralFromRoot - chord:', chord?.symbol, 'key:', key);
+            
             // Fallback method for calculating roman numerals
             // Safety check: ensure chord has a symbol
             if (!chord || !chord.symbol) {
-                console.warn('calculateRomanNumeralFromRoot called with invalid chord:', chord);
+                console.warn('⚠️ calculateRomanNumeralFromRoot called with invalid chord:', chord);
                 return 'I';
             }
             
@@ -9535,6 +10104,8 @@
             const keyRoot = key.replace('m', '').split('/')[0];
             // Extract root note including sharps (#) and flats (♭, b)
             let chordRoot = chord.symbol.match(/^[A-G][#♯b♭]?/)?.[0] || chord.symbol.charAt(0);
+            
+            console.log('🎼 Chord root:', chordRoot, 'Key root:', keyRoot, 'Is minor key:', isKeyMinor);
             
             // Detect chord quality
             const isDominantSeventh = /^[A-G][#♯b♭]?7$/.test(chord.symbol); // X7 pattern
@@ -9544,14 +10115,58 @@
             const isAugmented = chord.symbol.includes('+') || chord.symbol.includes('aug');
             
             // Scale degrees mapping
+            console.log('🎼 Getting key data for key:', key);
             const keyData = getCurrentKeyData();
-            if (!keyData || !keyData.scale) return 'I';
+            console.log('🎼 Key data result:', keyData ? 'found' : 'NOT FOUND');
+            
+            if (!keyData || !keyData.scale) {
+                console.error('❌ No key data or scale found for key:', key);
+                return 'I';
+            }
+            
+            console.log('🎼 Scale:', keyData.scale);
             
             const scalePosition = keyData.scale.findIndex(note => {
                 return noteToSemitone(note) === noteToSemitone(chordRoot);
             });
             
-            if (scalePosition === -1) return chordRoot;
+            // If chord root is not in the scale, calculate chromatic roman numeral
+            if (scalePosition === -1) {
+                console.log('🎼 Chord root not in scale - calculating chromatic numeral');
+                const chordSemitone = noteToSemitone(chordRoot);
+                const keySemitone = noteToSemitone(keyRoot);
+                let interval = (chordSemitone - keySemitone + 12) % 12;
+                
+                console.log('🎼 Chord semitone:', chordSemitone, 'Key semitone:', keySemitone, 'Interval:', interval);
+                
+                // Map semitone intervals to roman numerals with accidentals
+                const chromaticNumerals = {
+                    0: 'I',     // Root
+                    1: 'bII',   // Flat 2 (Neapolitan)
+                    2: 'II',    // Major 2
+                    3: 'bIII',  // Flat 3 (minor third)
+                    4: 'III',   // Major 3
+                    5: 'IV',    // Perfect 4
+                    6: isKeyMinor ? 'V' : 'bV',  // Tritone (b5 in major, natural 5 in minor)
+                    7: 'V',     // Perfect 5
+                    8: 'bVI',   // Flat 6
+                    9: 'VI',    // Major 6
+                    10: 'bVII', // Flat 7
+                    11: 'VII'   // Major 7
+                };
+                
+                let baseNumeral = chromaticNumerals[interval] || 'I';
+                
+                // Adjust case based on chord quality
+                if (isMinorChord && !baseNumeral.includes('b')) {
+                    baseNumeral = baseNumeral.toLowerCase();
+                } else if (isDiminished) {
+                    baseNumeral = baseNumeral.toLowerCase() + '°';
+                }
+                
+                console.log('🎼 Chromatic numeral:', baseNumeral);
+                return baseNumeral;
+            }
             
             if (isKeyMinor) {
                 const minorRomanNumerals = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
