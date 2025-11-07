@@ -55,6 +55,15 @@ async function convertMIDIToSong(midiFilePath, metadata = {}) {
         const chordProgression = extractChordProgression(mainTrack, timeSignature);
         console.log(`🎸 Chords: ${chordProgression.length} chord changes`);
         
+        // Quality validation
+        const qualityIssues = validateMIDIQuality(filename, keyInfo, chordProgression, timeSignature);
+        
+        if (qualityIssues.length > 0) {
+            console.log(`❌ SKIPPING - Quality issues detected:`);
+            qualityIssues.forEach(issue => console.log(`   • ${issue}`));
+            return null;
+        }
+        
         // Validate: Skip songs with insufficient chord data (melody-only MIDIs)
         if (chordProgression.length < 4) {
             console.log(`⚠️  SKIPPING: Insufficient chord data (${chordProgression.length} chords found)`);
@@ -546,6 +555,44 @@ function getSectionName(index, bars, totalSections, totalBars) {
     
     // Fallback
     return `Section ${index + 1}`;
+}
+
+/**
+ * Validate MIDI quality
+ */
+function validateMIDIQuality(filename, keyInfo, chordProgression, timeSignature) {
+    const issues = [];
+    
+    // Blacklist of known bad MIDI files
+    const blacklist = [
+        '25_Eagles-Hotel_California',  // Wrong key (G instead of Bm), wrong chords
+        '81_B_B__King-The_Thrill_Is_Gone', // Melody only
+        // Add more as discovered
+    ];
+    
+    if (blacklist.includes(filename)) {
+        issues.push('Known bad MIDI file (blacklisted)');
+        return issues;
+    }
+    
+    // Check key confidence - should be at least 70%
+    if (keyInfo.confidence < 0.70) {
+        issues.push(`Low key confidence (${(keyInfo.confidence * 100).toFixed(0)}% - need 70%+)`);
+    }
+    
+    // Check for chord variety - need at least 3 unique chords
+    const uniqueChords = new Set(chordProgression.map(c => c.symbol).filter(s => s !== 'N.C.'));
+    if (uniqueChords.size < 3) {
+        issues.push(`Insufficient chord variety (${uniqueChords.size} unique chords - need 3+)`);
+    }
+    
+    // Check for suspiciously high tempo (likely wrong)
+    if (timeSignature.display === '12/8' && keyInfo.key === 'G') {
+        // Hotel California pattern - 12/8 in G is likely wrong
+        issues.push('Suspicious time signature + key combination');
+    }
+    
+    return issues;
 }
 
 /**
