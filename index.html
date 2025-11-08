@@ -2715,7 +2715,10 @@
                 <!-- Musical Staff -->
                 <div class="staff-container" id="staffContainer">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <h4 style="margin: 0;">Chord Progression Staff</h4>
+                        <div>
+                            <h4 style="margin: 0;">Chord Progression Staff</h4>
+                            <div id="currentSongTitle" style="font-size: 13px; color: #666; margin-top: 4px;"></div>
+                        </div>
                         <div class="playback-mode-controls" style="display: flex; gap: 15px; font-size: 13px;">
                             <label style="cursor: pointer; display: flex; align-items: center; gap: 4px;">
                                 <input type="radio" name="playbackMode" id="playCurrentSection" checked>
@@ -3459,6 +3462,9 @@
                     // Show staff container
                     const staffContainer = document.getElementById('staffContainer');
                     staffContainer.classList.add('active');
+                    
+                    // Update song title display
+                    updateSongTitleDisplay();
                     
                     // Show and render section tabs
                     renderSectionTabs();
@@ -8954,6 +8960,16 @@
         }
 
         // Section Management Functions
+        // Update song title display in staff header
+        function updateSongTitleDisplay() {
+            const titleElement = document.getElementById('currentSongTitle');
+            if (titleElement && currentSong && currentSong.title) {
+                titleElement.textContent = currentSong.title;
+            } else if (titleElement) {
+                titleElement.textContent = '';
+            }
+        }
+
         function renderSectionTabs() {
             const tabsContainer = document.getElementById('sectionTabsContainer');
             const tabsElement = document.getElementById('sectionTabs');
