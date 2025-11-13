@@ -12,13 +12,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Music&display=swap" rel="stylesheet">
 
     <!-- Alternative: Use Bravura font via CDN -->
-    <style>
-    @font-face {
-      font-family: 'Bravura';
-      src: url('https://cdn.jsdelivr.net/gh/steinbergmedia/bravura@latest/redist/otf/Bravura.otf') format('opentype');
-      font-display: swap;
-    }
-    </style>
+
+        <!-- Bravura and Petaluma SMuFL fonts for music notation -->
+        <style>
+        @font-face {
+            font-family: 'Bravura';
+            src: url('https://cdn.jsdelivr.net/gh/steinbergmedia/bravura@latest/redist/otf/Bravura.otf') format('opentype');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Petaluma';
+            src: url('https://cdn.jsdelivr.net/npm/@musescore/petaluma@1.0.0/fonts/PetalumaScript.otf') format('opentype');
+            font-display: swap;
+        }
+        </style>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -570,6 +577,7 @@
             flex: 1;
             position: relative;
             min-height: 5rem;
+            overflow: visible; /* Allow chord symbols to appear above */
         }
 
         .staff-svg {
@@ -604,6 +612,7 @@
             transition: background-color 0.2s;
             min-height: 44px; /* Minimum touch target */
             margin-top: 30px; /* Space for section markers */
+            overflow: visible; /* Allow chord symbols to appear above */
         }
 
         .measure-staff:first-child {
@@ -908,6 +917,7 @@
             box-shadow: 0 0 8px rgba(255, 87, 34, 0.5);
         }
 
+
         .staff-container .chord-symbol {
             position: absolute;
             top: 0.5rem;
@@ -917,6 +927,30 @@
             white-space: nowrap;
             font-family: 'Times New Roman', serif;
             text-align: center;
+        }
+
+        .staff-container .rhythm-symbols, .rhythm-symbols {
+            position: absolute;
+            top: -1.2rem;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Bravura', 'Petaluma', 'Noto Music', 'Arial', sans-serif;
+            font-size: clamp(1.2rem, 2.7vw, 1.5rem);
+            font-weight: normal;
+            letter-spacing: 0.05em;
+            line-height: 1.1;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* Fine-tune notehead/stem alignment for Bravura */
+        .rhythm-symbols span {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.2em;
+            /* Adjust baseline for better stem connection */
+            transform: translateY(0.08em);
         }
 
         .staff-container .roman-numeral {
@@ -2833,6 +2867,19 @@
                         </label>
                         
                         <label>
+                            Subdivision: 
+                            <select id="measureSubdivision" onchange="updateMeasureSubdivision()">
+                                <option value="whole" selected>Whole note</option>
+                                <option value="half">Half note</option>
+                                <option value="dotted-half">Dotted half</option>
+                                <option value="quarter">Quarter note</option>
+                                <option value="dotted-quarter">Dotted quarter</option>
+                                <option value="eighth">Eighth note</option>
+                                <option value="dotted-eighth">Dotted eighth</option>
+                            </select>
+                        </label>
+                        
+                        <label>
                             Measures: 
                             <select id="measureCount">
                                 <option value="2">2</option>
@@ -2994,21 +3041,25 @@
         const TEACHER_CODE = "MUSIC2025";
 
         // Authentication State Observer
+        // TEMPORARILY DISABLED FOR TESTING - Allow app to function without auth
         auth.onAuthStateChanged((user) => {
             if (user) {
                 currentUser = user;
                 loadUserProfile(user.uid);
             } else {
                 currentUser = null;
-                showAuthModal();
+                // showAuthModal(); // DISABLED - Don't block UI
+                console.log('Auth disabled for testing');
             }
         });
 
         // Show/Hide Authentication Modal
         function showAuthModal() {
             document.getElementById('authModal').classList.add('show');
-            document.getElementById('appHeader').style.display = 'none';
-            document.getElementById('saveShareControls').classList.add('hidden');
+            const appHeader = document.getElementById('appHeader');
+            const saveShare = document.getElementById('saveShareControls');
+            if (appHeader) appHeader.style.display = 'none';
+            if (saveShare) saveShare.classList.add('hidden');
         }
 
         function hideAuthModal() {
@@ -3016,10 +3067,13 @@
         }
 
         // Switch between Sign In and Sign Up
-        document.getElementById('authSwitchLink').addEventListener('click', () => {
-            isAuthMode = isAuthMode === 'signin' ? 'signup' : 'signin';
-            updateAuthModal();
-        });
+        const authSwitchLink = document.getElementById('authSwitchLink');
+        if (authSwitchLink) {
+            authSwitchLink.addEventListener('click', () => {
+                isAuthMode = isAuthMode === 'signin' ? 'signup' : 'signin';
+                updateAuthModal();
+            });
+        }
 
         function updateAuthModal() {
             const title = document.getElementById('authModalTitle');
@@ -3044,62 +3098,70 @@
         }
 
         // Show teacher code input when teacher is selected
-        document.getElementById('userRole').addEventListener('change', (e) => {
-            const teacherCodeGroup = document.getElementById('teacherCodeGroup');
-            teacherCodeGroup.style.display = e.target.value === 'teacher' ? 'block' : 'none';
-        });
+        const userRoleSelect = document.getElementById('userRole');
+        if (userRoleSelect) {
+            userRoleSelect.addEventListener('change', (e) => {
+                const teacherCodeGroup = document.getElementById('teacherCodeGroup');
+                if (teacherCodeGroup) {
+                    teacherCodeGroup.style.display = e.target.value === 'teacher' ? 'block' : 'none';
+                }
+            });
+        }
 
         // Handle Authentication Submit
-        document.getElementById('authSubmitBtn').addEventListener('click', async () => {
-            const email = document.getElementById('authEmail').value.trim();
-            
-            if (!email) {
-                alert('Please enter your email');
-                return;
-            }
-
-            try {
-                if (isAuthMode === 'signup') {
-                    // Create new account
-                    const role = document.getElementById('userRole').value;
-                    
-                    // Verify teacher code if teacher role selected
-                    if (role === 'teacher') {
-                        const teacherCode = document.getElementById('teacherCode').value.trim();
-                        if (teacherCode !== TEACHER_CODE) {
-                            alert('Invalid teacher code. Please contact your administrator.');
-                            return;
-                        }
-                    }
-                    
-                    // Create user with email link (passwordless)
-                    const actionCodeSettings = {
-                        url: window.location.href,
-                        handleCodeInApp: true,
-                    };
-                    
-                    await auth.sendSignInLinkToEmail(email, actionCodeSettings);
-                    window.localStorage.setItem('emailForSignIn', email);
-                    window.localStorage.setItem('pendingRole', role);
-                    
-                    alert('Sign-in link sent! Please check your email to complete registration.');
-                } else {
-                    // Sign in existing user
-                    const actionCodeSettings = {
-                        url: window.location.href,
-                        handleCodeInApp: true,
-                    };
-                    
-                    await auth.sendSignInLinkToEmail(email, actionCodeSettings);
-                    window.localStorage.setItem('emailForSignIn', email);
-                    
-                    alert('Sign-in link sent! Please check your email.');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        if (authSubmitBtn) {
+            authSubmitBtn.addEventListener('click', async () => {
+                const email = document.getElementById('authEmail').value.trim();
+                
+                if (!email) {
+                    alert('Please enter your email');
+                    return;
                 }
-            } catch (error) {
-                console.error('Authentication error:', error);
-                alert('Error: ' + error.message);
-            }
-        });
+
+                try {
+                    if (isAuthMode === 'signup') {
+                        // Create new account
+                        const role = document.getElementById('userRole').value;
+                        
+                        // Verify teacher code if teacher role selected
+                        if (role === 'teacher') {
+                            const teacherCode = document.getElementById('teacherCode').value.trim();
+                            if (teacherCode !== TEACHER_CODE) {
+                                alert('Invalid teacher code. Please contact your administrator.');
+                                return;
+                            }
+                        }
+                        
+                        // Create user with email link (passwordless)
+                        const actionCodeSettings = {
+                            url: window.location.href,
+                            handleCodeInApp: true,
+                        };
+                        
+                        await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+                        window.localStorage.setItem('emailForSignIn', email);
+                        window.localStorage.setItem('pendingRole', role);
+                        
+                        alert('Sign-in link sent! Please check your email to complete registration.');
+                    } else {
+                        // Sign in existing user
+                        const actionCodeSettings = {
+                            url: window.location.href,
+                            handleCodeInApp: true,
+                        };
+                        
+                        await auth.sendSignInLinkToEmail(email, actionCodeSettings);
+                        window.localStorage.setItem('emailForSignIn', email);
+                        
+                        alert('Sign-in link sent! Please check your email.');
+                    }
+                } catch (error) {
+                    console.error('Authentication error:', error);
+                    alert('Error: ' + error.message);
+                }
+            });
+        }
 
         // Handle email link sign-in
         if (auth.isSignInWithEmailLink(window.location.href)) {
@@ -3393,6 +3455,7 @@
                         // NEW: Load multi-section song
                         currentSong = {
                             title: data.song.title || data.name,
+                            artist: data.song.artist || data.artist || 'Unknown Artist',
                             sections: data.song.sections.map(section => ({
                                 id: section.id,
                                 name: section.name,
@@ -3423,6 +3486,7 @@
                         // Legacy: Single section from old measures format
                         currentSong = {
                             title: data.name,
+                            artist: data.artist || 'Unknown Artist',
                             sections: [{
                                 id: 'section-1',
                                 name: 'Main',
@@ -4365,6 +4429,90 @@
             console.log('⏱️  Time signature updated to:', timeSignature);
         }
         
+        // Update subdivision for current measure (manual user change)
+        function updateMeasureSubdivision() {
+            if (!progressionActive || selectedMeasureIndex === null) return;
+            
+            const subdivision = document.getElementById('measureSubdivision').value;
+            console.log(`🎵 User manually changed subdivision to: ${subdivision}`);
+            
+            // Just store the user's choice - we'll handle it when they add the next chord
+            // This allows workflow: half note chord → change to quarter → add quarter chord → add quarter chord
+        }
+        
+        // Calculate remaining duration in measure and auto-set subdivision dropdown
+        function calculateRemainingDuration(measureIndex) {
+            console.log(`🔍 calculateRemainingDuration called for measure ${measureIndex}`);
+            const measure = progressionMeasures[measureIndex];
+            if (!measure) {
+                console.log('⚠️ No measure found, returning "whole"');
+                return 'whole';
+            }
+            
+            const timeSignature = measure.timeSignature || '4/4';
+            const [numerator, denominator] = timeSignature.split('/').map(Number);
+            const beatsPerMeasure = (numerator / denominator) * 4; // Normalize to quarter notes
+            console.log(`⏱️  Time: ${timeSignature}, Beats per measure: ${beatsPerMeasure}`);
+            
+            const subdivisionDurations = {
+                'whole': 4,
+                'half': 2,
+                'dotted-half': 3,
+                'quarter': 1,
+                'dotted-quarter': 1.5,
+                'eighth': 0.5,
+                'dotted-eighth': 0.75
+            };
+            
+            // Calculate used beats
+            let usedBeats = 0;
+            if (measure.chords && measure.chords.length > 0) {
+                console.log(`📊 Analyzing ${measure.chords.length} chord slots:`);
+                measure.chords.forEach((slot, i) => {
+                    if (slot.chord) {
+                        const beats = subdivisionDurations[slot.duration] || 0;
+                        console.log(`   Slot ${i}: ${slot.chord.symbol} (${slot.duration}) = ${beats} beats`);
+                        usedBeats += beats;
+                    }
+                });
+            } else {
+                console.log('📊 No chords in measure yet');
+            }
+            
+            const remainingBeats = beatsPerMeasure - usedBeats;
+            console.log(`📊 Measure ${measureIndex}: ${usedBeats}/${beatsPerMeasure} beats used, ${remainingBeats} remaining`);
+            
+            // Find best subdivision for remaining beats
+            const options = [
+                { name: 'whole', beats: 4 },
+                { name: 'dotted-half', beats: 3 },
+                { name: 'half', beats: 2 },
+                { name: 'dotted-quarter', beats: 1.5 },
+                { name: 'quarter', beats: 1 },
+                { name: 'dotted-eighth', beats: 0.75 },
+                { name: 'eighth', beats: 0.5 }
+            ];
+            
+            // Find exact match first
+            for (const opt of options) {
+                if (opt.beats === remainingBeats) {
+                    console.log(`✅ Exact match found: ${opt.name} (${opt.beats} beats)`);
+                    return opt.name;
+                }
+            }
+            
+            // Find largest subdivision that fits
+            for (const opt of options) {
+                if (opt.beats <= remainingBeats) {
+                    console.log(`✅ Best fit found: ${opt.name} (${opt.beats} beats fits in ${remainingBeats})`);
+                    return opt.name;
+                }
+            }
+            
+            console.log('⚠️ Fallback to eighth note');
+            return 'eighth'; // Smallest fallback
+        }
+        
         // Generate section tabs from song sections
         function generateSectionTabs(sections) {
             const sectionTabsContainer = document.getElementById('sectionTabsContainer');
@@ -4445,53 +4593,73 @@
                 console.log('⏱️  Set time signature to:', song.timeSignature);
             }
             
-            // Generate section tabs
-            generateSectionTabs(song.sections);
+            // Create currentSong object with sections
+            currentSong = {
+                title: song.title || 'Untitled',
+                artist: song.artist || 'Unknown Artist',
+                sections: song.sections.map(section => ({
+                    id: section.id || `section-${Math.random().toString(36).substr(2, 9)}`,
+                    name: section.name,
+                    bars: section.measures.length,
+                    key: section.key || song.key,
+                    timeSignature: section.timeSignature || song.timeSignature || '4/4',
+                    repeat: section.repeat || false,
+                    measures: section.measures.map(m => {
+                        // Parse chord symbol into full chord object if needed
+                        let parsedChord = m.chord;
+                        if (m.chord && m.chord.symbol && !m.chord.notes) {
+                            const chordSymbol = m.chord.symbol;
+                            const rootNote = extractRootNote(chordSymbol);
+                            const chordNotes = parseChordSymbol(chordSymbol, rootNote);
+                            parsedChord = {
+                                symbol: chordSymbol,
+                                root: rootNote,
+                                notes: chordNotes,
+                                isCustom: false
+                            };
+                            console.log('🎵 Parsed chord:', chordSymbol, '→ root:', rootNote, 'notes:', chordNotes);
+                        }
+                        return {
+                            chord: parsedChord,
+                            localKey: m.localKey || section.key || song.key,
+                            timeSignature: m.timeSignature || section.timeSignature || song.timeSignature || '4/4'
+                        };
+                    })
+                })),
+                currentSectionIndex: 0
+            };
             
-            // Convert song sections to measures with section markers
-            const measures = [];
-            if (song.sections && song.sections.length > 0) {
-                song.sections.forEach((section, sectionIndex) => {
-                    if (section.measures && section.measures.length > 0) {
-                        section.measures.forEach((measure, measureIndex) => {
-                            measures.push({
-                                chord: measure.chord,
-                                localKey: section.key || song.key,
-                                timeSignature: measure.timeSignature || song.timeSignature || '4/4',
-                                sectionName: measureIndex === 0 ? section.name : null // Mark first measure of each section
-                            });
-                        });
-                    }
-                });
-            }
-            
-            if (measures.length === 0) {
-                alert('This song has no chord data to display.');
-                return;
-            }
-            
-            // Load measures into progression
-            progressionMeasures = measures;
+            // Enable progression mode to show section tabs
             progressionActive = true;
-            selectedMeasureIndex = 0;
-            console.log('📊 Loaded', measures.length, 'measures into progressionMeasures');
-            console.log('📊 First 3 measures:', measures.slice(0, 3).map(m => m.chord?.symbol || 'N.C.'));
+            
+            // Sync to progressionMeasures (first section only)
+            syncProgressionMeasures();
             
             // Show staff container
             const staffContainer = document.getElementById('staffContainer');
             staffContainer.classList.add('active');
             
-            // Generate staff UI
-            const timeSignature = song.timeSignature || '4/4';
-            console.log('🎼 Generating staff with', measures.length, 'measures, time signature:', timeSignature);
-            generateStaffMeasures(measures.length, timeSignature);
+            // Update song title display
+            updateSongTitleDisplay();
+            
+            // Show and render section tabs
+            renderSectionTabs();
+            
+            // Generate staff UI for first section only
+            const firstSection = currentSong.sections[0];
+            const timeSignature = firstSection.timeSignature || song.timeSignature || '4/4';
+            const repeatCount = firstSection.repeat || 1;
+            const totalBars = firstSection.bars * repeatCount;
+            console.log('🎼 Generating staff for first section with', firstSection.bars, 'measures x', repeatCount, 'repeats =', totalBars, 'total bars, time signature:', timeSignature);
+            generateStaffMeasures(totalBars, timeSignature);
             
             // Update UI
             console.log('🎨 Calling updateProgressionChart...');
             updateProgressionChart();
             
             console.log('✅ Song loaded successfully!');
-            console.log('🎯 Current state - Key:', selectedKey, 'Scale:', selectedScale, 'Measure:', selectedMeasureIndex + '/' + measures.length);
+            // Use existing firstSection variable here, do not redeclare
+            console.log('🎯 Current state - Key:', selectedKey, 'Scale:', selectedScale, 'Measure:', selectedMeasureIndex + '/' + (firstSection && firstSection.measures ? firstSection.measures.length : 0));
         }
         
         async function loadLibraryProgression(progressionId) {
@@ -5952,8 +6120,8 @@
         }
 
         function romanToChordSymbol(roman, key) {
-            const keyData = keys[key];
-            if (!keyData) return null;
+            const keyData = getCurrentKeyData();
+            if (!keyData || !keyData.scale) return null;
             
             const scale = keyData.scale;
             const isMinor = key.includes('m');
@@ -6509,7 +6677,12 @@
                     key: 'C',
                     timeSignature: '4/4',
                     repeat: false,
-                    measures: []
+                    measures: new Array(4).fill(null).map(() => ({
+                        chord: null,
+                        chords: [],
+                        localKey: 'C',
+                        timeSignature: '4/4'
+                    }))
                 }
             ],
             currentSectionIndex: 0
@@ -6518,9 +6691,25 @@
         // Compatibility layer - progressionMeasures points to current section's measures
         let progressionMeasures = currentSong.sections[0].measures;
         
+        // Generate initial staff on page load - wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                generateStaffMeasures(4, '4/4');
+                setTimeout(() => updateProgressionChart(), 100);
+            });
+        } else {
+            // DOM already loaded
+            setTimeout(() => {
+                generateStaffMeasures(4, '4/4');
+                setTimeout(() => updateProgressionChart(), 100);
+            }, 50);
+        }
+        
         let audioContext = null;
         let isPlaying = false;
         let isMobileAudioUnlocked = false;
+        let isRegeneratingStaff = false; // Prevent infinite regeneration loop
+        let updateChartCallCount = 0; // Debug: track how many times updateProgressionChart is called
         
         // Additional progression state for enhanced staff system
         let isLooping = true;
@@ -7918,6 +8107,15 @@
             }
         }
         
+        // Extract root note from chord symbol (e.g., "Cmaj7" -> "C", "F#m" -> "F#", "Bb7" -> "Bb")
+        function extractRootNote(chordSymbol) {
+            if (!chordSymbol) return null;
+            
+            // Match note name (A-G) with optional accidental (# or b or ♯ or ♭)
+            const match = chordSymbol.match(/^([A-G][#b♯♭]?)/);
+            return match ? match[1] : null;
+        }
+        
         // New function to play chord from symbol
         function playChordFromSymbol(chordSymbol, rootNote) {
             if (!audioContext || !rootNote) return;
@@ -8262,22 +8460,124 @@
                 console.log('Using measure index:', measureIndex);
                 
                 if (measureIndex < progressionMeasures.length) {
+                    console.log('🎯 SUBDIVISION WORKFLOW START');
                     // Create a copy of the chord with mode and index information
                     const chordCopy = {
                         ...chords[chordIndex],
                         sourceMode: chordMode,
                         sourceIndex: chordIndex
                     };
-                    // Update measure object with new chord, preserving localKey and timeSignature
-                    progressionMeasures[measureIndex] = {
-                        ...progressionMeasures[measureIndex],
-                        chord: chordCopy
+                    
+                    const currentMeasure = progressionMeasures[measureIndex];
+                    console.log('📏 Current measure:', currentMeasure);
+                    
+                    const currentSubdivision = document.getElementById('measureSubdivision').value;
+                    console.log('🎵 Current subdivision dropdown value:', currentSubdivision);
+                    
+                    // Get time signature to calculate beats
+                    const timeSignature = currentMeasure.timeSignature || '4/4';
+                    const [numerator, denominator] = timeSignature.split('/').map(Number);
+                    const beatsPerMeasure = (numerator / denominator) * 4;
+                    console.log(`⏱️  Time signature: ${timeSignature}, Beats per measure: ${beatsPerMeasure}`);
+                    
+                    const subdivisionDurations = {
+                        'whole': 4, 'half': 2, 'dotted-half': 3,
+                        'quarter': 1, 'dotted-quarter': 1.5,
+                        'eighth': 0.5, 'dotted-eighth': 0.75
                     };
+                    
+                    // Initialize chords array if first chord in measure
+                    if (!currentMeasure.chords) {
+                        console.log('🆕 Initializing chords array for first chord in measure');
+                        currentMeasure.chords = [];
+                    } else {
+                        console.log(`📊 Existing chords in measure: ${currentMeasure.chords.length}`);
+                    }
+                    
+                    // Check if measure is already complete
+                    let usedBeats = 0;
+                    currentMeasure.chords.forEach(slot => {
+                        if (slot.chord) {
+                            const slotBeats = subdivisionDurations[slot.duration];
+                            console.log(`   - ${slot.chord.symbol} (${slot.duration}): ${slotBeats} beats`);
+                            usedBeats += slotBeats;
+                        }
+                    });
+                    
+                    const remainingBeats = beatsPerMeasure - usedBeats;
+                    const subdivisionBeats = subdivisionDurations[currentSubdivision];
+                    console.log(`📊 Used: ${usedBeats} beats, Remaining: ${remainingBeats} beats, Trying to add: ${subdivisionBeats} beats`);
+                    
+                    // If measure is complete (no remaining beats), clear it and start fresh
+                    if (remainingBeats === 0 || usedBeats >= beatsPerMeasure) {
+                        console.log('🔄 Measure is complete - clearing and starting fresh with new subdivision');
+                        currentMeasure.chords = [];
+                        usedBeats = 0;
+                    }
+                    
+                    // Recalculate remaining after potential clear
+                    const newRemainingBeats = beatsPerMeasure - usedBeats;
+                    
+
+                    // Helper to add a chord slot with roman numeral
+                    function addChordSlotWithRoman(chordObj, duration) {
+                        const romanNumeral = generateRomanNumeralForChord(chordObj, selectedKey, measureIndex);
+                        currentMeasure.chords.push({
+                            chord: chordObj,
+                            duration: duration,
+                            romanNumeral: romanNumeral
+                        });
+                    }
+
+                    if (subdivisionBeats > newRemainingBeats) {
+                        console.warn(`⚠️ Subdivision ${currentSubdivision} (${subdivisionBeats} beats) exceeds remaining space (${newRemainingBeats} beats)`);
+                        // Auto-adjust to fit
+                        const fitSubdivision = calculateRemainingDuration(measureIndex);
+                        console.log(`🔧 Auto-adjusting to: ${fitSubdivision}`);
+                        document.getElementById('measureSubdivision').value = fitSubdivision;
+                        addChordSlotWithRoman(chordCopy, fitSubdivision);
+                    } else {
+                        // Add chord with current subdivision
+                        console.log(`✅ Adding ${chordCopy.symbol} with ${currentSubdivision} (${subdivisionBeats} beats)`);
+                        addChordSlotWithRoman(chordCopy, currentSubdivision);
+                    }
+                    
+                    // Calculate new remaining duration and update dropdown
+                    const newRemainingDuration = calculateRemainingDuration(measureIndex);
+                    console.log(`🔄 Updating dropdown to next subdivision: ${newRemainingDuration}`);
+                    document.getElementById('measureSubdivision').value = newRemainingDuration;
+                    console.log(`✅ Added ${chordCopy.symbol} (${currentSubdivision}), next subdivision: ${newRemainingDuration}`);
+                    
+                    // Check if measure is complete
+                    let totalBeats = 0;
+                    currentMeasure.chords.forEach(slot => {
+                        if (slot.chord) totalBeats += subdivisionDurations[slot.duration];
+                    });
+                    console.log(`📊 Total beats in measure: ${totalBeats}/${beatsPerMeasure}`);
+                    
+                    if (totalBeats >= beatsPerMeasure) {
+                        console.log(`🎉 Measure ${measureIndex} complete! Auto-advancing...`);
+                        // Measure complete - auto-advance to next measure
+                        setTimeout(() => {
+                            if (measureIndex + 1 < progressionMeasures.length) {
+                                console.log(`➡️  Advancing to measure ${measureIndex + 1}`);
+                                selectMeasure(measureIndex + 1);
+                                // Reset subdivision to whole note for new measure
+                                document.getElementById('measureSubdivision').value = 'whole';
+                                console.log(`🔄 Reset subdivision to 'whole' for new measure`);
+                            }
+                        }, 100);
+                    } else {
+                        console.log(`⏳ Measure not complete yet (${totalBeats}/${beatsPerMeasure} beats)`);
+                    }
                     
                     // Ensure selectedMeasureIndex is set for consistency
                     selectedMeasureIndex = measureIndex;
                     
                     updateProgressionChart();
+                    
+                    const checkChord0a = document.getElementById('chord-0');
+                    console.log(`🟢 AFTER updateProgressionChart (CALL #3): chord-0=${checkChord0a ? 'EXISTS' : 'NULL'}`);
                     
                     // Show cadence options for the newly added chord (with error handling)
                     try {
@@ -8286,12 +8586,17 @@
                         console.warn('Error showing cadence options:', error);
                     }
                     
-                    // AUTO-ADVANCE: Use the fixed auto-advance function
-                    console.log('About to auto-advance from Roman numeral button');
-                    autoAdvanceToNextMeasureFixed();
-                    console.log('Auto-advance completed from Roman numeral button');
+                    const checkChord0b = document.getElementById('chord-0');
+                    console.log(`🟢 AFTER showCadenceOptions: chord-0=${checkChord0b ? 'EXISTS' : 'NULL'}`);
+                    
+                    // Note: Auto-advance is now handled by subdivision logic above
+                    // Only advances when measure is complete (totalBeats >= beatsPerMeasure)
                     
                     updateActiveChordButton(chords[chordIndex]);
+                    
+                    const checkChord0c = document.getElementById('chord-0');
+                    console.log(`🟢 AFTER updateActiveChordButton: chord-0=${checkChord0c ? 'EXISTS' : 'NULL'}`);
+                    console.log(`🟢 END of selectChord - NOW waiting 100ms for setTimeout to fire...`);
                 }
             }
         }
@@ -8955,8 +9260,28 @@
         // Helper function to sync compatibility layer
         function syncProgressionMeasures() {
             const currentSection = currentSong.sections[currentSong.currentSectionIndex];
-            progressionMeasures = currentSection.measures;
+            
+            // Expand measures based on repeat count (deep copy to avoid reference issues)
+            const repeatCount = currentSection.repeat || 1;
+            progressionMeasures = [];
+            
+            for (let i = 0; i < repeatCount; i++) {
+                // Deep copy each measure to preserve chord objects with notes array
+                const measuresCopy = currentSection.measures.map(m => ({
+                    chord: m.chord ? {
+                        symbol: m.chord.symbol,
+                        root: m.chord.root,
+                        notes: m.chord.notes ? [...m.chord.notes] : [],
+                        isCustom: m.chord.isCustom || false
+                    } : null,
+                    localKey: m.localKey,
+                    timeSignature: m.timeSignature
+                }));
+                progressionMeasures.push(...measuresCopy);
+            }
+            
             progressionKey = currentSection.key;
+            console.log('📊 syncProgressionMeasures: Loaded', progressionMeasures.length, 'measures for section', currentSong.currentSectionIndex);
         }
 
         // Section Management Functions
@@ -8964,7 +9289,8 @@
         function updateSongTitleDisplay() {
             const titleElement = document.getElementById('currentSongTitle');
             if (titleElement && currentSong && currentSong.title) {
-                titleElement.textContent = currentSong.title;
+                const artist = currentSong.artist || 'Unknown Artist';
+                titleElement.textContent = `${currentSong.title} - ${artist}`;
             } else if (titleElement) {
                 titleElement.textContent = '';
             }
@@ -9256,8 +9582,8 @@
         function switchToSection(sectionIndex) {
             if (sectionIndex < 0 || sectionIndex >= currentSong.sections.length) return;
             
-            // Save current section state
-            currentSong.sections[currentSong.currentSectionIndex].measures = progressionMeasures;
+            // DON'T save progressionMeasures back - it contains expanded repeats
+            // The original section.measures should remain unchanged
             
             // Switch to new section
             currentSong.currentSectionIndex = sectionIndex;
@@ -9311,7 +9637,9 @@
 
         function regenerateStaffForCurrentSection() {
             const currentSection = currentSong.sections[currentSong.currentSectionIndex];
-            generateStaffMeasures(currentSection.bars, currentSection.timeSignature);
+            const repeatCount = currentSection.repeat || 1;
+            const totalBars = currentSection.bars * repeatCount;
+            generateStaffMeasures(totalBars, currentSection.timeSignature);
             updateProgressionChart();
         }
 
@@ -9627,7 +9955,13 @@
         }
 
         function generateStaffMeasures(measureCount, timeSignature) {
+            console.log('🔥🔥🔥 generateStaffMeasures CALLED - This DESTROYS all elements!');
+            console.trace('Call stack:');
             const staffWrapper = document.getElementById('staffWrapper');
+            if (!staffWrapper) {
+                console.error('❌ staffWrapper element not found!');
+                return;
+            }
             staffWrapper.innerHTML = '';
             
             const measuresPerRow = 4;
@@ -9673,15 +10007,15 @@
                     measure.className = 'measure-staff';
                     measure.id = `staff-measure-${measureIndex}`;
                     
-                    measure.innerHTML = `
-                        <div class="roman-numeral" id="roman-${measureIndex}"></div>
-                        <div class="chord-symbol" id="chord-${measureIndex}">—</div>
-                    `;
+                    // Don't create chord/roman elements here - let updateProgressionChart create them dynamically
+                    // This prevents the placeholder "—" from appearing and allows dynamic styling
                     
                     measure.onclick = () => selectMeasure(measureIndex);
                     measuresRow.appendChild(measure);
+                    console.log(`✅ Created measure ${measureIndex} (chord/roman elements will be created dynamically)`);
                 }
             }
+            console.log('✅ generateStaffMeasures complete - created', measureCount, 'measures');
         }
         
         function displayKeySignature(key) {
@@ -9775,133 +10109,98 @@
             });
         }
 
+        /**
+         * Get rhythm notation symbol for subdivision
+         */
+        function getRhythmNotation(subdivision) {
+            const rhythmSymbols = {
+                'whole': '𝅝',           // Whole note (U+1D15D)
+                'half': '𝅗𝅥',           // Half note (U+1D15E) 
+                'dotted-half': '𝅗𝅥.',   // Dotted half note
+                'quarter': '𝅘𝅥',        // Quarter note (U+1D15F)
+                'dotted-quarter': '𝅘𝅥.', // Dotted quarter note
+                'eighth': '♪',           // Eighth note (U+266A)
+                'dotted-eighth': '♪.'    // Dotted eighth note
+            };
+            return rhythmSymbols[subdivision] || '𝅝';
+        }
+        
         function updateProgressionChart() {
-            console.log('🔄 updateProgressionChart - Starting with', progressionMeasures.length, 'measures');
-            console.log('🔄 progressionKey:', progressionKey, 'selectedKey:', selectedKey);
-            
+            console.log('📊 [updateProgressionChart] Starting update...');
+            const playBtn = document.querySelector('.play-progression-btn');
+            if (!progressionMeasures || !progressionMeasures.length) {
+                if (playBtn) {
+                    playBtn.disabled = true;
+                    playBtn.textContent = 'Play';
+                }
+                console.error('❌ No progression data');
+                return;
+            }
+            // Enable play button if all measures are valid (no nulls)
+            if (playBtn) {
+                const allValid = progressionMeasures.every(m => m && (m.chord || (m.chords && m.chords.length > 0)));
+                playBtn.disabled = !allValid;
+                playBtn.textContent = 'Play';
+            }
+            const totalMeasures = progressionMeasures.length;
+            console.log(`   Updating ${totalMeasures} measures`);
             progressionMeasures.forEach((measure, index) => {
-                const chord = measure ? measure.chord : null;
-                const chordEl = document.getElementById(`chord-${index}`);
-                const romanEl = document.getElementById(`roman-${index}`);
                 const measureEl = document.getElementById(`staff-measure-${index}`);
-                
-                if (chordEl && romanEl && measureEl) {
-                    if (chord) {
-                        if (chord.isCustom) {
-                            // Custom chord: display only pitch class names with root in bold/larger font
-                            let chordDisplay = '';
-                            chord.notes.forEach((note, noteIndex) => {
-                                const pitchClass = note.replace(/\d+/g, ''); // Remove octave numbers if any
-                                if (note === chord.root) {
-                                    chordDisplay += `<span style="font-weight: bold; font-size: 1.2em;">${pitchClass}</span> `;
-                                } else {
-                                    chordDisplay += `${pitchClass} `;
-                                }
-                            });
-                            chordEl.innerHTML = chordDisplay.trim();
-                            romanEl.textContent = ''; // No roman numeral for custom chords
-                        } else {
-                            // Regular chord: display normally - use measure's localKey for roman numeral
-                            chordEl.textContent = chord.symbol;
-                            const localKey = measure.localKey || progressionKey;
-                            
-                            // Generate roman numeral in the local key
-                            let romanNumeral = generateRomanNumeralForChord(chord, localKey, index);
-                            
-                            // If this measure is in a different key than the main progression key, add slash notation
-                            if (localKey !== progressionKey) {
-                                // Calculate what the local key is as a roman numeral of the main key
-                                const tonicizedKeyRoman = getKeyAsRomanNumeral(localKey, progressionKey);
-                                romanNumeral += `/${tonicizedKeyRoman}`;
-                            }
-                            
-                            romanEl.innerHTML = romanNumeral;
-                        }
-                        chordEl.style.color = '#333';
-                    } else {
-                        chordEl.textContent = '—';
-                        romanEl.innerHTML = ''; // Use innerHTML consistently
-                        chordEl.style.color = '#999';
-                    }
-                    
-                    // Update active measure indicator
-                    measureEl.style.background = index === selectedMeasureIndex ? 'rgba(76, 175, 80, 0.1)' : '';
-                    
-                    // Clear previous key/time labels to prevent duplicates
-                    measureEl.querySelectorAll('div[style*="position: absolute"]').forEach(el => el.remove());
-                    
-                    // Add section marker if this is the first measure of a section
-                    if (measure && measure.sectionName) {
-                        const sectionLabel = document.createElement('div');
-                        sectionLabel.className = 'section-marker';
-                        sectionLabel.style.cssText = `
-                            position: absolute;
-                            left: 0;
-                            top: -25px;
-                            font-weight: bold;
-                            font-size: 12px;
-                            color: #2196F3;
-                            background: rgba(33, 150, 243, 0.1);
-                            padding: 2px 8px;
-                            border-radius: 3px;
-                            white-space: nowrap;
-                            z-index: 5;
-                        `;
-                        sectionLabel.textContent = measure.sectionName;
-                        measureEl.appendChild(sectionLabel);
-                    }
-                    
-                    // Add key/time changes only when there's an ACTUAL change from previous measure
-                    if (measure && index > 0 && progressionMeasures[index - 1]) {
-                        const prevMeasure = progressionMeasures[index - 1];
-                        
-                        // Time signature change - styled like opening time signature
-                        if (measure.timeSignature !== prevMeasure.timeSignature) {
-                            const [numerator, denominator] = measure.timeSignature.split('/');
-                            
-                            const timeSig = document.createElement('div');
-                            timeSig.className = 'time-signature-change';
-                            timeSig.style.cssText = `
-                                position: absolute;
-                                left: 5px;
-                                top: 50%;
-                                transform: translateY(-50%);
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                                line-height: 0.85;
-                                font-family: 'Times New Roman', serif;
-                                font-weight: bold;
-                                font-size: 22px;
-                                color: #000;
-                                z-index: 10;
-                                background: white;
-                                padding: 2px 4px;
-                            `;
-                            
-                            timeSig.innerHTML = `
-                                <div>${numerator}</div>
-                                <div>${denominator}</div>
-                            `;
-                            
-                            measureEl.appendChild(timeSig);
-                        }
-                    }
-                } else {
-                    console.warn(`Missing elements for measure ${index}:`, {
-                        chordEl: !!chordEl,
-                        romanEl: !!romanEl,
-                        measureEl: !!measureEl
+                if (!measureEl) return;
+
+                // --- Chord Element ---
+                let chordEl = document.getElementById(`chord-${index}`);
+                if (!chordEl) {
+                    chordEl = document.createElement('div');
+                    chordEl.id = `chord-${index}`;
+                    chordEl.className = 'chord-symbol';
+                    measureEl.appendChild(chordEl);
+                }
+                // --- Roman Element ---
+                let romanEl = document.getElementById(`roman-${index}`);
+                if (!romanEl) {
+                    romanEl = document.createElement('div');
+                    romanEl.id = `roman-${index}`;
+                    romanEl.className = 'roman-numeral';
+                    measureEl.appendChild(romanEl);
+                }
+                // --- Rhythm Element ---
+                let rhythmEl = document.getElementById(`rhythm-${index}`);
+                if (!rhythmEl) {
+                    rhythmEl = document.createElement('div');
+                    rhythmEl.id = `rhythm-${index}`;
+                    rhythmEl.className = 'rhythm-symbols';
+                    measureEl.appendChild(rhythmEl);
+                }
+
+                // Subdivision mode
+                if (measure.chords && Array.isArray(measure.chords) && measure.chords.length > 0) {
+                    let rhythmDisplay = '';
+                    let chordDisplay = '';
+                    let romanDisplay = '';
+                    measure.chords.forEach((slot, slotIndex) => {
+                        // Rhythm symbol
+                        rhythmDisplay += `<span style="margin-right:8px">${getRhythmNotation(slot.duration)}</span>`;
+                        // Chord name
+                        chordDisplay += `<span style="margin-right:8px">${slot.chord ? slot.chord.symbol : '—'}</span>`;
+                        // Roman numeral
+                        romanDisplay += `<span style="margin-right:8px">${slot.romanNumeral || ''}</span>`;
                     });
+                    rhythmEl.innerHTML = rhythmDisplay;
+                    chordEl.innerHTML = chordDisplay;
+                    romanEl.innerHTML = romanDisplay;
+                } else if (measure.chord && measure.chord.symbol) {
+                    // Traditional mode
+                    chordEl.innerHTML = `<span class="chord-name">${measure.chord.symbol}</span>`;
+                    romanEl.textContent = measure.romanNumeral || '';
+                    rhythmEl.innerHTML = '';
+                } else {
+                    chordEl.innerHTML = '—';
+                    romanEl.textContent = '';
+                    rhythmEl.innerHTML = '';
                 }
             });
-            
-            // Enable play button if all measures have chords
-            const allFilled = progressionMeasures.every(measure => measure && measure.chord !== null);
-            const playBtn = document.querySelector('.play-progression-btn');
-            if (playBtn) {
-                playBtn.disabled = !allFilled;
-            }
+            console.log('✅ [updateProgressionChart] Complete\n');
         }
         
         /**
@@ -10044,9 +10343,9 @@
                     const minorRomanNumerals = ['i', 'ii°', 'III', 'iv', 'v', 'VI', 'VII'];
                     const numeral = minorRomanNumerals[chordPosition] || 'i';
                     if (chordMode === 'sevenths') {
-                        // Check if this is a major seventh chord (maj7 in symbol)
-                        const isMajor7 = chord.symbol && chord.symbol.includes('maj7');
-                        const seventh = isMajor7 ? '<sup>△7</sup>' : '<sup>7</sup>';
+                        // Use triangle for maj7, compact
+                        const isMajor7 = chord.symbol && (chord.symbol.includes('maj7') || chord.symbol.includes('M7'));
+                        const seventh = isMajor7 ? '<sup>△</sup>' : '<sup>7</sup>';
                         return numeral + seventh + figuredBass;
                     }
                     return numeral + figuredBass;
@@ -10251,11 +10550,15 @@
         function selectMeasure(measureIndex) {
             selectedMeasureIndex = measureIndex; // Track selected measure for custom chord building
             
+            console.log('🔵 selectMeasure START - chord-0:', document.getElementById('chord-0') ? 'EXISTS' : 'NULL');
+            
             const measure = progressionMeasures[measureIndex];
             
             // Always update the key display to match the selected measure's local key
             if (measure && measure.localKey) {
                 console.log('=== SELECT MEASURE: Syncing to measure localKey:', measure.localKey);
+                
+                console.log('🔵 After getting measure - chord-0:', document.getElementById('chord-0') ? 'EXISTS' : 'NULL');
                 
                 // Update the selectedKey to the measure's localKey
                 // This will update Circle of Fifths, key info, Roman numerals, etc.
@@ -10264,15 +10567,20 @@
                 selectedScale = measure.localKey.endsWith('m') ? 'minor' : 'major';
                 console.log('Set selectedKey to:', selectedKey, 'selectedScale to:', selectedScale);
                 
+                console.log('🔵 After setting selectedKey - chord-0:', document.getElementById('chord-0') ? 'EXISTS' : 'NULL');
+                
                 // Update all UI to reflect the local key
                 console.log('Calling updateKeyInfo...');
                 updateKeyInfo();
+                console.log('🔵 After updateKeyInfo - chord-0:', document.getElementById('chord-0') ? 'EXISTS' : 'NULL');
                 console.log('Calling updateSelectedButtons...');
                 updateSelectedButtons();
                 
                 // Sync progression window dropdowns with selected measure
                 const keySelect = document.getElementById('progressionKey');
                 const timeSelect = document.getElementById('timeSignature');
+                const subdivisionSelect = document.getElementById('measureSubdivision');
+                
                 if (keySelect) {
                     keySelect.value = measure.localKey;
                     console.log('Synced progressionKey dropdown to:', measure.localKey);
@@ -10281,9 +10589,21 @@
                     timeSelect.value = measure.timeSignature;
                     console.log('Synced timeSignature dropdown to:', measure.timeSignature);
                 }
+                if (subdivisionSelect && measure.subdivision) {
+                    subdivisionSelect.value = measure.subdivision;
+                    console.log('Synced subdivision dropdown to:', measure.subdivision);
+                } else if (subdivisionSelect) {
+                    subdivisionSelect.value = 'whole'; // Default
+                }
             }
             
             highlightSelectedMeasure();
+            
+            // DEBUG: Check if elements exist before calling updateProgressionChart
+            const testChord0 = document.getElementById('chord-0');
+            const testRoman0 = document.getElementById('roman-0');
+            console.log(`🚨 BEFORE updateProgressionChart in selectMeasure: chord-0=${testChord0 ? 'EXISTS' : 'NULL'}, roman-0=${testRoman0 ? 'EXISTS' : 'NULL'}`);
+            
             updateProgressionChart();
             
             // Display the chord on the fretboard if measure has a chord
@@ -10291,6 +10611,7 @@
             const chord = measure2 ? measure2.chord : null;
             if (chord) {
                 selectedChord = chord;
+                console.log('🎸 selectMeasure: Setting selectedChord:', chord.symbol, 'with notes:', chord.notes);
                 console.log('Calling updateFretboard with chord notes...');
                 updateFretboard(chord.notes);
             } else {
@@ -10547,43 +10868,73 @@
             const timeSignature = document.getElementById('timeSignature').value;
             const [beatsPerMeasure] = timeSignature.split('/').map(Number);
             const measureDuration = beatDuration * beatsPerMeasure;
-            
+
             for (let i = 0; i < progressionMeasures.length && isPlaying; i++) {
                 const measure = progressionMeasures[i];
-                const chord = measure ? measure.chord : null;
                 const measureEl = document.getElementById(`staff-measure-${i}`);
-                
+
                 // Highlight current measure
                 document.querySelectorAll('.measure-staff').forEach((m, index) => {
                     m.style.background = index === i ? 'rgba(255, 255, 0, 0.1)' : '';
                 });
-                
-                // Highlight chord on fretboard
-                selectedChord = chord;
-                updateFretboard();
-                
+
                 // Use measure's timeSignature if available, fallback to global
-                const localBeatsPerMeasure = measure && measure.timeSignature 
-                    ? parseInt(measure.timeSignature.split('/')[0]) 
+                const localBeatsPerMeasure = measure && measure.timeSignature
+                    ? parseInt(measure.timeSignature.split('/')[0])
                     : beatsPerMeasure;
                 const localMeasureDuration = beatDuration * localBeatsPerMeasure;
-                
-                // Play all beats of the measure with proper timing
-                for (let beat = 1; beat <= localBeatsPerMeasure && isPlaying; beat++) {
-                    if (beat === 1) {
-                        // Beat 1: Play chord and accented click
-                        playMetronomeClick(true); // Accent on beat 1
-                        if (chord) {
-                            playChordSound(chord, localMeasureDuration / 1000);
-                        }
-                    } else {
-                        // Other beats: Just metronome click
-                        playMetronomeClick(false);
+
+                // Prepare chord slots for syncopated measures
+                let chordSlots = [];
+                if (measure && measure.chords && Array.isArray(measure.chords) && measure.chords.length > 0) {
+                    const subdivisionDurations = {
+                        'whole': 4,
+                        'half': 2,
+                        'dotted-half': 3,
+                        'quarter': 1,
+                        'dotted-quarter': 1.5,
+                        'eighth': 0.5,
+                        'dotted-eighth': 0.75
+                    };
+                    let slotStart = 0;
+                    for (const slot of measure.chords) {
+                        chordSlots.push({
+                            chord: slot.chord,
+                            startBeat: slotStart,
+                            durationBeats: subdivisionDurations[slot.duration] || 4
+                        });
+                        slotStart += subdivisionDurations[slot.duration] || 4;
                     }
-                    
-                    // Wait for next beat (always wait, then check if we should continue)
+                } else if (measure.chord) {
+                    chordSlots.push({
+                        chord: measure.chord,
+                        startBeat: 0,
+                        durationBeats: localBeatsPerMeasure
+                    });
+                }
+
+                // Schedule all chords at their exact fractional startBeat
+                let chordTimers = [];
+                for (const slot of chordSlots) {
+                    if (slot.startBeat < localBeatsPerMeasure && isPlaying) {
+                        const chordTime = slot.startBeat * beatDuration;
+                        chordTimers.push(setTimeout(() => {
+                            if (!isPlaying) return;
+                            selectedChord = slot.chord;
+                            updateFretboard();
+                            playChordSound(slot.chord, (beatDuration * slot.durationBeats) / 1000);
+                        }, chordTime));
+                    }
+                }
+
+                // Play metronome clicks at each integer beat
+                for (let beat = 0; beat < localBeatsPerMeasure && isPlaying; beat++) {
+                    playMetronomeClick(beat === 0);
                     await new Promise(resolve => setTimeout(resolve, beatDuration));
                 }
+
+                // Clear chord timers (in case measure ends early)
+                chordTimers.forEach(timer => clearTimeout(timer));
             }
         }
 

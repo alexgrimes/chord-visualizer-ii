@@ -656,22 +656,42 @@ async function batchProcessMIDIFiles(inputDir, outputFile) {
         
         console.log(`[${i + 1}/${files.length}]`);
         
-        // Extract metadata from filename (format: "1_Artist-Title.mid")
-        const match = file.match(/^(\d+)_(.+?)-(.+?)\.mid$/);
+        // Extract metadata from filename
+        // Format 1: "1_Artist-Title.mid" (original library)
+        // Format 2: "TRACKID_Artist-Title_scoreX.XXX.mid" (Lakh dataset)
+        const originalMatch = file.match(/^(\d+)_(.+?)-(.+?)\.mid$/);
+        const lakhMatch = file.match(/^([A-Z0-9]+)_(.+?)-(.+?)_score[\d.]+\.mid$/);
         
         let metadata = {
-            title: file.replace('.mid', ''),
-            artist: 'Unknown',
+            title: file.replace('.mid', '').replace(/_/g, ' '),
+            artist: 'Various Artists',
             genre: 'Unknown'
         };
         
-        if (match) {
-            const [, id, artist, title] = match;
+        if (originalMatch) {
+            const [, id, artist, title] = originalMatch;
             metadata = {
                 title: title.replace(/_/g, ' '),
                 artist: artist.replace(/_/g, ' '),
                 genre: guessGenre(artist)
             };
+        } else if (lakhMatch) {
+            const [, trackId, artist, title] = lakhMatch;
+            // Skip if artist/title are placeholder values
+            if (artist !== 'Unknown' || title !== 'Untitled') {
+                metadata = {
+                    title: title.replace(/_/g, ' '),
+                    artist: artist.replace(/_/g, ' '),
+                    genre: guessGenre(artist)
+                };
+            } else {
+                // Use track ID as identifier if no metadata
+                metadata = {
+                    title: `Track ${trackId.substring(0, 8)}`,
+                    artist: 'Various Artists',
+                    genre: 'Unknown'
+                };
+            }
         }
         
         try {

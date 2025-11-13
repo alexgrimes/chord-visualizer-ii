@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Cleanup - Replace with Curated Library</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .warning h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .warning p {
+            color: #856404;
+            line-height: 1.6;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-box h3 {
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            margin-left: 20px;
+            color: #1565c0;
+        }
+        
+        .info-box li {
+            margin: 5px 0;
+        }
+        
+        .file-input {
+            margin: 20px 0;
+        }
+        
+        .file-input label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .file-input input[type="file"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .status {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .status.show {
+            display: block;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            color: #0c5460;
+        }
+        
+        .progress {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .progress.show {
+            display: block;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .stats.show {
+            display: block;
+        }
+        
+        .stats h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .stats p {
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Database Cleanup</h1>
+        <p class="subtitle">Replace Lakh Dataset with Curated Library</p>
+        
+        <div class="warning">
+            <h3>⚠️ WARNING</h3>
+            <p>This will <strong>DELETE ALL SONGS</strong> from your Firebase database and replace them with the 50 curated songs.</p>
+            <p>A backup will be created first (downloaded to your computer).</p>
+        </div>
+        
+        <div class="info-box">
+            <h3>📋 What This Does:</h3>
+            <ul>
+                <li>Downloads backup of current database</li>
+                <li>Deletes all existing songs (424 Lakh songs with wrong chords)</li>
+                <li>Uploads 50 curated songs with 100% accurate progressions</li>
+                <li>Verifies upload was successful</li>
+            </ul>
+        </div>
+        
+        <div class="file-input">
+            <label for="libraryFile">Select Curated Library File:</label>
+            <input type="file" id="libraryFile" accept=".json" />
+            <p style="margin-top: 10px; color: #666; font-size: 14px;">
+                File location: <code>library-builder/output/curated-library.json</code>
+            </p>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn-primary" onclick="backupDatabase()">1. Backup Database</button>
+            <button class="btn-danger" onclick="cleanupDatabase()" disabled id="cleanupBtn">2. Clean & Upload</button>
+            <button class="btn-success" onclick="verifyDatabase()" disabled id="verifyBtn">3. Verify</button>
+        </div>
+        
+        <div class="progress" id="progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
+            </div>
+        </div>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="stats" id="stats"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqiPS5kpzpP6vk5sMXV5nB5H4uH6MbJTA",
+            authDomain: "chord-visualizer.firebaseapp.com",
+            databaseURL: "https://chord-visualizer.firebaseio.com",
+            projectId: "chord-visualizer",
+            storageBucket: "chord-visualizer.appspot.com",
+            messagingSenderId: "982157664430",
+            appId: "1:982157664430:web:7b5a8f9c0d1e2f3g4h5i6j"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        
+        let curatedLibrary = null;
+        let backupComplete = false;
+
+        // Load library file
+        document.getElementById('libraryFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        curatedLibrary = JSON.parse(e.target.result);
+                        showStatus(`✅ Loaded ${curatedLibrary.length} songs from file`, 'success');
+                    } catch (error) {
+                        showStatus('❌ Invalid JSON file', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = `status show ${type}`;
+            statusDiv.innerHTML = message;
+        }
+
+        function updateProgress(percent, text) {
+            const progressDiv = document.getElementById('progress');
+            const progressFill = document.getElementById('progressFill');
+            progressDiv.classList.add('show');
+            progressFill.style.width = percent + '%';
+            progressFill.textContent = text || percent + '%';
+        }
+
+        function hideProgress() {
+            document.getElementById('progress').classList.remove('show');
+        }
+
+        function downloadBackup(data, filename) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        async function backupDatabase() {
+            try {
+                showStatus('📦 Creating backup...', 'info');
+                updateProgress(0, 'Loading...');
+                
+                const snapshot = await db.ref('songs').once('value');
+                const songs = snapshot.val();
+                
+                if (!songs) {
+                    showStatus('⚠️ No songs found in database', 'info');
+                    hideProgress();
+                    return;
+                }
+                
+                const songArray = Object.values(songs);
+                const filename = `backup-${Date.now()}.json`;
+                
+                updateProgress(100, 'Complete!');
+                downloadBackup(songs, filename);
+                
+                showStatus(`✅ Backup created: ${songArray.length} songs saved to ${filename}`, 'success');
+                backupComplete = true;
+                document.getElementById('cleanupBtn').disabled = false;
+                
+                setTimeout(hideProgress, 2000);
+            } catch (error) {
+                showStatus(`❌ Backup failed: ${error.message}`, 'error');
+                hideProgress();
+            }
+        }
+
+        async function cleanupDatabase() {
+            if (!curatedLibrary) {
+                showStatus('❌ Please select the curated library file first', 'error');
+                return;
+            }
+            
+            if (!backupComplete) {
+                showStatus('❌ Please create a backup first', 'error');
+                return;
+            }
+            
+            if (!confirm('⚠️ Are you SURE you want to delete all songs and upload the curated library?\n\nThis cannot be undone!')) {
+                return;
+            }
+            
+            try {
+                // Step 1: Delete all songs
+                showStatus('🗑️ Deleting all songs...', 'info');
+                updateProgress(10, 'Clearing...');
+                
+                await db.ref('songs').remove();
+                updateProgress(30, 'Database cleared');
+                
+                // Step 2: Upload curated library
+                showStatus('📤 Uploading curated library...', 'info');
+                
+                const totalSongs = curatedLibrary.length;
+                for (let i = 0; i < totalSongs; i++) {
+                    const song = curatedLibrary[i];
+                    const songId = `song_${Date.now()}_${i}`;
+                    
+                    await db.ref(`songs/${songId}`).set(song);
+                    
+                    const percent = 30 + Math.floor((i + 1) / totalSongs * 60);
+                    updateProgress(percent, `Uploading ${i + 1}/${totalSongs}`);
+                }
+                
+                updateProgress(100, 'Complete!');
+                showStatus(`✅ Successfully uploaded ${totalSongs} curated songs!`, 'success');
+                
+                document.getElementById('verifyBtn').disabled = false;
+                
+                setTimeout(hideProgress, 2000);
+            } catch (error) {
+                showStatus(`❌ Cleanup failed: ${error.message}`, 'error');
+                hideProgress();
+            }
+        }
+
+        async function verifyDatabase() {
+            try {
+                showStatus('🔍 Verifying database...', 'info');
+                updateProgress(0, 'Loading...');
+                
+                const snapshot = await db.ref('songs').once('value');
+                const songs = snapshot.val();
+                
+                if (!songs) {
+                    showStatus('⚠️ Database is empty', 'info');
+                    hideProgress();
+                    return;
+                }
+                
+                const songArray = Object.values(songs);
+                
+                // Count by genre
+                const byGenre = {};
+                songArray.forEach(song => {
+                    if (!byGenre[song.genre]) byGenre[song.genre] = 0;
+                    byGenre[song.genre]++;
+                });
+                
+                updateProgress(100, 'Complete!');
+                
+                let statsHTML = `<h4>✅ Database Verified</h4>`;
+                statsHTML += `<p><strong>Total Songs:</strong> ${songArray.length}</p>`;
+                statsHTML += `<p><strong>By Genre:</strong></p>`;
+                statsHTML += '<ul style="margin-left: 20px;">';
+                Object.entries(byGenre).forEach(([genre, count]) => {
+                    statsHTML += `<li>${genre}: ${count} songs</li>`;
+                });
+                statsHTML += '</ul>';
+                
+                statsHTML += `<p style="margin-top: 15px;"><strong>Sample Songs:</strong></p>`;
+                statsHTML += '<ul style="margin-left: 20px;">';
+                songArray.slice(0, 5).forEach(song => {
+                    statsHTML += `<li>${song.title} - ${song.artist} (${song.genre})</li>`;
+                });
+                statsHTML += '</ul>';
+                
+                document.getElementById('stats').innerHTML = statsHTML;
+                document.getElementById('stats').classList.add('show');
+                
+                showStatus('✅ Verification complete!', 'success');
+                
+                setTimeout(hideProgress, 2000);
+            } catch (error) {
+                showStatus(`❌ Verification failed: ${error.message}`, 'error');
+                hideProgress();
+            }
+        }
+    </script>
+</body>
+</html>
