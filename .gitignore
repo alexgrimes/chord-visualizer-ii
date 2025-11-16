@@ -1,0 +1,9 @@
+library-builder/lakh-dataset/
+library-builder/lakh-selected/
+library-builder/output/lakh-songs.json
+library-builder/output/songs.json
+*.bak
+*.tmp
+reset-database.json
+songs.json
+!library-builder/output/curated-library.json
