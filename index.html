@@ -4281,7 +4281,10 @@
                                         if (window._allSongsRaw) {
                                             let filtered = window._allSongsRaw;
                                             if (val && val !== 'all') {
-                                                filtered = filtered.filter(song => (song.category || '').toLowerCase() === val.toLowerCase());
+                                                // Normalize both dropdown value and song category for robust matching
+                                                const norm = s => (s || '').toLowerCase().replace(/^the\s+/, '').trim();
+                                                const valNorm = norm(val);
+                                                filtered = filtered.filter(song => norm(song.category) === valNorm);
                                             }
                                             renderSongs(filtered);
                                         }
