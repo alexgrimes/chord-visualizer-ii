@@ -1,0 +1,418 @@
+{
+  "songs": [
+    {
+      "title": "Hey Jude",
+      "artist": "The Beatles",
+      "genre": "Classic Rock",
+      "year": null,
+      "key": "F",
+      "mode": "major",
+      "timeSignature": "4/4",
+      "tempo": 73,
+      "sections": [
+        {
+          "id": "verse",
+          "name": "Verse",
+          "bars": 8,
+          "repeat": 1,
+          "key": "F",
+          "timeSignature": "4/4",
+          "measures": [
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "half"
+                },
+                {
+                  "symbol": "C7",
+                  "duration": "half"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "Bb",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bridge",
+          "name": "Bridge",
+          "bars": 8,
+          "repeat": 1,
+          "key": "F",
+          "timeSignature": "4/4",
+          "measures": [
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F7",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "Bb",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "Dm",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "Gm",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "C7",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "source": "curated",
+      "copyrightStatus": "chord_progression_only",
+      "dateAdded": "2025-11-09T02:53:03.477Z",
+      "verified": true,
+      "category": "Beatles"
+    },
+    {
+      "title": "Let It Be",
+      "artist": "The Beatles",
+      "genre": "Classic Rock",
+      "year": null,
+      "key": "C",
+      "mode": "major",
+      "timeSignature": "4/4",
+      "tempo": 76,
+      "sections": [
+        {
+          "id": "verse",
+          "name": "Verse",
+          "bars": 8,
+          "repeat": 1,
+          "key": "C",
+          "timeSignature": "4/4",
+          "measures": [
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "G",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "Am",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "G",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "whole"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "chorus",
+          "name": "Chorus",
+          "bars": 4,
+          "repeat": 1,
+          "key": "C",
+          "timeSignature": "4/4",
+          "measures": [
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "Am",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "G",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "whole"
+                }
+              ]
+            },
+            {
+              "timeSignature": "4/4",
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "whole"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "source": "curated",
+      "copyrightStatus": "chord_progression_only",
+      "dateAdded": "2025-11-09T02:53:03.487Z",
+      "verified": true,
+      "category": "Beatles"
+    },
+    {
+      "title": "Take Me Out to the Ball Game",
+      "artist": "Traditional",
+      "genre": "Traditional",
+      "year": 1908,
+      "key": "C",
+      "mode": "major",
+      "timeSignature": "3/4",
+      "tempo": 140,
+      "sections": [
+        {
+          "name": "Chorus",
+          "bars": 8,
+          "measures": [
+            {
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "dotted-half"
+                }
+              ],
+              "timeSignature": "3/4"
+            },
+            {
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "dotted-half"
+                }
+              ],
+              "timeSignature": "3/4"
+            },
+            {
+              "chords": [
+                {
+                  "symbol": "G7",
+                  "duration": "dotted-half"
+                }
+              ],
+              "timeSignature": "3/4"
+            },
+            {
+              "chords": [
+                {
+                  "symbol": "G7",
+                  "duration": "dotted-half"
+                }
+              ],
+              "timeSignature": "3/4"
+            },
+            {
+              "chords": [
+                {
+                  "symbol": "C",
+                  "duration": "dotted-half"
+                }
+              ],
+              "timeSignature": "3/4"
+            },
+            {
+              "chords": [
+                {
+                  "symbol": "C7",
+                  "duration": "dotted-half"
+                }
+              ],
+              "timeSignature": "3/4"
+            },
+            {
+              "chords": [
+                {
+                  "symbol": "F",
+                  "duration": "dotted-half"
+                }
+              ],
+              "timeSignature": "3/4"
+            },
+            {
+              "chords": [
+                {
+                  "symbol": "D7",
+                  "duration": "dotted-half"
+                }
+              ],
+              "timeSignature": "3/4"
+            }
+          ]
+        }
+      ],
+      "source": "curated",
+      "verified": true,
+      "category": "Traditional"
+    }
+  ]
+}

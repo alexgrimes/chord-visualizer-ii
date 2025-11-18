@@ -1,0 +1,7537 @@
+[
+  {
+    "title": "Hey Jude",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "F",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 73,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "F",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "half"
+              },
+              {
+                "symbol": "C7",
+                "duration": "half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "bars": 8,
+        "repeat": 1,
+        "key": "F",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.477Z",
+    "verified": true
+  },
+  {
+    "title": "Let It Be",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 76,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Yesterday",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "F",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 95,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "F",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm/C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "bars": 4,
+        "repeat": 1,
+        "key": "F",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Come Together",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "Dm",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 82,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Dm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Dm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Here Comes the Sun",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "A",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 129,
+    "sections": [
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "A",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "bars": 8,
+        "repeat": 1,
+        "key": "A",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Blackbird",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "G",
+    "mode": "major",
+    "timeSignature": "3/4",
+    "tempo": 96,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "G",
+        "timeSignature": "3/4",
+        "measures": [
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "Am7",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "G/B",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C#dim",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "D#dim",
+                "duration": "dotted-half"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "G",
+        "timeSignature": "3/4",
+        "measures": [
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C/E",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "While My Guitar Gently Weeps",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "Am",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 112,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Am",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am/G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D/F#",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Am",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Something",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 66,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am/G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Eleanor Rigby",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "Em",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 136,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Em",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Em",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Ob-La-Di, Ob-La-Da",
+    "artist": "The Beatles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "Bb",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 113,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Bb",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Bb",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Stairway to Heaven",
+    "artist": "Led Zeppelin",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "Am",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 72,
+    "sections": [
+      {
+        "id": "intro",
+        "name": "Intro",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Am",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E/G#",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C/G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D/F#",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Am",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Wish You Were Here",
+    "artist": "Pink Floyd",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "G",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 63,
+    "sections": [
+      {
+        "id": "intro",
+        "name": "Intro",
+        "bars": 4,
+        "repeat": 1,
+        "key": "G",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7sus4",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "G",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Hotel California",
+    "artist": "Eagles",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "Bm",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 74,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Bm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Bm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Sweet Home Alabama",
+    "artist": "Lynyrd Skynyrd",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "D",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 100,
+    "sections": [
+      {
+        "id": "main",
+        "name": "Main Riff",
+        "bars": 4,
+        "repeat": 1,
+        "key": "D",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "D",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Bohemian Rhapsody",
+    "artist": "Queen",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "Bb",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 72,
+    "sections": [
+      {
+        "id": "intro",
+        "name": "Intro",
+        "bars": 6,
+        "repeat": 1,
+        "key": "Bb",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Bb",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Comfortably Numb",
+    "artist": "Pink Floyd",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "Bm",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 63,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Bm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "D",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Free Bird",
+    "artist": "Lynyrd Skynyrd",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "G",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 63,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "G",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D/F#",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "G",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "More Than a Feeling",
+    "artist": "Boston",
+    "genre": "Classic Rock",
+    "year": null,
+    "key": "D",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 108,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "D",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Csus2",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G/B",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Csus2",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G/B",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "D",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Wonderwall",
+    "artist": "Oasis",
+    "genre": "Pop",
+    "year": null,
+    "key": "F#m",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 87,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "F#m",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Esus4",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Esus4",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Esus4",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Esus4",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 8,
+        "repeat": 1,
+        "key": "F#m",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Hallelujah",
+    "artist": "Leonard Cohen",
+    "genre": "Pop",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "6/8",
+    "tempo": 60,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "6/8",
+        "measures": [
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "6/8",
+        "measures": [
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Someone Like You",
+    "artist": "Adele",
+    "genre": "Pop",
+    "year": null,
+    "key": "A",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 67,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 4,
+        "repeat": 1,
+        "key": "A",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "A",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Perfect",
+    "artist": "Ed Sheeran",
+    "genre": "Pop",
+    "year": null,
+    "key": "Ab",
+    "mode": "major",
+    "timeSignature": "6/8",
+    "tempo": 63,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Ab",
+        "timeSignature": "6/8",
+        "measures": [
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Db",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "dotted-half"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Ab",
+        "timeSignature": "6/8",
+        "measures": [
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Db",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "6/8",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "dotted-half"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "All of Me",
+    "artist": "John Legend",
+    "genre": "Pop",
+    "year": null,
+    "key": "Ab",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Ab",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Db",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Ab",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Db",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Piano Man",
+    "artist": "Billy Joel",
+    "genre": "Pop",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "3/4",
+    "tempo": 90,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "3/4",
+        "measures": [
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "G/B",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "F/A",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C/G",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C/E",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "3/4",
+        "measures": [
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "G/B",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "F/A",
+                "duration": "dotted-half"
+              }
+            ]
+          },
+          {
+            "timeSignature": "3/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Imagine",
+    "artist": "John Lennon",
+    "genre": "Pop",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 76,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Your Song",
+    "artist": "Elton John",
+    "genre": "Pop",
+    "year": null,
+    "key": "Eb",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 63,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Eb",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb/D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm/Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Eb",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Don't Stop Believin'",
+    "artist": "Journey",
+    "genre": "Pop",
+    "year": null,
+    "key": "E",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 119,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 4,
+        "repeat": 1,
+        "key": "E",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "B",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "E",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "B",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "B",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Autumn Leaves",
+    "artist": "Joseph Kosma",
+    "genre": "Jazz",
+    "year": null,
+    "key": "Gm",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 140,
+    "sections": [
+      {
+        "id": "a-section",
+        "name": "A Section",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Gm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bbmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am7b5",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Fly Me to the Moon",
+    "artist": "Frank Sinatra",
+    "genre": "Jazz",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm7b5",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "All of Me",
+    "artist": "Gerald Marks",
+    "genre": "Jazz",
+    "year": null,
+    "key": "Ab",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Ab",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Db",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Ab",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Db",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Blue Bossa",
+    "artist": "Kenny Dorham",
+    "genre": "Jazz",
+    "year": null,
+    "key": "Cm",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 140,
+    "sections": [
+      {
+        "id": "a-section",
+        "name": "A Section",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Cm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7b5",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "b-section",
+        "name": "B Section",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Cm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dbmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dbmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7b5",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Take Five",
+    "artist": "Dave Brubeck",
+    "genre": "Jazz",
+    "year": null,
+    "key": "Ebm",
+    "mode": "minor",
+    "timeSignature": "5/4",
+    "tempo": 170,
+    "sections": [
+      {
+        "id": "head",
+        "name": "Head",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Ebm",
+        "timeSignature": "5/4",
+        "measures": [
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Ebm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Ebm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Bbm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Bbm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Ebm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Ebm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Bbm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Bbm7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Ebm",
+        "timeSignature": "5/4",
+        "measures": [
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Abm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Db7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Gbmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Gbmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Bb7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Ebm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "5/4",
+            "chords": [
+              {
+                "symbol": "Ebm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "So What",
+    "artist": "Miles Davis",
+    "genre": "Jazz",
+    "year": null,
+    "key": "Dm",
+    "mode": "dorian",
+    "timeSignature": "4/4",
+    "tempo": 135,
+    "sections": [
+      {
+        "id": "a-section",
+        "name": "A Section",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Dm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "b-section",
+        "name": "B Section",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Ebm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebm7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "All the Things You Are",
+    "artist": "Jerome Kern",
+    "genre": "Jazz",
+    "year": null,
+    "key": "Ab",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 140,
+    "sections": [
+      {
+        "id": "a-section",
+        "name": "A Section",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Ab",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bbm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Abmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dbmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "b-section",
+        "name": "B Section",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Ab",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Abmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gmaj7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Summertime",
+    "artist": "George Gershwin",
+    "genre": "Jazz",
+    "year": null,
+    "key": "Am",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 80,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Am",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am6",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am6",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am6",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am6",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Am",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am6",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am6",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am6",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "My Funny Valentine",
+    "artist": "Chet Baker",
+    "genre": "Jazz",
+    "year": null,
+    "key": "Cm",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 90,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Cm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm/Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm6",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7b5",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Cm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Fm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ebmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Abmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7b5",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Take Me Home, Country Roads",
+    "artist": "John Denver",
+    "genre": "Folk",
+    "year": null,
+    "key": "A",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 80,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "A",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "A",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "The Sound of Silence",
+    "artist": "Simon & Garfunkel",
+    "genre": "Folk",
+    "year": null,
+    "key": "Dm",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 100,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "Dm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Dm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Blowin' in the Wind",
+    "artist": "Bob Dylan",
+    "genre": "Folk",
+    "year": null,
+    "key": "D",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 88,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "D",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "D",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Fire and Rain",
+    "artist": "James Taylor",
+    "genre": "Folk",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 76,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 8,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Heart of Gold",
+    "artist": "Neil Young",
+    "genre": "Folk",
+    "year": null,
+    "key": "Em",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 104,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Em",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Em",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "12-Bar Blues in A",
+    "artist": "Traditional",
+    "genre": "Blues",
+    "year": null,
+    "key": "A",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "blues",
+        "name": "Blues Form",
+        "bars": 12,
+        "repeat": 1,
+        "key": "A",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "The Thrill Is Gone",
+    "artist": "B.B. King",
+    "genre": "Blues",
+    "year": null,
+    "key": "Bm",
+    "mode": "minor",
+    "timeSignature": "4/4",
+    "tempo": 60,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 12,
+        "repeat": 1,
+        "key": "Bm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chorus",
+        "name": "Chorus",
+        "bars": 4,
+        "repeat": 1,
+        "key": "Bm",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bm",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F#7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Pride and Joy",
+    "artist": "Stevie Ray Vaughan",
+    "genre": "Blues",
+    "year": null,
+    "key": "E",
+    "mode": "major",
+    "timeSignature": "12/8",
+    "tempo": 122,
+    "sections": [
+      {
+        "id": "verse",
+        "name": "Verse",
+        "bars": 12,
+        "repeat": 1,
+        "key": "E",
+        "timeSignature": "12/8",
+        "measures": [
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "B7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "12/8",
+            "chords": [
+              {
+                "symbol": "B7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Sweet Home Chicago",
+    "artist": "Robert Johnson",
+    "genre": "Blues",
+    "year": null,
+    "key": "E",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "blues",
+        "name": "Blues Form",
+        "bars": 12,
+        "repeat": 1,
+        "key": "E",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "B7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "B7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "I-V-vi-IV Progression",
+    "artist": "Common Progression",
+    "genre": "Teaching",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "progression",
+        "name": "Common Pop Progression",
+        "bars": 4,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "I-IV-V Progression",
+    "artist": "Common Progression",
+    "genre": "Teaching",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "progression",
+        "name": "Rock Progression",
+        "bars": 4,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "ii-V-I Progression",
+    "artist": "Common Progression",
+    "genre": "Teaching",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "progression",
+        "name": "Jazz Progression",
+        "bars": 4,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Dm7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Cmaj7",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "50s Progression (I-vi-IV-V)",
+    "artist": "Common Progression",
+    "genre": "Teaching",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "id": "progression",
+        "name": "50s Doo-Wop",
+        "bars": 4,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Am",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Circle of Fifths",
+    "artist": "Theory Exercise",
+    "genre": "Teaching",
+    "year": null,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 100,
+    "sections": [
+      {
+        "id": "exercise",
+        "name": "Circle of Fifths",
+        "bars": 12,
+        "repeat": 1,
+        "key": "C",
+        "timeSignature": "4/4",
+        "measures": [
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Bb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Eb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Ab",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Db",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "Gb",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "B",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ]
+          },
+          {
+            "timeSignature": "4/4",
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "whole"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "copyrightStatus": "chord_progression_only",
+    "dateAdded": "2025-11-09T02:53:03.487Z",
+    "verified": true
+  },
+  {
+    "title": "Amazing Grace",
+    "artist": "Traditional",
+    "genre": "Hymn",
+    "year": 1779,
+    "key": "G",
+    "mode": "major",
+    "timeSignature": "3/4",
+    "tempo": 80,
+    "sections": [
+      {
+        "name": "Verse",
+        "bars": 8,
+        "measures": [
+          {
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "Em",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "verified": true
+  },
+  {
+    "title": "Twinkle Twinkle Little Star",
+    "artist": "Traditional",
+    "genre": "Children",
+    "year": 1806,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 100,
+    "sections": [
+      {
+        "name": "Verse",
+        "bars": 8,
+        "measures": [
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "half"
+              },
+              {
+                "symbol": "G7",
+                "duration": "half"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "verified": true
+  },
+  {
+    "title": "You Are My Sunshine",
+    "artist": "Jimmie Davis",
+    "genre": "Country",
+    "year": 1939,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 110,
+    "sections": [
+      {
+        "name": "Chorus",
+        "bars": 8,
+        "measures": [
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C7",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "verified": true
+  },
+  {
+    "title": "Happy Birthday",
+    "artist": "Traditional",
+    "genre": "Traditional",
+    "year": 1893,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "3/4",
+    "tempo": 120,
+    "sections": [
+      {
+        "name": "Song",
+        "bars": 8,
+        "measures": [
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "verified": true
+  },
+  {
+    "title": "Stand By Me",
+    "artist": "Ben E. King",
+    "genre": "R&B",
+    "year": 1961,
+    "key": "A",
+    "mode": "major",
+    "timeSignature": "4/4",
+    "tempo": 118,
+    "sections": [
+      {
+        "name": "Verse",
+        "bars": 8,
+        "measures": [
+          {
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "F#m",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "D",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "E",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "A",
+                "duration": "whole"
+              }
+            ],
+            "timeSignature": "4/4"
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "verified": true
+  },
+  {
+    "title": "Take Me Out to the Ball Game",
+    "artist": "Traditional",
+    "genre": "Traditional",
+    "year": 1908,
+    "key": "C",
+    "mode": "major",
+    "timeSignature": "3/4",
+    "tempo": 140,
+    "sections": [
+      {
+        "name": "Chorus",
+        "bars": 8,
+        "measures": [
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "G7",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "C7",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "F",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          },
+          {
+            "chords": [
+              {
+                "symbol": "D7",
+                "duration": "dotted-half"
+              }
+            ],
+            "timeSignature": "3/4"
+          }
+        ]
+      }
+    ],
+    "source": "curated",
+    "verified": true
+  }
+]

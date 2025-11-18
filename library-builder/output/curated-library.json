@@ -18,51 +18,46 @@
         "timeSignature": "4/4",
         "measures": [
           {
-            "chord": {
-              "symbol": "F"
-            },
+            "chords": [
+              { "symbol": "F", "duration": "whole" }
+            ],
             "timeSignature": "4/4"
           },
           {
-            "chord": {
-              "symbol": "C"
-            },
+            "chords": [
+              { "symbol": "C", "duration": "half" },
+              { "symbol": "C7", "duration": "half" }
+            ],
             "timeSignature": "4/4"
           },
           {
-            "chord": {
-              "symbol": "C7"
-            },
+            "chords": [
+              { "symbol": "F", "duration": "whole" }
+            ],
             "timeSignature": "4/4"
           },
           {
-            "chord": {
-              "symbol": "F"
-            },
+            "chords": [
+              { "symbol": "Bb", "duration": "whole" }
+            ],
             "timeSignature": "4/4"
           },
           {
-            "chord": {
-              "symbol": "Bb"
-            },
+            "chords": [
+              { "symbol": "F", "duration": "whole" }
+            ],
             "timeSignature": "4/4"
           },
           {
-            "chord": {
-              "symbol": "F"
-            },
+            "chords": [
+              { "symbol": "C", "duration": "whole" }
+            ],
             "timeSignature": "4/4"
           },
           {
-            "chord": {
-              "symbol": "C"
-            },
-            "timeSignature": "4/4"
-          },
-          {
-            "chord": {
-              "symbol": "F"
-            },
+            "chords": [
+              { "symbol": "F", "duration": "whole" }
+            ],
             "timeSignature": "4/4"
           }
         ]

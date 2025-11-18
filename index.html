@@ -2522,6 +2522,25 @@
     </style>
 </head>
 <body>
+    <header class="main-header" style="background:#222;color:#fff;padding:18px 0 12px 0;box-shadow:0 2px 8px rgba(0,0,0,0.08);margin-bottom:18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:0 24px;">
+            <h1 style="margin:0;font-size:2.1rem;letter-spacing:1px;font-weight:700;">Chord Visualizer II</h1>
+            <nav>
+                <label for="categoryDropdown" style="font-size:1.1rem;margin-right:8px;">Browse Category:</label>
+                <select id="categoryDropdown" style="font-size:1.1rem;padding:6px 12px;border-radius:6px;border:1px solid #ccc;">
+                    <option value="all">All Songs</option>
+                    <option value="basics">Basics</option>
+                    <option value="beatles">The Beatles</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="folk">Folk</option>
+                    <option value="classical">Classical</option>
+                    <option value="pop">Pop</option>
+                    <option value="blues">Blues</option>
+                    <option value="holiday">Holiday</option>
+                </select>
+            </nav>
+        </div>
+    </header>
     <!-- Authentication Modal -->
     <div class="modal-overlay" id="authModal">
         <div class="modal">
@@ -4230,31 +4249,71 @@
         async function loadSongs() {
             const songsList = document.getElementById('songsList');
             songsList.innerHTML = '<div class="loading">Loading songs...</div>';
-            
+
+            // If running on localhost, load from local JSON file
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                try {
+                    const response = await fetch('library-builder/output/curated-library-rhythmic-categorized.json');
+                    if (!response.ok) throw new Error('Failed to load local song library');
+                    const json = await response.json();
+                    // The format is { songs: [...] }
+                    allSongs = (json.songs || []).map((song, idx) => ({ id: song.id || idx, ...song }));
+                    window._allSongsRaw = allSongs; // for category filtering
+                            // Category Dropdown Logic
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const catDropdown = document.getElementById('categoryDropdown');
+                                if (catDropdown) {
+                                    catDropdown.addEventListener('change', (e) => {
+                                        const val = catDropdown.value;
+                                        // Open modal and switch to Song Library tab
+                                        showBrowseLibrary();
+                                        const tabs = document.querySelectorAll('.tab-btn');
+                                        tabs.forEach(tab => {
+                                            if (tab.dataset.collection === 'songs') {
+                                                tab.classList.add('active');
+                                            } else {
+                                                tab.classList.remove('active');
+                                            }
+                                        });
+                                        document.getElementById('packsGrid').style.display = 'none';
+                                        document.getElementById('songsGrid').style.display = 'flex';
+                                        // Filter songs by category
+                                        if (window._allSongsRaw) {
+                                            let filtered = window._allSongsRaw;
+                                            if (val && val !== 'all') {
+                                                filtered = filtered.filter(song => (song.category || '').toLowerCase() === val.toLowerCase());
+                                            }
+                                            renderSongs(filtered);
+                                        }
+                                    });
+                                }
+                            });
+                    console.log('Loaded', allSongs.length, 'songs from local JSON');
+                    populateFilters();
+                    setupFilterListeners();
+                    filterSongs();
+                } catch (error) {
+                    console.error('Error loading local song library:', error);
+                    songsList.innerHTML = '<div class="loading">Error loading local song library: ' + error.message + '</div>';
+                }
+                return;
+            }
+
+            // Otherwise, use Firebase as before
             try {
                 const songsQuery = await db.collection('library_songs').get();
-                
                 allSongs = songsQuery.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
                 })).sort((a, b) => {
-                    // Sort by artist, then title in JavaScript instead of Firestore
                     const artistCompare = (a.artist || '').localeCompare(b.artist || '');
                     if (artistCompare !== 0) return artistCompare;
                     return (a.title || '').localeCompare(b.title || '');
                 });
-                
                 console.log('Loaded', allSongs.length, 'songs from Firebase');
-                
-                // Populate filter dropdowns
                 populateFilters();
-                
-                // Setup filter listeners
                 setupFilterListeners();
-                
-                // Display all songs
                 filterSongs();
-                
             } catch (error) {
                 console.error('Error loading songs:', error);
                 songsList.innerHTML = '<div class="loading">Error loading songs: ' + error.message + '</div>';
