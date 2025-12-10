@@ -8391,7 +8391,7 @@
                 console.log('Slash chord detected - Upper:', upperChord, 'Bass:', bassNote);
                 
                 // Generate the upper chord notes
-                const upperChordNotes = generateChordNotesFromSymbol(upperChord, rootNote);
+                const upperChordNotes = generateChordNotesFromSymbol_Legacy(upperChord, rootNote);
                 console.log('Upper chord notes:', upperChordNotes);
                 
                 // Add bass note if it's not already in the chord
@@ -8404,11 +8404,11 @@
             }
             
             // For regular chords, generate the actual chord notes from the symbol
-            return generateChordNotesFromSymbol(chordSymbol, rootNote);
+            return generateChordNotesFromSymbol_Legacy(chordSymbol, rootNote);
         }
         
         // Generate actual chord notes from chord symbol
-        function generateChordNotesFromSymbol(chordSymbol, rootNote) {
+        function generateChordNotesFromSymbol_Legacy(chordSymbol, rootNote) {
             console.log('=== CHORD GENERATION ===');
             console.log('Generating notes for chord symbol:', chordSymbol, 'with root:', rootNote);
             
@@ -11480,7 +11480,7 @@
                 notes = Array.from(new Set(finalNotes)).filter(Boolean).slice(0, 5);
             }
             
-            return notes;
+            return notes || [];
         }
         
         // Get intervals for chord quality
