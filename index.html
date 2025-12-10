@@ -11276,6 +11276,12 @@
                             } else {
                                 chordObj = slot.chord;
                             }
+
+                            // Generate notes if missing, so fretboard can display them
+                            if (!chordObj.notes || chordObj.notes.length === 0) {
+                                chordObj.notes = generateChordNotesFromSymbol(chordObj.symbol);
+                            }
+
                             selectedChord = chordObj;
                             updateFretboard();
                             playChordSound(chordObj, (beatDuration * slot.durationBeats) / 1000);
