@@ -11437,7 +11437,50 @@
                 return noteNames[noteSemitone];
             });
 
-            // ...existing code...
+            // If it's a 7th chord or extension (and not 13th, handled above), apply 5-note max rule
+            const is7thChord = /7/.test(quality);
+            if (is7thChord) {
+                // Find root, 3rd, 7th
+                const rootNote = notes[0];
+                const thirdNote = notes[1];
+                // 5th is usually index 2
+                const fifthNote = notes[2];
+                // Find the 7th by interval (should be 10 or 11 semitones from root)
+                let seventhIdx = -1;
+                for (let i = 0; i < intervals.length; i++) {
+                    if (intervals[i] === 10 || intervals[i] === 11) {
+                        seventhIdx = i;
+                        break;
+                    }
+                }
+                const seventhNote = seventhIdx !== -1 ? notes[seventhIdx] : notes[3];
+
+                // Gather explicit extensions (anything above 7th, e.g., 9th, 11th, #11, b9, etc.)
+                let extensionNotes = [];
+                for (let i = 0; i < intervals.length; i++) {
+                    if (intervals[i] > 11) {
+                        extensionNotes.push(notes[i]);
+                    }
+                    // Also include altered extensions (e.g., #11, b9, #9, b13, #5, b5)
+                    if ([13, 14, 15, 16, 17, 18, 20, 21].includes(intervals[i])) {
+                        if (!extensionNotes.includes(notes[i])) extensionNotes.push(notes[i]);
+                    }
+                }
+
+                // Compose final notes: always root, 3rd, 7th
+                let finalNotes = [rootNote, thirdNote, seventhNote];
+                // Add up to 2 extensions, prioritizing explicit extensions
+                if (extensionNotes.length > 0) {
+                    finalNotes = finalNotes.concat(extensionNotes.slice(0, 2));
+                } else if (fifthNote) {
+                    // If no extension, add 5th
+                    finalNotes.push(fifthNote);
+                }
+                // Remove duplicates and undefined, strictly limit to 5 notes
+                notes = Array.from(new Set(finalNotes)).filter(Boolean).slice(0, 5);
+            }
+            
+            return notes;
         }
         
         // Get intervals for chord quality
