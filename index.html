@@ -2526,21 +2526,67 @@
         <div style="display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto;padding:0 24px;">
             <h1 style="margin:0;font-size:2.1rem;letter-spacing:1px;font-weight:700;">Chord Visualizer II</h1>
             <nav>
-                <label for="categoryDropdown" style="font-size:1.1rem;margin-right:8px;">Browse Category:</label>
-                <select id="categoryDropdown" style="font-size:1.1rem;padding:6px 12px;border-radius:6px;border:1px solid #ccc;">
-                    <option value="all">All Songs</option>
-                    <option value="basics">Basics</option>
-                    <option value="beatles">The Beatles</option>
-                    <option value="jazz">Jazz</option>
-                    <option value="folk">Folk</option>
-                    <option value="classical">Classical</option>
-                    <option value="pop">Pop</option>
-                    <option value="blues">Blues</option>
-                    <option value="holiday">Holiday</option>
+                <label for="genreDropdown" style="font-size:1.1rem;margin-right:8px;">Choose Genre:</label>
+                <select id="genreDropdown" style="font-size:1.1rem;padding:6px 12px;border-radius:6px;border:1px solid #ccc;min-width:200px;">
+                    <option value="">Choose genre...</option>
                 </select>
             </nav>
         </div>
+        <!-- Genre Modal -->
+        <div id="genreModal" class="genre-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:10000;">
+            <div class="modal-box" style="background:white;border-radius:12px;width:90%;max-width:700px;max-height:80vh;display:flex;flex-direction:column;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                <div class="modal-header" style="padding:20px;border-bottom:2px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+                    <h2 id="modalGenre">Songs</h2>
+                    <button class="modal-close" onclick="closeModal()" style="background:none;border:none;font-size:28px;cursor:pointer;color:#999;">&times;</button>
+                </div>
+                <div id="modalSongs" class="modal-songs" style="padding:20px;overflow-y:auto;"></div>
+            </div>
+        </div>
     </header>
+        <!-- Song Category Modal System -->
+        <div id="songCategoryModalOverlay" class="modal-overlay" style="display:none;z-index:2000;">
+            <div class="modal" style="max-width:800px;width:95%;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;">
+                <div class="modal-header" style="padding:20px 30px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <h2 id="songCategoryModalTitle" style="font-size:24px;color:#333;margin:0;">Songs</h2>
+                        <span class="genre-badge" id="songCategoryModalGenre" style="background:#4CAF50;color:white;padding:5px 12px;border-radius:20px;font-size:14px;font-weight:500;"></span>
+                    </div>
+                    <button class="modal-close" id="songCategoryModalClose" style="background:none;border:none;font-size:32px;color:#999;cursor:pointer;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;">&times;</button>
+                </div>
+                <div class="modal-body" style="padding:20px 30px;overflow-y:auto;flex:1;">
+                    <div id="songCategoryModalLoading" class="loading" style="display:none;text-align:center;padding:40px;color:#999;">
+                        <div class="loading-spinner" style="border:3px solid #f3f3f3;border-top:3px solid #4CAF50;border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin:0 auto 20px;"></div>
+                        <p>Loading songs...</p>
+                    </div>
+                    <div id="songCategoryModalEmpty" class="empty-state" style="display:none;text-align:center;padding:60px 20px;color:#999;">
+                        <div class="icon" style="font-size:64px;margin-bottom:20px;">🎵</div>
+                        <h3>No songs found</h3>
+                        <p>There are no songs in this category yet.</p>
+                    </div>
+                    <div id="songCategoryModalList" class="song-list" style="display:grid;gap:15px;"></div>
+                </div>
+                <div class="modal-footer" style="padding:20px 30px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+                    <span class="song-count" id="songCategoryModalCount" style="color:#666;font-size:14px;"></span>
+                    <button class="btn btn-secondary" id="songCategoryModalCancel" style="padding:10px 24px;font-size:16px;background:#f5f5f5;color:#666;border:none;border-radius:6px;">Close</button>
+                </div>
+            </div>
+        </div>
+        <style>
+            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            .song-card-modal { background:#f9f9f9;border:2px solid #e0e0e0;border-radius:8px;padding:15px 20px;cursor:pointer;transition:all 0.2s;display:flex;justify-content:space-between;align-items:center; }
+            .song-card-modal:hover { background:#fff;border-color:#4CAF50;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+            .song-card-modal.selected { background:#e8f5e9;border-color:#4CAF50;border-width:2px; }
+            .song-info-modal { flex:1; }
+            .song-title-modal { font-size:18px;font-weight:600;color:#333;margin-bottom:5px; }
+            .song-details-modal { display:flex;gap:15px;font-size:14px;color:#666; }
+            .song-detail-modal { display:flex;align-items:center;gap:5px; }
+            .song-actions-modal { display:flex;gap:10px; }
+            .btn-modal { padding:8px 16px;border:none;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s; }
+            .btn-modal-primary { background:#4CAF50;color:white; }
+            .btn-modal-primary:hover { background:#45a049;transform:translateY(-1px);box-shadow:0 2px 8px rgba(76,175,80,0.3); }
+            .btn-modal-secondary { background:#f5f5f5;color:#666; }
+            .btn-modal-secondary:hover { background:#e0e0e0; }
+        </style>
     <!-- Authentication Modal -->
     <div class="modal-overlay" id="authModal">
         <div class="modal">
@@ -4250,57 +4296,23 @@
             const songsList = document.getElementById('songsList');
             songsList.innerHTML = '<div class="loading">Loading songs...</div>';
 
-            // If running on localhost, load from local JSON file
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                try {
-                    const response = await fetch('library-builder/output/curated-library-rhythmic-categorized.json');
-                    if (!response.ok) throw new Error('Failed to load local song library');
-                    const json = await response.json();
-                    // The format is { songs: [...] }
-                    allSongs = (json.songs || []).map((song, idx) => ({ id: song.id || idx, ...song }));
-                    window._allSongsRaw = allSongs; // for category filtering
-                            // Category Dropdown Logic
-                            document.addEventListener('DOMContentLoaded', () => {
-                                const catDropdown = document.getElementById('categoryDropdown');
-                                if (catDropdown) {
-                                    catDropdown.addEventListener('change', (e) => {
-                                        const val = catDropdown.value;
-                                        // Open modal and switch to Song Library tab
-                                        showBrowseLibrary();
-                                        const tabs = document.querySelectorAll('.tab-btn');
-                                        tabs.forEach(tab => {
-                                            if (tab.dataset.collection === 'songs') {
-                                                tab.classList.add('active');
-                                            } else {
-                                                tab.classList.remove('active');
-                                            }
-                                        });
-                                        document.getElementById('packsGrid').style.display = 'none';
-                                        document.getElementById('songsGrid').style.display = 'flex';
-                                        // Filter songs by category
-                                        if (window._allSongsRaw) {
-                                            let filtered = window._allSongsRaw;
-                                            if (val && val !== 'all') {
-                                                // Normalize both dropdown value and song category for robust matching
-                                                const norm = s => (s || '').toLowerCase().replace(/^the\s+/, '').trim();
-                                                const valNorm = norm(val);
-                                                filtered = filtered.filter(song => norm(song.category) === valNorm);
-                                            }
-                                            renderSongs(filtered);
-                                        }
-                                    });
-                                }
-                            });
-                    console.log('Loaded', allSongs.length, 'songs from local JSON');
-                    populateFilters();
-                    setupFilterListeners();
-                    filterSongs();
-                } catch (error) {
-                    console.error('Error loading local song library:', error);
-                    songsList.innerHTML = '<div class="loading">Error loading local song library: ' + error.message + '</div>';
-                }
-                return;
+            // Always load from curated-library-rhythmic.json (flat array)
+            try {
+                const response = await fetch('library-builder/output/curated-library-rhythmic.json');
+                if (!response.ok) throw new Error('Failed to load song library');
+                const json = await response.json();
+                allSongs = (Array.isArray(json) ? json : []).map((song, idx) => ({ id: song.id || idx, ...song }));
+                window._allSongsRaw = allSongs; // for category filtering
+                console.log('Loaded', allSongs.length, 'songs from curated-library-rhythmic.json');
+                console.log('First 5 songs:', allSongs.slice(0, 5));
+                populateFilters();
+                setupFilterListeners();
+                filterSongs();
+            } catch (error) {
+                console.error('Error loading song library:', error);
+                songsList.innerHTML = '<div class="loading">Error loading song library: ' + error.message + '</div>';
             }
+            return;
 
             // Otherwise, use Firebase as before
             try {
@@ -4380,7 +4392,7 @@
                 songsList.innerHTML = '<div class="loading">No songs match your filters</div>';
                 return;
             }
-            
+            console.log('Rendering', songs.length, 'songs:', songs.slice(0, 5));
             songsList.innerHTML = '';
             songs.forEach(song => {
                 const card = document.createElement('div');
@@ -4395,7 +4407,6 @@
                         ${song.difficulty ? `<span class="song-badge difficulty ${song.difficulty.toLowerCase()}">${song.difficulty}</span>` : ''}
                     </div>
                 `;
-                
                 card.onclick = () => loadSongIntoVisualizer(song);
                 songsList.appendChild(card);
             });
@@ -4620,8 +4631,24 @@
         }
         
         function loadSongIntoVisualizer(song) {
-            console.log('📖 Loading song into visualizer:', song.title, 'by', song.artist);
+            console.log('========================================');
+            console.log('📖 LOADING SONG INTO VISUALIZER');
+            console.log('========================================');
+            console.log('📖 Song:', song.title, 'by', song.artist);
             console.log('📖 Song key from JSON:', song.key);
+            console.log('📖 Song sections:', song.sections ? song.sections.length : 'NONE');
+            song.sections?.forEach((section, idx) => {
+                console.log(`📖 Section ${idx}:`, section.name, 'bars:', section.bars, 'measures:', section.measures?.length);
+            });
+            if (song.sections?.[0]?.measures) {
+                console.log('📖 First measure data:', JSON.stringify(song.sections[0].measures[0], null, 2));
+            }
+            // Force progressionActive and tab rendering
+            progressionActive = true;
+            // Set currentSong and render tabs
+            currentSong = song;
+            renderSectionTabs();
+            updateSongTitleDisplay();
             
             // Close the browse modal
             closeBrowseLibrary();
@@ -4659,35 +4686,99 @@
             currentSong = {
                 title: song.title || 'Untitled',
                 artist: song.artist || 'Unknown Artist',
-                sections: song.sections.map(section => ({
-                    id: section.id || `section-${Math.random().toString(36).substr(2, 9)}`,
-                    name: section.name,
-                    bars: section.measures.length,
-                    key: section.key || song.key,
-                    timeSignature: section.timeSignature || song.timeSignature || '4/4',
-                    repeat: section.repeat || false,
-                    measures: section.measures.map(m => {
-                        // Parse chord symbol into full chord object if needed
-                        let parsedChord = m.chord;
-                        if (m.chord && m.chord.symbol && !m.chord.notes) {
+                sections: song.sections.map(section => {
+                    console.log('📖 Processing section:', section.name, 'measures:', section.measures?.length);
+                    return {
+                        id: section.id || `section-${Math.random().toString(36).substr(2, 9)}`,
+                        name: section.name,
+                        bars: section.measures.length,
+                        key: section.key || song.key,
+                        timeSignature: section.timeSignature || song.timeSignature || '4/4',
+                        repeat: section.repeat || false,
+                        measures: section.measures.map((m, mIdx) => {
+                            console.log(`📖 Processing measure ${mIdx}:`, JSON.stringify(m, null, 2));
+                            
+                            // Handle subdivided format (chords array with durations)
+                            if (m.chords && Array.isArray(m.chords)) {
+                                console.log(`📖 Measure ${mIdx} has subdivided chords:`, m.chords.length, 'chords');
+                                const transformedChords = m.chords.map((chordSlot, slotIdx) => {
+                                    console.log(`  📖 Processing chord slot ${slotIdx}:`, chordSlot);
+                                    const chordSymbol = chordSlot.symbol;
+                                    if (!chordSymbol) {
+                                        console.warn(`⚠️ No symbol in chord slot ${slotIdx} of measure ${mIdx}`);
+                                        return null;
+                                    }
+                                    const rootNote = extractRootNote(chordSymbol);
+                                    if (!rootNote) {
+                                        console.warn(`⚠️ Could not extract root from ${chordSymbol}`);
+                                        return null;
+                                    }
+                                    const chordNotes = parseChordSymbol(chordSymbol, rootNote);
+                                    console.log(`  🎵 Transformed: ${chordSymbol} → root: ${rootNote}, notes:`, chordNotes);
+                                    return {
+                                        chord: {
+                                            symbol: chordSymbol,
+                                            root: rootNote,
+                                            notes: chordNotes || [],
+                                            isCustom: false
+                                        },
+                                        duration: chordSlot.duration || 'whole',
+                                        romanNumeral: '' // Will be calculated later
+                                    };
+                                }).filter(slot => slot !== null);
+                                
+                                console.log(`  ✅ Measure ${mIdx} transformed chords:`, transformedChords.length, 'chords');
+                                return {
+                                    chord: null, // Legacy field
+                                    chords: transformedChords,
+                                    localKey: m.localKey || section.key || song.key,
+                                    timeSignature: m.timeSignature || section.timeSignature || song.timeSignature || '4/4'
+                                };
+                            }
+                            
+                            // Handle traditional format (single chord per measure)
+                            if (!m.chord || !m.chord.symbol) {
+                                // No chord in this measure
+                                return {
+                                    chord: null,
+                                    localKey: m.localKey || section.key || song.key,
+                                    timeSignature: m.timeSignature || section.timeSignature || song.timeSignature || '4/4'
+                                };
+                            }
+                            
                             const chordSymbol = m.chord.symbol;
                             const rootNote = extractRootNote(chordSymbol);
-                            const chordNotes = parseChordSymbol(chordSymbol, rootNote);
-                            parsedChord = {
+                            
+                            // Generate notes if not present
+                            let chordNotes = m.chord.notes;
+                            if (!chordNotes || chordNotes.length === 0) {
+                                chordNotes = parseChordSymbol(chordSymbol, rootNote);
+                                console.log('🎵 Generated notes for chord:', chordSymbol, '→', chordNotes);
+                            }
+                            
+                            // Ensure we have valid notes
+                            if (!chordNotes || chordNotes.length === 0) {
+                                console.error('❌ Failed to generate notes for chord:', chordSymbol);
+                                chordNotes = [rootNote]; // Fallback to just root note
+                            }
+                            
+                            const parsedChord = {
                                 symbol: chordSymbol,
                                 root: rootNote,
                                 notes: chordNotes,
                                 isCustom: false
                             };
-                            console.log('🎵 Parsed chord:', chordSymbol, '→ root:', rootNote, 'notes:', chordNotes);
-                        }
-                        return {
-                            chord: parsedChord,
-                            localKey: m.localKey || section.key || song.key,
-                            timeSignature: m.timeSignature || section.timeSignature || song.timeSignature || '4/4'
-                        };
-                    })
-                })),
+                            
+                            console.log('🎵 Parsed traditional chord:', chordSymbol, '→ root:', rootNote, 'notes:', parsedChord.notes);
+                            
+                            return {
+                                chord: parsedChord,
+                                localKey: m.localKey || section.key || song.key,
+                                timeSignature: m.timeSignature || section.timeSignature || song.timeSignature || '4/4'
+                            };
+                        })
+                    };
+                }),
                 currentSectionIndex: 0
             };
             
@@ -4715,13 +4806,53 @@
             console.log('🎼 Generating staff for first section with', firstSection.bars, 'measures x', repeatCount, 'repeats =', totalBars, 'total bars, time signature:', timeSignature);
             generateStaffMeasures(totalBars, timeSignature);
             
-            // Update UI
-            console.log('🎨 Calling updateProgressionChart...');
-            updateProgressionChart();
-            
             console.log('✅ Song loaded successfully!');
-            // Use existing firstSection variable here, do not redeclare
-            console.log('🎯 Current state - Key:', selectedKey, 'Scale:', selectedScale, 'Measure:', selectedMeasureIndex + '/' + (firstSection && firstSection.measures ? firstSection.measures.length : 0));
+            console.log('🎯 Current state - Key:', selectedKey, 'Scale:', selectedScale);
+            console.log('🎯 Current song sections:', currentSong.sections.length);
+            console.log('🎯 First section measures:', currentSong.sections[0].measures.length);
+            console.log('🎯 First measure:', JSON.stringify(currentSong.sections[0].measures[0], null, 2));
+            
+            // DEBUG: Check if measures have chords
+            console.log('🔍 CHORD CHECK - First measure has chords array:', !!currentSong.sections[0].measures[0].chords);
+            if (currentSong.sections[0].measures[0].chords) {
+                console.log('🔍 First measure chords count:', currentSong.sections[0].measures[0].chords.length);
+                console.log('🔍 First chord in array:', JSON.stringify(currentSong.sections[0].measures[0].chords[0], null, 2));
+            }
+            
+            // CRITICAL: Use setTimeout to ensure DOM is ready before updating chart
+            setTimeout(() => {
+                console.log('🎨 Calling updateProgressionChart (after DOM ready)...');
+                console.log('📊 progressionMeasures:', progressionMeasures.length, 'measures');
+                console.log('📊 First measure data:', JSON.stringify(progressionMeasures[0], null, 2));
+                console.log('📊 First progressionMeasure has chords:', !!progressionMeasures[0]?.chords);
+                if (progressionMeasures[0]?.chords) {
+                    console.log('📊 First progressionMeasure chords count:', progressionMeasures[0].chords.length);
+                }
+                
+                updateProgressionChart();
+                
+                // Auto-select first chord and display it
+                if (currentSong.sections[0].measures[0]) {
+                    const firstMeasure = currentSong.sections[0].measures[0];
+                    console.log('🎸 First measure:', firstMeasure);
+                    
+                    if (firstMeasure.chord) {
+                        selectedChord = firstMeasure.chord;
+                        selectedMeasureIndex = 0;
+                        console.log('🎸 Auto-selected first chord:', selectedChord.symbol);
+                        console.log('🎸 Chord notes:', selectedChord.notes);
+                        
+                        // Update fretboard to show the chord
+                        updateFretboard();
+                    } else {
+                        console.log('⚠️ First measure has no chord');
+                        updateFretboard();
+                    }
+                } else {
+                    console.log('⚠️ No first measure found');
+                    updateFretboard();
+                }
+            }, 200); // Give DOM time to settle
         }
         
         async function loadLibraryProgression(progressionId) {
@@ -6351,6 +6482,12 @@
 
         // Comprehensive chord template repository
         const CHORD_TEMPLATES = {
+                        '7b9': { intervals: [0, 4, 7, 10, 13], priority: 9, symbol: '7b9', type: 'altered', completenessThreshold: 0.6, excludeIf: [] },
+                        '7#9': { intervals: [0, 4, 7, 10, 15], priority: 9, symbol: '7#9', type: 'altered', completenessThreshold: 0.6, excludeIf: [] },
+                        '7b5': { intervals: [0, 4, 6, 10], priority: 9, symbol: '7b5', type: 'altered', completenessThreshold: 0.75, excludeIf: [] },
+                        '7#5': { intervals: [0, 4, 8, 10], priority: 9, symbol: '7#5', type: 'altered', completenessThreshold: 0.75, excludeIf: [] },
+                        '7#11': { intervals: [0, 4, 7, 10, 18], priority: 9, symbol: '7#11', type: 'altered', completenessThreshold: 0.6, excludeIf: [] },
+                        '13': { intervals: [0, 4, 7, 10, 14, 17, 21], priority: 9, symbol: '13', type: 'extended', completenessThreshold: 0.5, excludeIf: [] },
             // TRIADS (Priority 1)
             'major': { 
                 intervals: [0, 4, 7], 
@@ -6750,8 +6887,54 @@
             currentSectionIndex: 0
         };
         
-        // Compatibility layer - progressionMeasures points to current section's measures
+        // Compatibility layer - progressionMeasures points to current section's measures or all sections in Song mode
         let progressionMeasures = currentSong.sections[0].measures;
+
+        // Helper to get all measures from all sections
+        function getAllSectionsMeasures() {
+            if (!currentSong || !currentSong.sections) return [];
+            let all = [];
+            currentSong.sections.forEach(section => {
+                const repeat = section.repeat || 1;
+                for (let i = 0; i < repeat; i++) {
+                    all = all.concat(section.measures);
+                }
+            });
+            return all;
+        }
+
+        // Listen for playback mode change to update staff
+        document.getElementById('playCurrentSection').addEventListener('change', updateStaffForPlaybackMode);
+        document.getElementById('playAllSections').addEventListener('change', updateStaffForPlaybackMode);
+
+        function updateStaffForPlaybackMode() {
+            const playAllSections = document.getElementById('playAllSections').checked;
+            if (playAllSections) {
+                progressionMeasures = getAllSectionsMeasures();
+                // Use first section's time signature for now (could be improved for multi-time-signature songs)
+                generateStaffMeasures(progressionMeasures.length, currentSong.sections[0].timeSignature);
+            } else {
+                progressionMeasures = currentSong.sections[currentSong.currentSectionIndex].measures;
+                generateStaffMeasures(progressionMeasures.length, currentSong.sections[currentSong.currentSectionIndex].timeSignature);
+            }
+            setTimeout(() => updateProgressionChart(), 100);
+        }
+
+        // Ensure staff updates on song/section load
+        function regenerateStaffForCurrentSection() {
+            const playAllSections = document.getElementById('playAllSections').checked;
+            if (playAllSections) {
+                progressionMeasures = getAllSectionsMeasures();
+                generateStaffMeasures(progressionMeasures.length, currentSong.sections[0].timeSignature);
+            } else {
+                const currentSection = currentSong.sections[currentSong.currentSectionIndex];
+                const repeatCount = currentSection.repeat || 1;
+                const totalBars = currentSection.bars * repeatCount;
+                progressionMeasures = currentSection.measures;
+                generateStaffMeasures(totalBars, currentSection.timeSignature);
+            }
+            updateProgressionChart();
+        }
         
         // Generate initial staff on page load - wait for DOM to be ready
         if (document.readyState === 'loading') {
@@ -9322,26 +9505,38 @@
         // Helper function to sync compatibility layer
         function syncProgressionMeasures() {
             const currentSection = currentSong.sections[currentSong.currentSectionIndex];
-            
+
             // Expand measures based on repeat count (deep copy to avoid reference issues)
             const repeatCount = currentSection.repeat || 1;
             progressionMeasures = [];
-            
+
             for (let i = 0; i < repeatCount; i++) {
                 // Deep copy each measure to preserve chord objects with notes array
-                const measuresCopy = currentSection.measures.map(m => ({
-                    chord: m.chord ? {
-                        symbol: m.chord.symbol,
-                        root: m.chord.root,
-                        notes: m.chord.notes ? [...m.chord.notes] : [],
-                        isCustom: m.chord.isCustom || false
-                    } : null,
-                    localKey: m.localKey,
-                    timeSignature: m.timeSignature
-                }));
+                const measuresCopy = currentSection.measures.map(m => {
+                    const measureCopy = {
+                        chord: m.chord ? {
+                            symbol: m.chord.symbol,
+                            root: m.chord.root,
+                            notes: m.chord.notes ? [...m.chord.notes] : [],
+                            isCustom: m.chord.isCustom || false
+                        } : null,
+                        localKey: m.localKey,
+                        timeSignature: m.timeSignature
+                    };
+                    // --- NEW: Copy chords array for new format ---
+                    if (m.chords && Array.isArray(m.chords)) {
+                        measureCopy.chords = m.chords.map(chordSlot => ({
+                            chord: chordSlot.chord || null,
+                            symbol: chordSlot.symbol || '',
+                            duration: chordSlot.duration || 'whole',
+                            romanNumeral: chordSlot.romanNumeral || ''
+                        }));
+                    }
+                    return measureCopy;
+                });
                 progressionMeasures.push(...measuresCopy);
             }
-            
+
             progressionKey = currentSection.key;
             console.log('📊 syncProgressionMeasures: Loaded', progressionMeasures.length, 'measures for section', currentSong.currentSectionIndex);
         }
@@ -10188,7 +10383,28 @@
         }
         
         function updateProgressionChart() {
-            console.log('📊 [updateProgressionChart] Starting update...');
+            console.log('========================================');
+            console.log('📊 [updateProgressionChart] FULL DIAGNOSTIC');
+            console.log('========================================');
+            console.log('📊 progressionMeasures:', progressionMeasures);
+            console.log('📊 progressionMeasures.length:', progressionMeasures.length);
+            
+            // Detailed measure inspection
+            if (progressionMeasures.length > 0) {
+                console.log('📊 Inspecting first 3 measures in detail:');
+                for (let i = 0; i < Math.min(3, progressionMeasures.length); i++) {
+                    const m = progressionMeasures[i];
+                    console.log(`📊 Measure ${i}:`, {
+                        hasChord: !!m.chord,
+                        hasChords: !!m.chords,
+                        chordsLength: m.chords?.length,
+                        chordSymbol: m.chord?.symbol,
+                        firstChordSlot: m.chords?.[0],
+                        fullMeasure: JSON.stringify(m, null, 2)
+                    });
+                }
+            }
+            
             const playBtn = document.querySelector('.play-progression-btn');
             if (!progressionMeasures || !progressionMeasures.length) {
                 if (playBtn) {
@@ -10198,70 +10414,125 @@
                 console.error('❌ No progression data');
                 return;
             }
+            
             // Enable play button if all measures are valid (no nulls)
             if (playBtn) {
                 const allValid = progressionMeasures.every(m => m && (m.chord || (m.chords && m.chords.length > 0)));
                 playBtn.disabled = !allValid;
                 playBtn.textContent = 'Play';
             }
+            
             const totalMeasures = progressionMeasures.length;
-            console.log(`   Updating ${totalMeasures} measures`);
+            console.log(`📊 Updating ${totalMeasures} measures`);
+            
             progressionMeasures.forEach((measure, index) => {
+                console.log(`📊 Processing measure ${index}:`, measure);
+                
                 const measureEl = document.getElementById(`staff-measure-${index}`);
-                if (!measureEl) return;
+                if (!measureEl) {
+                    console.error(`❌ Measure element not found for index ${index}`);
+                    return;
+                }
+                
+                console.log(`✅ Found measure element for index ${index}`);
 
                 // --- Chord Element ---
                 let chordEl = document.getElementById(`chord-${index}`);
                 if (!chordEl) {
+                    console.log(`Creating chord element for measure ${index}`);
                     chordEl = document.createElement('div');
                     chordEl.id = `chord-${index}`;
                     chordEl.className = 'chord-symbol';
                     measureEl.appendChild(chordEl);
+                } else {
+                    console.log(`Chord element already exists for measure ${index}`);
                 }
+                
                 // --- Roman Element ---
                 let romanEl = document.getElementById(`roman-${index}`);
                 if (!romanEl) {
+                    console.log(`Creating roman element for measure ${index}`);
                     romanEl = document.createElement('div');
                     romanEl.id = `roman-${index}`;
                     romanEl.className = 'roman-numeral';
                     measureEl.appendChild(romanEl);
+                } else {
+                    console.log(`Roman element already exists for measure ${index}`);
                 }
+                
                 // --- Rhythm Element ---
                 let rhythmEl = document.getElementById(`rhythm-${index}`);
                 if (!rhythmEl) {
+                    console.log(`Creating rhythm element for measure ${index}`);
                     rhythmEl = document.createElement('div');
                     rhythmEl.id = `rhythm-${index}`;
                     rhythmEl.className = 'rhythm-symbols';
                     measureEl.appendChild(rhythmEl);
+                } else {
+                    console.log(`Rhythm element already exists for measure ${index}`);
                 }
 
+                // Get measure key for roman numeral calculation
+                const measureKey = measure.localKey || selectedKey || 'C';
+                console.log(`📊 Measure ${index} key: ${measureKey}`);
+
+                // Check what kind of data we have
+                console.log(`📊 Measure ${index} has chord:`, !!measure.chord);
+                console.log(`📊 Measure ${index} has chords array:`, !!measure.chords);
+                
                 // Subdivision mode
                 if (measure.chords && Array.isArray(measure.chords) && measure.chords.length > 0) {
+                    console.log(`📊 Measure ${index} using subdivision mode with ${measure.chords.length} chord slots`);
                     let rhythmDisplay = '';
                     let chordDisplay = '';
                     let romanDisplay = '';
+                    
                     measure.chords.forEach((slot, slotIndex) => {
+                        console.log(`  📊 Slot ${slotIndex}:`, slot);
                         // Rhythm symbol
                         rhythmDisplay += `<span style="margin-right:8px">${getRhythmNotation(slot.duration)}</span>`;
-                        // Chord name
-                        chordDisplay += `<span style="margin-right:8px">${slot.chord ? slot.chord.symbol : '—'}</span>`;
-                        // Roman numeral
-                        romanDisplay += `<span style="margin-right:8px">${slot.romanNumeral || ''}</span>`;
+                        // Chord name: use slot.symbol if slot.chord is missing
+                        const chordSymbol = slot.chord ? slot.chord.symbol : slot.symbol || '—';
+                        console.log(`  📊 Chord symbol: ${chordSymbol}`);
+                        chordDisplay += `<span style="margin-right:8px">${chordSymbol}</span>`;
+                        // Roman numeral - calculate if missing
+                        let romanNum = slot.romanNumeral;
+                        if (!romanNum && slot.chord) {
+                            romanNum = generateRomanNumeralForChord(slot.chord, measureKey, index);
+                            slot.romanNumeral = romanNum; // Cache it
+                        }
+                        console.log(`  📊 Roman numeral: ${romanNum}`);
+                        romanDisplay += `<span style="margin-right:8px">${romanNum || ''}</span>`;
                     });
+                    
+                    console.log(`📊 Setting rhythmEl.innerHTML:`, rhythmDisplay);
+                    console.log(`📊 Setting chordEl.innerHTML:`, chordDisplay);
+                    console.log(`📊 Setting romanEl.innerHTML:`, romanDisplay);
+                    
                     rhythmEl.innerHTML = rhythmDisplay;
                     chordEl.innerHTML = chordDisplay;
                     romanEl.innerHTML = romanDisplay;
                 } else if (measure.chord && measure.chord.symbol) {
                     // Traditional mode
+                    console.log(`📊 Measure ${index} using traditional mode with chord: ${measure.chord.symbol}`);
                     chordEl.innerHTML = `<span class="chord-name">${measure.chord.symbol}</span>`;
+                    // Calculate roman numeral if missing
+                    if (!measure.romanNumeral) {
+                        measure.romanNumeral = generateRomanNumeralForChord(measure.chord, measureKey, index);
+                    }
+                    console.log(`📊 Roman numeral: ${measure.romanNumeral}`);
                     romanEl.textContent = measure.romanNumeral || '';
                     rhythmEl.innerHTML = '';
                 } else {
+                    console.log(`📊 Measure ${index} has no chord data, displaying placeholder`);
                     chordEl.innerHTML = '—';
                     romanEl.textContent = '';
                     rhythmEl.innerHTML = '';
                 }
+                
+                console.log(`✅ Finished processing measure ${index}`);
             });
+            
             console.log('✅ [updateProgressionChart] Complete\n');
         }
         
@@ -10807,14 +11078,30 @@
                 if (!audioContext) {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 }
-                
-                // Ensure mobile audio is unlocked
+                // Diagnostic: log audio context state
+                console.log('AudioContext state before playback:', audioContext.state);
+                // Force unlock/resume audio context
                 if (!isMobileAudioUnlocked) {
                     unlockMobileAudio();
                 }
-                
                 if (audioContext.state === 'suspended') {
                     await audioContext.resume();
+                    console.log('AudioContext resumed. State:', audioContext.state);
+                }
+                // Test: play a short beep to confirm audio
+                try {
+                    const testOsc = audioContext.createOscillator();
+                    const testGain = audioContext.createGain();
+                    testOsc.connect(testGain);
+                    testGain.connect(audioContext.destination);
+                    testOsc.frequency.setValueAtTime(440, audioContext.currentTime);
+                    testOsc.type = 'sine';
+                    testGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    testGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    testOsc.start(audioContext.currentTime);
+                    testOsc.stop(audioContext.currentTime + 0.2);
+                } catch (err) {
+                    console.warn('Test beep failed:', err);
                 }
                 
                 // Count-in
@@ -10961,7 +11248,7 @@
                     let slotStart = 0;
                     for (const slot of measure.chords) {
                         chordSlots.push({
-                            chord: slot.chord,
+                            chord: slot.chord || slot.symbol,
                             startBeat: slotStart,
                             durationBeats: subdivisionDurations[slot.duration] || 4
                         });
@@ -10982,9 +11269,16 @@
                         const chordTime = slot.startBeat * beatDuration;
                         chordTimers.push(setTimeout(() => {
                             if (!isPlaying) return;
-                            selectedChord = slot.chord;
+                            // Ensure selectedChord and playChordSound both get an object
+                            let chordObj;
+                            if (typeof slot.chord === 'string') {
+                                chordObj = { symbol: slot.chord };
+                            } else {
+                                chordObj = slot.chord;
+                            }
+                            selectedChord = chordObj;
                             updateFretboard();
-                            playChordSound(slot.chord, (beatDuration * slot.durationBeats) / 1000);
+                            playChordSound(chordObj, (beatDuration * slot.durationBeats) / 1000);
                         }, chordTime));
                     }
                 }
@@ -11071,15 +11365,18 @@
             try {
                 // Simple synthesized chord using Web Audio API
                 const frequencies = getChordFrequencies(notesToPlay);
-                console.log('Frequencies for progression playback:', frequencies);
+                console.log('[AUDIO] playChordSound called');
+                console.log('[AUDIO] Notes to play:', notesToPlay);
+                console.log('[AUDIO] Frequencies:', frequencies);
+                console.log('[AUDIO] Duration:', duration);
                 const oscillators = [];
                 const gainNode = audioContext.createGain();
-                
                 gainNode.connect(audioContext.destination);
-                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                // Set gain higher for audibility during testing
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-                
-                frequencies.forEach(freq => {
+                console.log('[AUDIO] GainNode initial value:', gainNode.gain.value);
+                frequencies.forEach((freq, idx) => {
                     const oscillator = audioContext.createOscillator();
                     oscillator.connect(gainNode);
                     oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
@@ -11087,12 +11384,11 @@
                     oscillator.start(audioContext.currentTime);
                     oscillator.stop(audioContext.currentTime + duration);
                     oscillators.push(oscillator);
+                    console.log(`[AUDIO] Oscillator ${idx}: freq=${freq}, type=sine, start=${audioContext.currentTime}, stop=${audioContext.currentTime + duration}`);
                 });
-                
                 return new Promise(resolve => {
                     setTimeout(resolve, duration * 1000);
                 });
-                
             } catch (error) {
                 console.error('Chord sound generation error:', error);
             }
@@ -11101,28 +11397,47 @@
         // Generate chord notes from chord symbol (for library songs)
         function generateChordNotesFromSymbol(symbol) {
             if (!symbol || symbol === 'N.C.') return [];
-            
             // Parse chord symbol to get root and quality
             const rootMatch = symbol.match(/^([A-G][#♯b♭]?)/);
             if (!rootMatch) return [];
-            
             const root = rootMatch[1];
             const quality = symbol.substring(root.length);
-            
             // Get semitones for intervals based on chord quality
             const intervals = getChordIntervals(quality);
-            
             // Convert root to semitone
             const rootSemitone = noteToSemitone(root);
-            
-            // Generate notes
-            const noteNames = ['C', 'C♯', 'D', 'E♭', 'E', 'F', 'F♯', 'G', 'A♭', 'A', 'B♭', 'B'];
-            const notes = intervals.map(interval => {
+
+            // Use sharps for sharp keys/roots, flats for flat keys/roots
+            // List of keys/roots that prefer sharps
+            const sharpRoots = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'E#'];
+            // List of roots that prefer flats
+            const flatRoots = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Cb'];
+            // Normalize root for comparison
+            const normRoot = root.replace('♯', '#').replace('♭', 'b');
+            let useSharps = sharpRoots.includes(normRoot);
+            if (flatRoots.includes(normRoot)) useSharps = false;
+
+            const noteNamesSharps = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+            const noteNamesFlats  = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+            const noteNames = useSharps ? noteNamesSharps : noteNamesFlats;
+
+            // For 13th chords, immediately return only root, 3rd, 5th, 7th, 13th before any other logic
+            if (/13/.test(quality)) {
+                let rootNote = noteNames[rootSemitone % 12];
+                let thirdNote = noteNames[(rootSemitone + 4) % 12];
+                let fifthNote = noteNames[(rootSemitone + 7) % 12];
+                // 7th: dominant (10) or major (11)
+                let seventhNote = noteNames[(rootSemitone + (intervals.includes(11) ? 11 : 10)) % 12];
+                let thirteenthNote = noteNames[(rootSemitone + 21) % 12];
+                return [rootNote, thirdNote, fifthNote, seventhNote, thirteenthNote];
+            }
+
+            let notes = intervals.map(interval => {
                 const noteSemitone = (rootSemitone + interval) % 12;
                 return noteNames[noteSemitone];
             });
-            
-            return notes;
+
+            // ...existing code...
         }
         
         // Get intervals for chord quality
@@ -11145,10 +11460,18 @@
                 '9': [0, 4, 7, 10, 14],     // Dominant 9th
                 'maj9': [0, 4, 7, 11, 14],  // Major 9th
                 'm9': [0, 3, 7, 10, 14],    // Minor 9th
+                '13': [0, 4, 7, 10, 14, 17, 21],      // Dominant 13th
+                'maj13': [0, 4, 7, 11, 14, 17, 21],   // Major 13th
+                'm13': [0, 3, 7, 10, 14, 17, 21],     // Minor 13th
+                '7b9': [0, 4, 7, 10, 13],             // Dominant 7b9
+                '7#9': [0, 4, 7, 10, 15],             // Dominant 7#9
+                '7#11': [0, 4, 7, 10, 14, 18],        // Dominant 7#11
+                '7b13': [0, 4, 7, 10, 20],            // Dominant 7b13
+                '7#5': [0, 4, 8, 10],                 // Dominant 7#5
+                '7b5': [0, 4, 6, 10],                 // Dominant 7b5
                 '5': [0, 7],                // Power chord
                 'add9': [0, 4, 7, 14]       // Add 9
             };
-            
             return patterns[quality] || patterns[''];  // Default to major
         }
 
@@ -11173,7 +11496,8 @@
             console.log('Playing chord notes:', noteNames);
             
             // Map notes to frequencies
-            let frequencies = noteNames.slice(0, 4).map(note => {
+            // Play up to 7 notes for extended/jazz chords
+            let frequencies = noteNames.slice(0, 7).map(note => {
                 const freq = noteFrequencies[note];
                 if (!freq) {
                     console.warn(`No frequency found for note: ${note}, using A440`);
@@ -11216,6 +11540,327 @@
                 generateStaffMeasures(progressionMeasures.length, document.getElementById('timeSignature').value);
             }
         });
+
+        // Song Category Modal Integration
+    const SONG_LIBRARY_URL = 'library-builder/output/curated-library-rhythmic.json';
+    let SONG_LIBRARY = [];
+    let currentGenre = null;
+    let songCategoryModalOpen = false;
+    let modalInitialized = false;
+    
+    // Enhanced logging
+    console.log('🎵 [MODAL] Song Category Modal system initializing...');
+    console.log('🎵 [MODAL] Library URL:', SONG_LIBRARY_URL);
+    const GENRES = {
+        'Classic Rock': { color: '#e91e63', icon: '🎸' },
+        'Pop': { color: '#9c27b0', icon: '🎤' },
+        'Jazz': { color: '#3f51b5', icon: '🎺' },
+        'Blues': { color: '#2196f3', icon: '🎵' },
+        'Folk': { color: '#4caf50', icon: '🪕' },
+        'Country': { color: '#ff9800', icon: '🤠' },
+        'R&B': { color: '#f44336', icon: '🎹' },
+        'Teaching': { color: '#607d8b', icon: '📚' },
+        'Hymn': { color: '#795548', icon: '⛪' },
+        'Children': { color: '#ff5722', icon: '🧸' },
+        'Traditional': { color: '#009688', icon: '🎭' }
+    };
+    
+    function populateSongDropdown() {
+        const dropdown = document.getElementById('songDropdown');
+        if (!dropdown) return;
+        // Remove all except first
+        while (dropdown.options.length > 1) dropdown.remove(1);
+        SONG_LIBRARY.forEach((song, idx) => {
+            const option = document.createElement('option');
+            option.value = idx;
+            option.textContent = `${song.title} — ${song.artist}`;
+            dropdown.appendChild(option);
+        });
+    }
+    function getSongsByGenre(genre) {
+        return SONG_LIBRARY.filter(song => song.genre === genre);
+    }
+    function openSongCategoryModal(genre) {
+        console.log('[Modal] Opening modal for genre:', genre);
+        currentGenre = genre;
+        songCategoryModalOpen = true;
+        document.getElementById('songCategoryModalOverlay').style.display = 'flex';
+        document.getElementById('songCategoryModalTitle').textContent = `${genre} Songs`;
+        document.getElementById('songCategoryModalGenre').textContent = genre;
+        document.getElementById('songCategoryModalGenre').style.background = GENRES[genre]?.color || '#4CAF50';
+        document.getElementById('songCategoryModalLoading').style.display = 'block';
+        document.getElementById('songCategoryModalEmpty').style.display = 'none';
+        document.getElementById('songCategoryModalList').innerHTML = '';
+        setTimeout(() => displaySongsInModal(genre), 200);
+    }
+    function closeSongCategoryModal() {
+        console.log('[Modal] Closing modal');
+        songCategoryModalOpen = false;
+        document.getElementById('songCategoryModalOverlay').style.display = 'none';
+        currentGenre = null;
+    }
+    function displaySongsInModal(genre) {
+        const songs = getSongsByGenre(genre);
+        document.getElementById('songCategoryModalLoading').style.display = 'none';
+        if (songs.length === 0) {
+            document.getElementById('songCategoryModalEmpty').style.display = 'block';
+            document.getElementById('songCategoryModalCount').textContent = '0 songs';
+            console.log('[Modal] No songs found for genre:', genre);
+            return;
+        }
+        document.getElementById('songCategoryModalEmpty').style.display = 'none';
+        document.getElementById('songCategoryModalCount').textContent = `${songs.length} song${songs.length !== 1 ? 's' : ''}`;
+        const list = document.getElementById('songCategoryModalList');
+        list.innerHTML = '';
+        songs.forEach((song, idx) => {
+            const card = document.createElement('div');
+            card.className = 'song-card-modal';
+            card.innerHTML = `
+                <div class="song-info-modal">
+                    <div class="song-title-modal">${song.title}</div>
+                    <div class="song-details-modal">
+                        <div class="song-detail-modal"><span>👤</span><span>${song.artist}</span></div>
+                        <div class="song-detail-modal"><span>🎹</span><span>Key: ${song.key} ${song.mode}</span></div>
+                        <div class="song-detail-modal"><span>⏱️</span><span>${song.tempo} BPM</span></div>
+                        <div class="song-detail-modal"><span>📄</span><span>${song.sections?.length || 0} section${(song.sections?.length !== 1) ? 's' : ''}</span></div>
+                    </div>
+                </div>
+                <div class="song-actions-modal">
+                    <button class="btn-modal btn-modal-primary" data-idx="${idx}">Select ✓</button>
+                </div>
+            `;
+            card.querySelector('.btn-modal-primary').onclick = () => {
+                closeSongCategoryModal();
+                if (typeof loadSongIntoVisualizer === 'function') {
+                    console.log('[Modal] Loading song into visualizer:', song.title);
+                    loadSongIntoVisualizer(song);
+                } else {
+                    alert('Song selected: ' + song.title);
+                }
+            };
+            list.appendChild(card);
+        });
+        console.log('[Modal] Displayed', songs.length, 'songs for genre', genre);
+    }
+    // Initialize modal system
+    function initializeModalSystem() {
+        if (modalInitialized) {
+            console.log('🎵 [MODAL] Already initialized, skipping...');
+            return;
+        }
+        
+        console.log('🎵 [MODAL] ========================================');
+        console.log('🎵 [MODAL] Initializing modal system...');
+        console.log('🎵 [MODAL] ========================================');
+        
+        const dropdown = document.getElementById('songDropdown');
+        if (!dropdown) return;
+        dropdown.addEventListener('change', function(e) {
+            const idx = e.target.value;
+            if (idx !== "" && SONG_LIBRARY[idx]) {
+                loadSongIntoVisualizer(SONG_LIBRARY[idx]);
+            }
+        });
+        
+        // Load song library
+        console.log('🎵 [MODAL] Fetching library from:', SONG_LIBRARY_URL);
+        fetch(SONG_LIBRARY_URL)
+            .then(r => r.json())
+            .then(data => {
+                SONG_LIBRARY = Array.isArray(data) ? data : [];
+                populateSongDropdown();
+            });
+        
+        // Setup modal close handlers
+        const closeBtn = document.getElementById('songCategoryModalClose');
+        const cancelBtn = document.getElementById('songCategoryModalCancel');
+        const overlay = document.getElementById('songCategoryModalOverlay');
+        
+        if (closeBtn) {
+            closeBtn.onclick = closeSongCategoryModal;
+            console.log('🎵 [MODAL] ✅ Close button handler attached');
+        }
+        if (cancelBtn) {
+            cancelBtn.onclick = closeSongCategoryModal;
+            console.log('🎵 [MODAL] ✅ Cancel button handler attached');
+        }
+        if (overlay) {
+            overlay.onclick = (e) => {
+                if (e.target === overlay) closeSongCategoryModal();
+            };
+            console.log('🎵 [MODAL] ✅ Overlay click handler attached');
+        }
+        
+        // ESC key handler
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && songCategoryModalOpen) {
+                closeSongCategoryModal();
+            }
+        });
+        console.log('🎵 [MODAL] ✅ ESC key handler attached');
+    }
+    
+    // Initialize on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeModalSystem);
+        console.log('🎵 [MODAL] Will initialize on DOMContentLoaded');
+    } else {
+        // DOM already loaded
+        console.log('🎵 [MODAL] DOM already loaded, initializing now');
+        initializeModalSystem();
+    }
     </script>
+</body>
+<script>
+
+// --- Genre Modal Logic ---
+function populateGenres() {
+    const dropdown = document.getElementById('genreDropdown');
+    if (!window.SONG_LIBRARY || !window.SONG_LIBRARY.length) {
+        console.warn('SONG_LIBRARY not found or empty!');
+        return;
+    }
+    const genres = [...new Set(window.SONG_LIBRARY.map(song => song.genre))].sort();
+    genres.forEach(genre => {
+        const option = document.createElement('option');
+        option.value = genre;
+        option.textContent = genre;
+        dropdown.appendChild(option);
+    });
+}
+
+document.getElementById('genreDropdown').addEventListener('change', function() {
+    const genre = this.value;
+    if (genre) openGenreModal(genre);
+});
+
+function openGenreModal(genre) {
+    const songs = window.SONG_LIBRARY.filter(song => song.genre === genre);
+    document.getElementById('modalGenre').textContent = `${genre} (${songs.length})`;
+    const container = document.getElementById('modalSongs');
+    container.innerHTML = '';
+    songs.forEach(song => {
+        const div = document.createElement('div');
+        div.className = 'song-item';
+        div.style = 'padding:15px;margin-bottom:10px;background:#f9f9f9;border:2px solid #ddd;border-radius:8px;cursor:pointer;transition:all 0.2s;';
+        div.innerHTML = `
+            <div class=\"song-title\" style=\"font-size:18px;font-weight:bold;margin-bottom:5px;\">${song.title}</div>
+            <div class=\"song-info\" style=\"font-size:14px;color:#666;\">
+                ${song.artist} • ${song.key} ${song.mode || ''} • ${song.tempo || ''} BPM
+            </div>
+        `;
+        div.onclick = function() {
+            console.log('🎵 Song clicked:', song);
+            if (typeof window.loadThisSong === 'function') {
+                window.loadThisSong(song);
+            } else {
+                console.warn('window.loadThisSong is not a function');
+            }
+            closeModal();
+        };
+        container.appendChild(div);
+    });
+    document.getElementById('genreModal').style.display = 'flex';
+    document.getElementById('genreModal').style.alignItems = 'center';
+    document.getElementById('genreModal').style.justifyContent = 'center';
+}
+
+function closeModal() {
+    document.getElementById('genreModal').style.display = 'none';
+}
+
+document.getElementById('genreModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
+
+// Ensure currentProgression is defined globally
+window.currentProgression = {};
+window.loadThisSong = function(song) {
+    console.log('✅ [loadThisSong] Loading song:', song);
+    try {
+        currentSong = song;
+        // Diagnostic: Log sections and measures
+        if (Array.isArray(currentSong.sections)) {
+            console.log(`[loadThisSong] Song has ${currentSong.sections.length} sections.`);
+            currentSong.sections.forEach((section, idx) => {
+                console.log(`[loadThisSong] Section ${idx}:`, section.name, 'bars:', section.bars, 'measures:', section.measures?.length);
+            });
+        }
+        // Ensure currentSectionIndex is valid
+        if (typeof currentSong.currentSectionIndex !== 'number' ||
+            !Array.isArray(currentSong.sections) ||
+            currentSong.currentSectionIndex < 0 ||
+            currentSong.currentSectionIndex >= currentSong.sections.length) {
+            currentSong.currentSectionIndex = 0;
+        }
+        // Ensure repeat is a valid number for each section
+        currentSong.sections.forEach(section => {
+            if (typeof section.repeat !== 'number' || section.repeat < 1) {
+                section.repeat = 1;
+            }
+        });
+        progressionActive = true;
+        renderSectionTabs();
+        updateSongTitleDisplay();
+        currentProgression.key = song.key;
+        currentProgression.mode = song.mode;
+        selectKey(song.key, song.mode === 'minor');
+        syncProgressionMeasures(0);
+        // Get measure count and time signature for staff generation
+        const currentSection = currentSong.sections[currentSong.currentSectionIndex];
+        progressionMeasures = currentSection.measures;
+        // Diagnostic: Log measure and chord slot structure for debugging
+        console.log('🟡 [DIAG] First 3 measures:', progressionMeasures.slice(0, 3));
+        if (progressionMeasures[0] && progressionMeasures[0].chords) {
+            console.log('🟡 [DIAG] Measure 0 chords:', progressionMeasures[0].chords);
+        }
+        progressionActive = true;
+        // Show the staff container and enable play button
+        const staffContainer = document.getElementById('staffContainer');
+        if (staffContainer) staffContainer.classList.add('active');
+        const playBtn = document.querySelector('.play-progression-btn');
+        if (playBtn) playBtn.disabled = false;
+        const measureCount = Array.isArray(currentSection.measures) ? currentSection.measures.length * (currentSection.repeat || 1) : 0;
+        const timeSignature = currentSection.timeSignature || '4/4';
+        generateStaffMeasures(measureCount, timeSignature);
+        updateProgressionChart();
+        selectMeasure(0);
+        console.log('✅ Song loaded successfully!');
+    } catch (err) {
+        console.error('❌ Error loading song:', err);
+    }
+};
+
+
+// --- Load SONG_LIBRARY from JSON and populate genres ---
+function loadSongLibraryAndGenres() {
+    // Try to fetch the JSON file (adjust path if needed)
+    fetch('library-builder/output/curated-library-rhythmic.json')
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to fetch song library JSON');
+            return res.json();
+        })
+        .then(data => {
+            window.SONG_LIBRARY = data;
+            console.log('✅ SONG_LIBRARY loaded:', window.SONG_LIBRARY);
+            if (!Array.isArray(window.SONG_LIBRARY) || window.SONG_LIBRARY.length === 0) {
+                console.warn('SONG_LIBRARY is empty or not an array');
+            } else {
+                console.log('First song:', window.SONG_LIBRARY[0]);
+                console.log('Genres:', window.SONG_LIBRARY.map(s => s.genre));
+            }
+            populateGenres();
+        })
+        .catch(err => {
+            console.error('Error loading SONG_LIBRARY:', err);
+        });
+}
+
+// Call this on DOMContentLoaded
+window.addEventListener('DOMContentLoaded', loadSongLibraryAndGenres);
+</script>
 </body>
 </html>
