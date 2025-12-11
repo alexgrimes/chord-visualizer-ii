@@ -11415,9 +11415,9 @@
 
             // Use sharps for sharp keys/roots, flats for flat keys/roots
             // List of keys/roots that prefer sharps
-            const sharpRoots = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'E#'];
+            const sharpRoots = ['G', 'D', 'A', 'E', 'B', 'F#', 'C#', 'G#', 'D#', 'A#', 'E#'];
             // List of roots that prefer flats
-            const flatRoots = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Cb'];
+            const flatRoots = ['C', 'F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Cb'];
             // Normalize root for comparison
             const normRoot = root.replace('♯', '#').replace('♭', 'b');
             let useSharps = sharpRoots.includes(normRoot);
