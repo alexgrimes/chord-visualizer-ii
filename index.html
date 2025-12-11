@@ -3784,6 +3784,22 @@
                             };
                         }
                     });
+
+                    // Update currentSong to match loaded progression
+                    currentSong = {
+                        title: data.title || "Shared Song",
+                        artist: data.artist || "Unknown Artist",
+                        sections: [
+                            {
+                                name: "A Section",
+                                measures: progressionMeasures,
+                                key: data.key,
+                                timeSignature: data.timeSignature || '4/4',
+                                bars: progressionMeasures.length
+                            }
+                        ],
+                        currentSectionIndex: 0
+                    };
                     
                     // Activate progression mode
                     progressionActive = true;
@@ -4906,6 +4922,22 @@
                         };
                     }
                 });
+
+                // Update currentSong to match loaded progression
+                currentSong = {
+                    title: data.title || "Untitled Song",
+                    artist: data.artist || "Unknown Artist",
+                    sections: [
+                        {
+                            name: "A Section",
+                            measures: progressionMeasures,
+                            key: data.key,
+                            timeSignature: data.timeSignature || '4/4',
+                            bars: progressionMeasures.length
+                        }
+                    ],
+                    currentSectionIndex: 0
+                };
                 
                 // Activate progression mode
                 progressionActive = true;
@@ -7653,6 +7685,12 @@
                         localKey: key // Update localKey to match new progression key
                     };
                 });
+
+                // Sync back to currentSong to ensure persistence
+                if (typeof currentSong !== 'undefined' && currentSong.sections && currentSong.sections[currentSong.currentSectionIndex]) {
+                    currentSong.sections[currentSong.currentSectionIndex].measures = progressionMeasures;
+                    currentSong.sections[currentSong.currentSectionIndex].key = key;
+                }
                 
                 // Update the staff UI with transposed chords
                 updateProgressionChart();
@@ -11028,6 +11066,12 @@
         function clearProgression() {
             progressionActive = false;
             progressionMeasures = [];
+            
+            // Sync back to currentSong to ensure persistence
+            if (typeof currentSong !== 'undefined' && currentSong.sections && currentSong.sections[currentSong.currentSectionIndex]) {
+                currentSong.sections[currentSong.currentSectionIndex].measures = [];
+            }
+
             selectedMeasureIndex = null;
             isPlaying = false;
             
