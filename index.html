@@ -7623,6 +7623,23 @@
             }
             
             const oldKey = selectedKey;
+            
+            // If progression is active, enforce Major->Major and Minor->Minor transposition
+            if (progressionActive && oldKey) {
+                const oldIsMinor = oldKey.endsWith('m');
+                const newIsMinor = key.endsWith('m');
+                
+                if (oldIsMinor && !newIsMinor) {
+                    // Minor -> Major: Convert new key to Minor
+                    key = key + 'm';
+                    console.log(`Enforcing Minor->Minor: Converted ${key.replace('m','')} to ${key}`);
+                } else if (!oldIsMinor && newIsMinor) {
+                    // Major -> Minor: Convert new key to Major
+                    key = key.replace('m', '');
+                    console.log(`Enforcing Major->Major: Converted ${key + 'm'} to ${key}`);
+                }
+            }
+
             selectedKey = key;
             
             // Clear chromatic mode when selecting a key
@@ -7656,35 +7673,78 @@
                 console.log('Progression active - NOT updating dropdown, it controls measure keys');
             }
             
-            // AUTO-TRANSPOSE: If progression is active and key changed, transpose all measures
-            if (progressionActive && progressionMeasures.length > 0 && oldKey && oldKey !== key) {
-                console.log(`Transposing progression from ${oldKey} to ${key}`);
+            // AUTO-TRANSPOSE: If progression is active and key changed, transpose ALL sections
+            if (progressionActive && oldKey && oldKey !== key) {
+                console.log(`Transposing FULL SONG from ${oldKey} to ${key}`);
                 
                 // Update the progression key variable
                 progressionKey = key;
                 
-                // Only transpose measures that match the old progression key
-                // Preserve measures with different localKey values (modulated sections)
-                progressionMeasures = progressionMeasures.map(measure => {
-                    if (!measure || !measure.chord) return measure;
+                if (typeof currentSong !== 'undefined' && currentSong.sections) {
+                    currentSong.sections.forEach(section => {
+                        // Transpose all measures in the section
+                        section.measures = section.measures.map(measure => {
+                            if (!measure) return measure;
+                            
+                            let newMeasure = { ...measure };
+                            
+                            // Transpose chord if it exists
+                            if (measure.chord) {
+                                newMeasure.chord = {
+                                    ...measure.chord,
+                                    symbol: transposeChord(measure.chord.symbol, oldKey, key),
+                                    notes: transposeNotes(measure.chord.notes, oldKey, key)
+                                };
+                            }
+                            
+                            // Transpose localKey
+                            if (measure.localKey) {
+                                // Helper to transpose a key string (e.g. "Am" -> "Bm")
+                                const root = measure.localKey.replace('m', '');
+                                const suffix = measure.localKey.endsWith('m') ? 'm' : '';
+                                const newRoot = transposeChord(root, oldKey, key);
+                                newMeasure.localKey = newRoot + suffix;
+                            }
+                            
+                            return newMeasure;
+                        });
+                        
+                        // Transpose section key metadata
+                        if (section.key) {
+                            const root = section.key.replace('m', '');
+                            const suffix = section.key.endsWith('m') ? 'm' : '';
+                            const newRoot = transposeChord(root, oldKey, key);
+                            section.key = newRoot + suffix;
+                        }
+                    });
                     
-                    // If measure has a different localKey, preserve it
-                    if (measure.localKey && measure.localKey !== oldKey) {
-                        console.log(`Preserving measure with localKey ${measure.localKey}, not transposing`);
-                        return measure;
+                    // Update progressionMeasures to point to the updated current section
+                    if (currentSong.sections[currentSong.currentSectionIndex]) {
+                        progressionMeasures = currentSong.sections[currentSong.currentSectionIndex].measures;
                     }
-                    
-                    // Otherwise, transpose the chord and update localKey
-                    return {
-                        ...measure,
-                        chord: {
-                            ...measure.chord,
-                            symbol: transposeChord(measure.chord.symbol, oldKey, key),
-                            notes: transposeNotes(measure.chord.notes, oldKey, key)
-                        },
-                        localKey: key // Update localKey to match new progression key
-                    };
-                });
+                } else if (progressionMeasures.length > 0) {
+                    // Fallback for legacy single-section structure
+                     progressionMeasures = progressionMeasures.map(measure => {
+                        if (!measure || !measure.chord) return measure;
+                        
+                        // If measure has a different localKey, preserve it
+                        if (measure.localKey && measure.localKey !== oldKey) {
+                            console.log(`Preserving measure with localKey ${measure.localKey}, not transposing`);
+                            return measure;
+                        }
+                        
+                        // Otherwise, transpose the chord and update localKey
+                        return {
+                            ...measure,
+                            chord: {
+                                ...measure.chord,
+                                symbol: transposeChord(measure.chord.symbol, oldKey, key),
+                                notes: transposeNotes(measure.chord.notes, oldKey, key)
+                            },
+                            localKey: key // Update localKey to match new progression key
+                        };
+                    });
+                }
 
                 // Sync back to currentSong to ensure persistence
                 if (typeof currentSong !== 'undefined' && currentSong.sections && currentSong.sections[currentSong.currentSectionIndex]) {
@@ -7694,7 +7754,7 @@
                 
                 // Update the staff UI with transposed chords
                 updateProgressionChart();
-                console.log('Progression transposed successfully');
+                console.log('Full song transposed successfully');
             }
             
             // Reset fretboard zoom when key changes
@@ -11171,17 +11231,19 @@
         async function playAllSectionsSequentially() {
             const startingSectionIndex = currentSong.currentSectionIndex;
             
-            // Play from current section to end
-            for (let i = startingSectionIndex; i < currentSong.sections.length && isPlaying; i++) {
-                await playSectionByIndexWithSwitch(i);
-            }
-            
-            // Play remaining sections from start if we didn't start at 0
-            if (startingSectionIndex > 0 && isPlaying) {
-                for (let i = 0; i < startingSectionIndex && isPlaying; i++) {
+            do {
+                // Play from current section to end
+                for (let i = startingSectionIndex; i < currentSong.sections.length && isPlaying; i++) {
                     await playSectionByIndexWithSwitch(i);
                 }
-            }
+                
+                // Play remaining sections from start if we didn't start at 0
+                if (startingSectionIndex > 0 && isPlaying) {
+                    for (let i = 0; i < startingSectionIndex && isPlaying; i++) {
+                        await playSectionByIndexWithSwitch(i);
+                    }
+                }
+            } while (isPlaying);
         }
 
         async function playSectionByIndexWithSwitch(sectionIndex) {
